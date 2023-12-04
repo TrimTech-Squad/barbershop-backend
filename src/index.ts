@@ -1,5 +1,3 @@
-export const c = 2
-import { b } from './test'
-const a = 1
+import models from '../models'
 
-console.log(a + b, 'b hasil import dari js')
+console.log(models, 'this is models')

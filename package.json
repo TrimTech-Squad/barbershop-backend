@@ -1,19 +1,25 @@
 {
   "scripts": {
     "dev": "nodemon",
-    "build": "babel index.js -d dist",
+    "build": "npm run lint && tsc",
     "start": "npm run build && node dist/index.js",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "test": "vitest "
   },
   "devDependencies": {
+    "@types/jest": "^29.5.10",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
     "eslint": "^8.55.0",
+    "mysql2": "^3.6.5",
     "nodemon": "^3.0.2",
     "npm": "^10.2.4",
     "prettier": "^3.1.0",
+    "sequelize": "^6.35.1",
+    "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "vitest": "^0.34.6"
   }
 }
