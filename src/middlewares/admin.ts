@@ -21,7 +21,7 @@ const adminController = {
         )
       }
 
-      if (user?.role === USERROLE.admin) {
+      if (user?.role === USERROLE.ADMIN) {
         return next()
       }
 
