@@ -2,15 +2,14 @@ export type USER = {
   id: string
   email: string
   password: string
-  phone_number: string
+  firstName: string
+  lastName: string
   role: ROLE
-  createdAt: Date
-  updatedAt: Date
 }
 
 export enum USERROLE {
-  customer = 'customer',
-  admin = 'admin',
+  CUSTOMER = 'Customer',
+  ADMIN = 'Admin',
 }
 
 export type USERTOKENOBJECT = {
