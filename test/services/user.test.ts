@@ -66,27 +66,4 @@ describe('user services', async () => {
     expect(data.number).toEqual(updatedUser.number)
     expect(data.id).toBeTypeOf('number')
   })
-
-  // it('should throw error when user not found', async () => {
-  //   await expect(user.getUser('-1')).rejects.toThrow('User not found')
-  // })
-
-  // it('should can update user', async () => {
-  //   const data = await user.updateUser(userCtx.id.toString(), {
-  //     email: 'adj@gmail.com',
-  //     password: '12345678',
-  //     role: USERROLE.ADMIN,
-  //     firstName: 'adj',
-  //     lastName: 'adj',
-  //   })
-  //   expect(data).toEqual({
-  //     email: 'adj@gmail.com',
-  //     password: '12345678',
-  //     role: USERROLE.ADMIN,
-  //     firstName: 'adj',
-  //     lastName: 'adj',
-  //   })
-
-  //   Object.assign(userCtx, data)
-  // })
 })
