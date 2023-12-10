@@ -9,18 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      lastName: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true
       },
       password: {
         allowNull: false,
@@ -28,6 +19,19 @@ module.exports = {
         validate: {
           min: 8
         }
+      },
+      email: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        unique: true
+      },
+      number: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      photo_url: {
+        allowNull: false,
+        type: Sequelize.TEXT
       },
       role: {
         allowNull: false,

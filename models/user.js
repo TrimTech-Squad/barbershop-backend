@@ -18,17 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    firstName: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING,
-    },
-    lastName: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING
     },
     password: {
       allowNull: false,
@@ -36,6 +28,18 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         min: 8
       }
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    number: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    photo_url: {
+    allowNull: false,
+    type: DataTypes.TEXT
     },
     role: {
       allowNull: false,

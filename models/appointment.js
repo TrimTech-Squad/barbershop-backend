@@ -50,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     },
     status: {
-      type: DataTypes.ENUM('Booked', 'Completed', 'Cancelled')
+      type: DataTypes.ENUM('Booked', 'Completed', 'Cancelled'),
+      defaultValue: ['Booked']
     }
   }, {
     sequelize,
