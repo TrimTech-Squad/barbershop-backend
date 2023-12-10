@@ -4,7 +4,7 @@ export type USER = {
   password: string
   firstName: string
   lastName: string
-  role: ROLE
+  role: USERROLE
 }
 
 export enum USERROLE {
