@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -7,14 +7,14 @@ module.exports = {
         allowNull: false,
         autoIncrement: false,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
-          key: "id"
+          model: 'Users',
+          key: 'id',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -23,8 +23,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Kapsters",
-          key: "id"
+          model: 'Kapsters',
+          key: 'id',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -33,35 +33,36 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Services",
-          key: "id"
+          model: 'Services',
+          key: 'id',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       date: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       time: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       status: {
         allowNull: false,
-        type: Sequelize.ENUM('Booked', 'Completed', 'Cancelled')
+        type: Sequelize.ENUM('Booked', 'Completed', 'Cancelled'),
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Appointments');
-  }
-};
+    await queryInterface.dropTable('Appointments')
+  },
+}

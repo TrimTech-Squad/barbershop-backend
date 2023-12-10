@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
+const bcrypt = require('bcrypt')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,42 +11,53 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Appointment, {
-        as: 'appointment2',
-        foreignKey: 'userId'
+        as: 'appointment',
+        foreignKey: 'userId',
       })
     }
   }
-  User.init({
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING,
+  User.init(
+    {
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        validate: {
+          min: 8,
+        },
+      },
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      number: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      photo_url: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+      },
+      role: {
+        allowNull: false,
+        type: DataTypes.ENUM('Customer', 'Admin'),
+      },
     },
-    password: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        min: 8
-      }
+    {
+      sequelize,
+      modelName: 'User',
+      hooks: {
+        beforeCreate: user => {
+          if (user.photo_url === '' || !user.photo_url) {
+            user.photo_url = 'https://i.imgur.com/5NvPv4U.png'
+          }
+          user.password = bcrypt.hashSync(user.password, 10)
+        },
+      },
     },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    number: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    photo_url: {
-    allowNull: false,
-    type: DataTypes.TEXT
-    },
-    role: {
-      allowNull: false,
-      type: DataTypes.ENUM('Customer', 'Admin')
-    }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
-  return User;
-};
+  )
+  return User
+}

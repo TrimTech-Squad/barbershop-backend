@@ -1,34 +1,44 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Service_Kapster extends Model {
+  class ServiceKapster extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static associate(models) {
-      // define association here
+      models.ServiceKapster.belongsTo(models.Service, {
+        as: 'service',
+        foreignKey: 'serviceId',
+      })
+
+      models.ServiceKapster.belongsTo(models.Kapster, {
+        as: 'kapster',
+        foreignKey: 'kapsterId',
+      })
     }
   }
-  Service_Kapster.init({
-    barberManId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
+  ServiceKapster.init(
+    {
+      kapsterId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      serviceId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      price: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
     },
-    serviceId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
+    {
+      sequelize,
+      modelName: 'ServiceKapster',
     },
-    price: {
-      allowNull: false,
-      type: DataTypes.INTEGER
-    }
-  }, {
-    sequelize,
-    modelName: 'Service_Kapster',
-  });
-  return Service_Kapster;
-};
+  )
+  return ServiceKapster
+}
