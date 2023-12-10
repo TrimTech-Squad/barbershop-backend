@@ -3,10 +3,10 @@ import {
   InferCreationAttributes,
   ModelDefined,
 } from 'sequelize'
-import { USER } from '../src/types/user'
-import { APPOINTMENT } from '../src/types/appointment'
-import { KAPSTER } from '../src/types/kapster'
-import { SERVICE, SERVICE_KAPSTER } from '../src/types/service'
+import { USER } from '../types/user'
+import { APPOINTMENT } from '../types/appointment'
+import { KAPSTER } from '../types/kapster'
+import { SERVICE, SERVICE_KAPSTER } from '../types/service'
 
 declare const User: User &
   ModelDefined<InferAttributes<USER>, InferCreationAttributes<USER>>
