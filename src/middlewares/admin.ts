@@ -1,8 +1,8 @@
 import { User } from '../../models'
 import { Request, Response, NextFunction } from 'express'
-import { USERROLE, USERTOKENOBJECT } from '../types/user'
-import ErrorCatcher, { ForbiddenError } from '../response/error'
-import ResponseBuilder from '../response/builder'
+import { USERROLE, USERTOKENOBJECT } from '../../types/user'
+import ErrorCatcher, { ForbiddenError } from '../utils/error'
+import ResponseBuilder from '../utils/response-builder'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export interface RequestMiddleware extends Request {

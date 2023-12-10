@@ -1,9 +1,10 @@
 export type USER = {
-  id: string
+  id?: number
   email: string
   password: string
-  firstName: string
-  lastName: string
+  name: string
+  photo_url: string
+  number: string
   role: USERROLE
 }
 
