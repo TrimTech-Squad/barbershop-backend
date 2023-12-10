@@ -5,7 +5,8 @@ export type SERVICE = {
 }
 
 export type SERVICE_KAPSTER = {
-  barberManId: number
+  id?: number
+  kapsterId: number
   serviceId: number
   price: number
 }

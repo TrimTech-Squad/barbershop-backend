@@ -1,7 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Service_Kapster extends Model {
+  class ServiceKapster extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,12 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static associate(models) {
-      // define association here
+      models.ServiceKapster.belongsTo(models.Service, {
+        as: 'service',
+        foreignKey: 'serviceId',
+      })
+
+      models.ServiceKapster.belongsTo(models.Kapster, {
+        as: 'kapster',
+        foreignKey: 'kapsterId',
+      })
     }
   }
-  Service_Kapster.init(
+  ServiceKapster.init(
     {
-      barberManId: {
+      kapsterId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
@@ -29,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Service_Kapster',
+      modelName: 'ServiceKapster',
     },
   )
-  return Service_Kapster
+  return ServiceKapster
 }

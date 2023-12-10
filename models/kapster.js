@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Kapster extends Model {
     /**
@@ -13,29 +11,36 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Kapster.hasMany(models.Appointment, {
         as: 'appointment',
-        foreignKey: 'kapsterId'
-      }),
+        foreignKey: 'kapsterId',
+      })
       Kapster.belongsToMany(models.Service, {
-        through: 'Service_Kapster'
+        through: 'Service_Kapster',
+      })
+      Kapster.hasMany(models.ServiceKapster, {
+        as: 'service',
+        foreignKey: 'kapsterId',
       })
     }
   }
-  Kapster.init({
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING,
+  Kapster.init(
+    {
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      gender: {
+        allowNull: false,
+        type: DataTypes.ENUM('Man', 'Woman'),
+      },
+      specialization: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
-    gender: {
-      allowNull: false,
-      type: DataTypes.ENUM('Man', 'Woman')
+    {
+      sequelize,
+      modelName: 'Kapster',
     },
-    specialization: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    }
-  }, {
-    sequelize,
-    modelName: 'Kapster',
-  });
-  return Kapster;
-};
+  )
+  return Kapster
+}

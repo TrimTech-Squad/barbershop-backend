@@ -12,15 +12,15 @@ module.exports = (sequelize, DataTypes) => {
       Appointment.belongsTo(models.User, {
         as: 'user',
         foreignKey: 'userId',
-      }),
-        Appointment.belongsTo(models.Kapster, {
-          as: 'kapster',
-          foreignKey: 'kapsterId',
-        }),
-        Appointment.belongsTo(models.Service, {
-          as: 'service',
-          foreignKey: 'serviceId',
-        })
+      })
+      Appointment.belongsTo(models.Kapster, {
+        as: 'kapster',
+        foreignKey: 'kapsterId',
+      })
+      Appointment.belongsTo(models.Service, {
+        as: 'service',
+        foreignKey: 'serviceId',
+      })
     }
   }
   Appointment.init(
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.ENUM('Booked', 'Completed', 'Cancelled'),
-        defaultValue: ['Booked'],
+        defaultValue: 'Booked',
       },
     },
     {
