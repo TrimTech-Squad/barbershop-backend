@@ -18,7 +18,7 @@ describe('appointment services', () => {
     try {
       const userCtx: USER = {
         id: 0,
-        email: Math.random() * 100 + '@gmail.com',
+        email: 'nishi@gmail.com',
         password: '12345678',
         role: USERROLE.CUSTOMER,
         name: 'nishi',

@@ -1,5 +1,6 @@
 'use strict'
 const { Model } = require('sequelize')
+const bcrypt = require('bcrypt')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -48,6 +49,14 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'User',
+      hooks: {
+        beforeCreate: user => {
+          if (user.photo_url === '' || !user.photo_url) {
+            user.photo_url = 'https://i.imgur.com/5NvPv4U.png'
+          }
+          user.password = bcrypt.hashSync(user.password, 10)
+        },
+      },
     },
   )
   return User
