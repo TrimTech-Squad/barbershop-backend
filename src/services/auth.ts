@@ -1,6 +1,6 @@
 import { User } from '../../models'
 import bcrtpt from 'bcrypt'
-import { UnauthorizedError } from '../utils/error'
+import { UnauthorizedError } from '../helpers/error'
 import { USER } from '../../types/user'
 import jwt from 'jsonwebtoken'
 

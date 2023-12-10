@@ -1,5 +1,5 @@
 import { User } from '../../models/index'
-import { NotFoundError } from '../utils/error'
+import { NotFoundError } from '../helpers/error'
 import { USER } from '../../types/user'
 
 class UserServices {

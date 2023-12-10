@@ -1,0 +1,495 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: local dev server
+    url: http://127.0.0.1:3000
+info:
+  version: "1.0.0"
+  title: barbershop-api
+  description: The API for barbershop project
+
+tags:
+  - name: Auth
+    description: Everything about auth
+  - name: User
+    description: to accsess user informations
+  - name: Service
+    description: all services api
+  - name: Appointment
+    description: Everything abou appointment api
+  - name: Barberman
+    description: Everything about barberman api
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  examples:
+    email:
+      value: vocasia@mail.com
+    name:
+      value: vocasia
+    password:
+      value: 12345678
+    photo_url:
+      value: https//:imgrul.com
+    number:
+      value: 08123456789
+
+  requestBodies:
+    appointment:
+      description: object shape to create appointment
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: integer
+                example: 1
+              serviceId:
+                type: integer
+                example: 1
+              barbermanId:
+                type: integer
+                example: 1
+              date:
+                type: number
+                example: 1701279682022
+              status:
+                type: string
+                example: booked | ongoing | completed
+              time:
+                type: integer
+                example: 1
+
+  parameters:
+    idParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    barbermanSpecializationQuery:
+      name: specialization
+      in: query
+      schema:
+        type: string
+      example: krimbat
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Vocasia"
+        passwod:
+          type: string
+          example:
+            $ref: "#/components/examples/password/value"
+          writeOnly: true
+        email:
+          example:
+            $ref: "#/components/examples/email/value"
+          type: string
+        number:
+          example:
+            $ref: "#/components/examples/number/value"
+          type: string
+        photo_url:
+          example:
+            $ref: "#/components/examples/photo_url/value"
+          type: string
+    Service:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Krimbat
+        description:
+          type: string
+          example: manjakan rambut anda dengan service krimbat
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user:
+          $ref: "#/components/schemas/User"
+        service:
+          $ref: "#/components/schemas/Service"
+        barberman:
+          $ref: "#/components/schemas/Barberman"
+        date:
+          type: number
+          example: 1701279682022
+        status:
+          type: string
+          example: booked | ongoing | completed
+        time:
+          type: integer
+          example: 1
+    Barberman:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example:
+            $ref: "#/components/examples/name/value"
+        specialization:
+          type: string
+
+  responses:
+    400Error:
+      description: "Invalid Request Error"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: field name is required
+    401Error:
+      description: "Unauthorized Error"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: credentials error
+    403Error:
+      description: Not permitted error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not permitted to access this page or resources"
+    404Error:
+      description: Not Found Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Resource not found"
+
+paths:
+  /api/auth:
+    post:
+      tags:
+        - Auth
+      description: "To Login in application"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  example:
+                    $ref: "#/components/examples/email/value"
+                  type: string
+                password:
+                  type: string
+              
+
+      responses:
+        "200":
+          description: "Successfully Login"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: login success
+        "400":
+          $ref: "#/components/responses/400Error"
+
+        "401":
+          $ref: "#/components/responses/401Error"
+
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      description: "To create new user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/email/value"
+                password:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/password/value"
+                name:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/name/value"
+                photo_url:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/photo_url/value"
+                number:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/number/value"
+                role:
+                  type: string
+                  example: Admin | Customer
+      responses:
+        "201":
+          description: "Created new user successfuly"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        "400":
+          $ref: "#/components/responses/400Error"
+
+  /user/{id}:
+    get:
+      tags:
+        - User
+      description: "To fetch user data"
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+
+      responses:
+        "200":
+          description: "Successfuly get user data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/401Error"
+
+    put:
+      tags:
+        - User
+      description: "To fetch user data"
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        "200":
+          description: "Successfuly update user data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/401Error"
+
+        "403":
+          $ref: "#/components/responses/403Error"
+
+  /services:
+    get:
+      tags:
+        - Service
+      description: To get all serives available
+      responses:
+        200:
+          description: Successfuly get all services data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        401:
+          $ref: "#/components/responses/401Error"
+
+  /appointment:
+    post:
+      tags:
+        - Appointment
+      description: To post new appointment
+      requestBody:
+        $ref: "#/components/requestBodies/appointment"
+      responses:
+        200:
+          description: Succes aded appointment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: "#/components/responses/400Error"
+        401:
+          $ref: "#/components/responses/401Error"
+
+  /appointment/{id}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      tags:
+        - Appointment
+      description: Get appointment
+      responses:
+        200:
+          description: Get appointment according id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        401:
+          $ref: "#/components/responses/401Error"
+        403:
+          $ref: "#/components/responses/403Error"
+        404:
+          $ref: "#/components/responses/404Error"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      tags:
+        - Appointment
+      description: Update appointment
+      requestBody:
+        $ref: "#/components/requestBodies/appointment"
+
+      responses:
+        200:
+          description: update appointment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        401:
+          $ref: "#/components/responses/401Error"
+        403:
+          $ref: "#/components/responses/403Error"
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      tags:
+        - Appointment
+      responses:
+        200:
+          description: Delete appointment according id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Appointment id 1 has been deleted"
+        401:
+          $ref: "#/components/responses/401Error"
+        403:
+          $ref: "#/components/responses/403Error"
+        404:
+          $ref: "#/components/responses/404Error"
+
+  /barberman:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/barbermanSpecializationQuery"
+      tags:
+        - Barberman
+      description: Api to get all barberman infomation and its service
+      responses:
+        200:
+          description: Successfuly get all services data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    barberman:
+                      $ref: "#/components/schemas/Barberman"
+                    services:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          serviceId:
+                            type: integer
+                            example: 1
+                          price:
+                            type: integer
+                            minimum: 0
+                            example: 10000
+        401:
+          $ref: "#/components/responses/401Error"
+
+    post:
+      tags:
+        - Barberman
+      description: Create new barberman record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                specialization:
+                  type: string
+                  example: "krimbat"
+                name:
+                  type: string
+                  example:
+                    $ref: "#/components/examples/name/value"
+
+      responses:
+        200:
+          description: Add new barberman record (admin only)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully added baberman record"

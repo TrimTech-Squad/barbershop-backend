@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+//@ts-nocheck
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Service extends Model {
     /**
@@ -13,25 +12,28 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Service.hasMany(models.Appointment, {
         as: 'appointment1',
-        foreignKey: 'serviceId'
+        foreignKey: 'serviceId',
       }),
-      Service.belongsToMany(models.Kapster, {
-        through: 'Service_Kapster'
-      })
+        Service.belongsToMany(models.Kapster, {
+          through: 'Service_Kapster',
+        })
     }
   }
-  Service.init({
-    serviceName: {
-      allowNull : false,
-      type: DataTypes.STRING,
+  Service.init(
+    {
+      serviceName: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      description: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+      },
     },
-    description: {
-      allowNull: false, 
-      type: DataTypes.TEXT
-    }
-  }, {
-    sequelize,
-    modelName: 'Service',
-  });
-  return Service;
-};
+    {
+      sequelize,
+      modelName: 'Service',
+    },
+  )
+  return Service
+}

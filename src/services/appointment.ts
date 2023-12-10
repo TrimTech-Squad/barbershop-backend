@@ -1,6 +1,6 @@
 import { Appointment } from '../../models'
 import { APPOINTMENT } from '../../types/appointment'
-import { NotFoundError } from '../utils/error'
+import { NotFoundError } from '../helpers/error'
 
 export default class AppointmentService {
   static async createAppointment(appointment: APPOINTMENT) {

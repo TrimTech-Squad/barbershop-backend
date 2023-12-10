@@ -1,6 +1,6 @@
 import { Service } from '../../models'
 import { SERVICE } from '../../types/service'
-import { NotFoundError } from '../utils/error'
+import { NotFoundError } from '../helpers/error'
 
 export default class ServiceServices {
   static createService = async (service: SERVICE): Promise<SERVICE> => {

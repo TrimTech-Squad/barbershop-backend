@@ -1,4 +1,4 @@
-import { NotFoundError } from '../utils/error'
+import { NotFoundError } from '../helpers/error'
 import { KAPSTER, KAPSTERSERVICE } from '../../types/kapster'
 import { Kapster, Service, ServiceKapster } from '../../models'
 import { SERVICE } from '../../types/service'

@@ -1,68 +1,67 @@
-const { User } = require('../models');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { generateToken } = require('../helpers/jwt.js')
+import { object, string, mixed } from 'yup'
+import UserServices from '../services/user'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher from '../helpers/error'
 
-const register = async (req, res) => {
+// @ts-ignore
+export const register = async (req, res) => {
+  const userSchema = object({
+    name: string().required('Nama harus diisi'),
+    email: string().required('Email harus diisi').email('Email tidak valid'),
+    password: string().required('Password harus diisi'),
+    photo_url: string().required('Photo harus diisi'),
+    number: string().required('Nomor harus diisi'),
+    role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
+  })
   try {
-    const { name, email, password } = req.body;
-
-    const emailUsed = await User.findOne({
-      where: { email }
-    });
-
-    if (emailUsed) {
-      return res.status(400).json({ name: 'bad request', message: "email sudah digunakan" });
-    }
-
-    // Hash the password asynchronously
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashPassword,
-      isAdmin: true
-    });
-
-    // Don't send the hashed password in the response
-    delete user.password;
-
-    res.status(201).json({ message: 'akun berhasil dibuat, silahkan login.' });
+    const body = req.body
+    await userSchema.validate(body, { abortEarly: false })
+    await UserServices.createUser(body)
+    return ResponseBuilder(
+      {
+        code: 201,
+        message: 'User successfully created.',
+        data: null,
+      },
+      res,
+    )
   } catch (error) {
-    console.error('Error during registration:', error);
-    res.status(500).json({ message: 'Terjadi kesalahan saat membuat akun.' });
+    // @ts-ignore
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
+}
 
+// const login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body
 
-const login = async (req, res) => {
-  try{
-  const { email, password } = req.body;
+//     const user = await User.findOne({
+//       where: { email },
+//     })
 
-  const user = await User.findOne({ 
-    where: { email }
-   })
+//     if (!user) {
+//       return res.status(401).json({
+//         message: 'Authentication failed. Salah menginput email / password .',
+//       })
+//     }
 
-   if (!user){
-    return res.status(401).json({ message: 'Authentication failed. Salah menginput email / password .' });
-   }
-       
-    const Password = bcrypt.compareSync(password, user.password);
-        if(!Password) {
-          return res.status(401).json({ message: 'Authentication failed. Incorrect password.' });
-        } 
-        
-        //generateToken
-         token = generateToken({ 
-            userId: user.id, 
-            email: user.email });
+//     const Password = bcrypt.compareSync(password, user.password)
+//     if (!Password) {
+//       return res
+//         .status(401)
+//         .json({ message: 'Authentication failed. Incorrect password.' })
+//     }
 
-        return res.status(200).json({ message: 'User successfully login.', token: token})
+//     //generateToken
+//     const token = generateToken({
+//       userId: user.id,
+//       email: user.email,
+//     })
 
-  } catch(error){
-      res.status(500).json({ message: 'Internal Server Error' });
-    };
-};
-
-module.exports = { register, login }
+//     return res
+//       .status(200)
+//       .json({ message: 'User successfully login.', token: token })
+//   } catch (error) {
+//     res.status(500).json({ message: 'Internal Server Error' })
+//   }
+// }

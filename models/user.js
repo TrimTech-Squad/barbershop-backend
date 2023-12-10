@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 const bcrypt = require('bcrypt')
