@@ -3,10 +3,13 @@ export default function ResponseBuilder(
   options: { code: number; data: unknown; message: string },
   res: Response,
 ) {
-  return res.status(options.code).json({
+  const response = {
+    code: options.code,
     data: options.data,
-    status: options.code,
     message: options.message,
-    timestamp: new Date().toISOString(),
-  })
+  }
+
+  if (!options.data) delete response.data
+
+  return res.status(options.code).json(response)
 }

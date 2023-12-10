@@ -9,10 +9,11 @@ export default class AuthService {
     return new Promise((resolve, reject) => {
       User.findOne({ where: { email } })
         .then((user: USER) => {
-          if (!user) throw new UnauthorizedError('Email not found')
+          if (!user) throw new UnauthorizedError('Invalid email or password')
           bcrtpt.compare(password, user.password, (err, result) => {
-            if (err) throw new UnauthorizedError('Password not match')
-            if (!result) throw new UnauthorizedError('Password not match')
+            if (err) reject(new UnauthorizedError('Invalid email or password'))
+            if (!result)
+              reject(new UnauthorizedError('Invalid email or password'))
             const token = jwt.sign(
               { id: user.id, email: user.email },
               process.env.JWT_SECRET || 'secret',

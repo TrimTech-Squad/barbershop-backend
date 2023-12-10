@@ -1,11 +1,18 @@
 import { ValidationError } from 'sequelize'
+import { ValidationError as YupError } from 'yup'
 
 export default function ErrorCatcher(error: Error): {
   code: number
   data: null
   message: string
 } {
-  if (error instanceof ValidationError) {
+  if (error instanceof YupError) {
+    return {
+      code: 400,
+      data: null,
+      message: error.errors[0],
+    }
+  } else if (error instanceof ValidationError) {
     const errors = error.errors.map(err => err.message)
     return {
       code: 400,
@@ -33,6 +40,24 @@ export default function ErrorCatcher(error: Error): {
   } else if (error instanceof ForbiddenError) {
     return {
       code: 403,
+      data: null,
+      message: error.message,
+    }
+  } else if (error instanceof NotFoundError) {
+    return {
+      code: 404,
+      data: null,
+      message: error.message,
+    }
+  } else if (error instanceof BadRequestError) {
+    return {
+      code: 400,
+      data: null,
+      message: error.message,
+    }
+  } else if (error instanceof UnauthorizedError) {
+    return {
+      code: 401,
       data: null,
       message: error.message,
     }
