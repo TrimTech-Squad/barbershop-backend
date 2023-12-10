@@ -1,6 +1,6 @@
 import { User } from '../../models'
 import { Request, Response, NextFunction } from 'express'
-import { USERROLE, USERTOKENOBJECT } from '../../types/user'
+import { USERROLE, USERTOKENOBJECT } from '../types/user'
 import ErrorCatcher, { ForbiddenError } from '../response/error'
 import ResponseBuilder from '../response/builder'
 
