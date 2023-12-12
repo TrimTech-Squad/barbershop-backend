@@ -1,6 +1,7 @@
-const { getAllService } = require('../controllers/serviceController')
+import { Router } from 'express'
+import { getAllService } from '../controllers/serviceController'
 
-const router = require('express').Router()
+const router = Router();
 
 router.get('/service', getAllService)
 

@@ -1,7 +1,8 @@
-const { createAppointment, getAppointmentById, updateDataAppointment, deleteAppointment } = require('../controllers/appointmentController')
+// src/routes/kapsterRoutes.js
+import { Router } from 'express'
+import { createAppointment, getAppointmentById, updateDataAppointment, deleteAppointment } from '../controllers/appointmentController'
 
-const router = require('express').Router()
-
+const router = Router();
 router.post('/appointment', createAppointment)
 router.get('/appointment/:id', getAppointmentById)
 router.put('/appointment/:id', updateDataAppointment)
