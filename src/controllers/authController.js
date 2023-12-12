@@ -13,8 +13,8 @@ export const register = async (
     name: string().required('Nama harus diisi'),
     email: string().required('Email harus diisi').email('Email tidak valid'),
     password: string().required('Password harus diisi'),
-    photo_url: string(),
     number: string().required('Nomor harus diisi'),
+    photo_url: string(),
     role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
   })
   try {
@@ -65,3 +65,5 @@ export const login = async (
     return ResponseBuilder(ErrorCatcher(error), res)
   }
 }
+
+module.exports = {register, login}

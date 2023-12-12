@@ -1,62 +1,81 @@
-const { User, Appointment } = require('../models')
+const { UserService} = require('../services/user');
+const ResponseBuilder = require('../helpers/response-builder');
+const ErrorCatcher = require('../helpers/error');
+const { object, string, mixed } = require('yup');
 
-//GET BY ID
-const getUserById = async(req, res) => {
-    try{
-        const { id } = req.params;
-        const user = await User.findByPk(id, {
-           include: [
-            {
-                model: Appointment,
-                as: 'appointment2'
-            }
-           ]
+// Validasi Yup Schema
+const userUpdateSchema = object({
+  name: string().required('Nama harus diisi'),
+  password: string().required('Password harus diisi'),
+  email: string().required('Email harus diisi').email('Email tidak valid'),
+  number: string().required('Nomor harus diisi'),
+  photo_url: string(),
+  role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
+});
+
+const getUserById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const appointment = await UserService.getUser(id);
+  
+      if (!appointment) {
+        return res.status(404).json({
+          error: 'Jadwal tidak ditemukan',
         });
-        
-        if (user === null){
-            return res.status(404).json({ 
-                error :'User tidak ditemukan'
-            });
-        }
-
-        res.status(200).json(user);
+      }
+  
+      res.status(200).json(appointment);
     } catch (error) {
-        console.log(error, '<-- Error Get User by id')
+        return ResponseBuilder(ErrorCatcher(error), res);
     }
-}
+  };
 
-
-//PUT
 const updateDataUser = async (req, res) => {
-        try{
-            //mendapatkan req params -> mendapatkan data movie berdasarkan id
-            const { id } = req.params
-            //mendapatkan req body
-            const {name, password, email, number, photo_url, role} = req.body
+  try {
+    const { id } = req.params;
+    const { name, password, email, number, photo_url, role } = req.body;
 
-            const user = await User.findByPk(id)
+    // Validasi request menggunakan Yup
+    await userUpdateSchema.validate(
+      { name, password, email, number, photo_url, role },
+      { abortEarly: false },
+    );
 
-            if (!user) {
-                return res.status(404).json({
-                    error: 'Tidak ditemukan'
-                });
-            }
-            //update
-            user.name = name
-            user.password = password
-            user.email = email
-            user.number = number
-            user.photo_url = photo_url
-            user.role = role
-            user.updateAt = new Date()
+    const user = await UserService.updateUser(id);
 
-            //save data
-            user.save()
-            //response
-            res.status(200).json(user);
-        } catch(error) {
-            console.log(error, '<-- Error Update Data User')
-        }
+    if (!user) {
+      return res.status(404).json({
+        error: 'User tidak ditemukan',
+      });
     }
-    
-    module.exports = {getUserById, updateDataUser}
+
+    // Update data user
+    user.name = name;
+    user.password = password;
+    user.email = email;
+    user.number = number;
+    user.photo_url = photo_url;
+    user.role = role;
+    user.updatedAt = new Date();
+
+    // Save data
+    await user.save();
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Data User berhasil diupdate',
+      },
+      res,
+    );
+  } catch (error) {
+    console.log(error, '<-- Error Update Data User');
+    return ResponseBuilder(ErrorCatcher(error), res);
+  }
+};
+
+module.exports = {
+  getUserById,
+  updateDataUser,
+};

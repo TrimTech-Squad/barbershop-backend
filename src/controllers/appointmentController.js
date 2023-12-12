@@ -1,105 +1,108 @@
-import ResopnseBuilder from '../helpers/ResponseBuilder'
-import AppointmentService from '../services/AppointmentService'
-import ErrorCatcher from '../helpers/ErrorCatcher'
+const ResponseBuilder = require('../helpers/response-builder');
+const AppointmentService = require('../services/appointment');
+const ErrorCatcher = require('../helpers/error');
+const { object, string, date, mixed } = require('yup');
+
+const appointmentSchema = object({
+  kapsterId: string().required('Kapster ID harus diisi'),
+  serviceId: string().required('Service ID harus diisi'),
+  date: date().required('Tanggal harus diisi'),
+  time: string().required('Waktu harus diisi'),
+  status: mixed().oneOf(['Customer', 'Admin']).required('Status harus diisi'),
+});
 
 const createAppointment = async (req, res) => {
   try {
-    const request = req.body
-    const newAppointment = await AppointmentService.create(request)
-    return ResopnseBuilder(
+    const request = req.body;
+
+    await appointmentSchema.validate(request, { abortEarly: false });
+
+    const newAppointment = await AppointmentService.createAppointment(request);
+
+    return ResponseBuilder(
       {
         code: 201,
         data: newAppointment,
         message: 'Appointment berhasil dibuat',
       },
       res,
-    )
+    );
   } catch (error) {
-    return ResopnseBuilder(ErrorCatcher(error), res)
+    return ResponseBuilder(ErrorCatcher(error), res);
   }
-}
+};
 
-//GET BY ID
 const getAppointmentById = async (req, res) => {
   try {
-    const { id } = req.params
-    const appointment = await Appointment.findByPk(id, {
-      include: [
-        {
-          model: Service,
-          as: 'service',
-        },
-      ],
-    })
+    const { id } = req.params;
+    const appointment = await AppointmentService.getAppointment(id);
 
-    if (appointment === null) {
+    if (!appointment) {
       return res.status(404).json({
         error: 'Jadwal tidak ditemukan',
-      })
+      });
     }
 
-    res.status(200).json(appointment)
+    res.status(200).json(appointment);
   } catch (error) {
-    console.log(error, '<-- Error Get Appointment')
+    return ResponseBuilder(ErrorCatcher(error), res);
   }
-}
+};
 
-//PUT
 const updateDataAppointment = async (req, res) => {
   try {
-    const { id } = req.params
-    const { kapsterId, serviceId, date, time, status } = req.body
+    const { id } = req.params;
+    const { kapsterId, serviceId, date, time, status } = req.body;
 
-    const appointment = await Appointment.findByPk(id)
+    // Validasi request menggunakan Yup
+    await appointmentSchema.validate(
+      { kapsterId, serviceId, date, time, status },
+      { abortEarly: false },
+    );
+
+    const appointment = await AppointmentService.updateAppointment(id);
     if (!appointment) {
       return res.status(404).json({
         message: 'Jadwal tidak ditemukan',
-      })
+      });
     }
 
-    appointment.kapsterId = kapsterId || appointment.kapsterId
-    appointment.serviceId = serviceId || appointment.serviceId
-    appointment.date = date || appointment.date
-    appointment.time = time || appointment.time
-    appointment.status = status || appointment.status
+    const updatedAppointment = await AppointmentService.updateById(id, {
+      kapsterId: kapsterId || appointment.kapsterId,
+      serviceId: serviceId || appointment.serviceId,
+      date: date || appointment.date,
+      time: time || appointment.time,
+      status: status || appointment.status,
+    });
 
-    await appointment.save()
-
-    return res.status(200).json({
-      kapsterId: appointment.kapsterId,
-      serviceId: appointment.serviceId,
-      date: appointment.date,
-      time: appointment.time,
-      status: appointment.status,
-      userId: appointment.userId,
-      updatedAt: appointment.updatedAt,
-    })
+    return res.status(200).json(updatedAppointment);
   } catch (error) {
-    console.log(error, '<-- Error Update Data Appointment')
+    return ResponseBuilder(ErrorCatcher(error), res);
   }
-}
+};
 
-//DELETE
 const deleteAppointment = async (req, res) => {
   try {
-    const { id } = req.params
-    const appointment = await Appointment.findByPk(id)
+    const { id } = req.params;
+    const appointment = await AppointmentService.deleteAppointment(id);
 
     if (!appointment) {
-      res.status(404).json({ message: 'jadwal tidak ditemukan' })
+      return res.status(404).json({ message: 'Jadwal tidak ditemukan' });
     }
-    appointment.destroy()
-    res
-      .status(200)
-      .json({ message: `appointment dengan id ${id} berhasil dihapus` })
+
+    await AppointmentService.deleteById(id);
+
+    return res.status(200).json({
+      message: `Appointment dengan id ${id} berhasil dihapus`,
+    });
   } catch (error) {
-    console.log(error, '<-- Error Delete Appointment')
+    return ResponseBuilder(ErrorCatcher(error), res);
   }
-}
+};
 
 module.exports = {
   createAppointment,
   getAppointmentById,
   updateDataAppointment,
   deleteAppointment,
-}
+};
