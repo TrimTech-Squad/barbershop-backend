@@ -1,5 +1,5 @@
 import { User } from '../../models'
-import bcrtpt from 'bcrypt'
+import bcrypt from 'bcrypt'
 import { UnauthorizedError } from '../helpers/error'
 import { USER } from '../../types/user'
 import jwt from 'jsonwebtoken'
@@ -10,7 +10,7 @@ export default class AuthService {
       User.findOne({ where: { email } })
         .then((user: USER) => {
           if (!user) throw new UnauthorizedError('Invalid email or password')
-          bcrtpt.compare(password, user.password, (err, result) => {
+          bcrypt.compare(password, user.password, (err, result) => {
             if (err) reject(new UnauthorizedError('Invalid email or password'))
             if (!result)
               reject(new UnauthorizedError('Invalid email or password'))

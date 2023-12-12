@@ -15,6 +15,18 @@ export default class ServiceServices {
     })
   }
 
+  static getAllServices = async (): Promise<SERVICE[]> => {
+    return new Promise((resolve, reject) => {
+      Service.findAll()
+        .then((data: SERVICE[]) => {
+          resolve(data);
+        })
+        .catch((err: Error) => {
+          reject(err);
+        });
+    });
+  };
+
   static getService = async (id: number): Promise<SERVICE> => {
     return new Promise((resolve, reject) => {
       Service.findOne({
