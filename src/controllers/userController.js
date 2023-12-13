@@ -1,7 +1,7 @@
-const { UserService} = require('../services/user');
-const ResponseBuilder = require('../helpers/response-builder');
-const ErrorCatcher = require('../helpers/error');
-const { object, string, mixed } = require('yup');
+import { object, string, number, mixed } from 'yup'
+import UserService from '../services/user'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher from '../helpers/error'
 
 // Validasi Yup Schema
 const userUpdateSchema = object({
@@ -11,55 +11,42 @@ const userUpdateSchema = object({
   number: string().required('Nomor harus diisi'),
   photo_url: string(),
   role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
-});
+})
 
-const getUserById = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const appointment = await UserService.getUser(id);
-  
-      if (!appointment) {
-        return res.status(404).json({
-          error: 'Jadwal tidak ditemukan',
-        });
-      }
-  
-      res.status(200).json(appointment);
-    } catch (error) {
-        return ResponseBuilder(ErrorCatcher(error), res);
-    }
-  };
-
-const updateDataUser = async (req, res) => {
+export const getUserById = async (
+  /** @type {{ body: any;params:{id:number} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
   try {
-    const { id } = req.params;
-    const { name, password, email, number, photo_url, role } = req.body;
+    const { id } = req.params
+    await number().validate(id)
+    const user = await UserService.getUser(id)
 
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Data User berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
+export const updateDataUser = async (
+  /** @type {{ body: any;params:{id:number} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    await number().validate(id)
+    const body = req.body
     // Validasi request menggunakan Yup
-    await userUpdateSchema.validate(
-      { name, password, email, number, photo_url, role },
-      { abortEarly: false },
-    );
+    await userUpdateSchema.validate(body)
 
-    const user = await UserService.updateUser(id);
-
-    if (!user) {
-      return res.status(404).json({
-        error: 'User tidak ditemukan',
-      });
-    }
-
-    // Update data user
-    user.name = name;
-    user.password = password;
-    user.email = email;
-    user.number = number;
-    user.photo_url = photo_url;
-    user.role = role;
-    user.updatedAt = new Date();
-
-    // Save data
-    await user.save();
+    const user = await UserService.updateUser(id, body)
 
     return ResponseBuilder(
       {
@@ -68,14 +55,8 @@ const updateDataUser = async (req, res) => {
         message: 'Data User berhasil diupdate',
       },
       res,
-    );
-  } catch (error) {
-    console.log(error, '<-- Error Update Data User');
-    return ResponseBuilder(ErrorCatcher(error), res);
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
-
-module.exports = {
-  getUserById,
-  updateDataUser,
-};
+}

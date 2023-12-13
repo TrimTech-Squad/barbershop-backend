@@ -1,10 +1,9 @@
 import express from 'express'
-
-const auth = require ('./routes/auth')
-const kapster = require('./routes/kapsterRoutes')
-const appointment = require('./routes/appointmentRoutes')
-const service = require ('./routes/serviceRoutes')
-const user = require ('./routes/userRoutes')
+import auth from './routes/auth'
+import kapster from './routes/kapsterRoutes'
+import appointment from './routes/appointmentRoutes'
+import service from './routes/serviceRoutes'
+import user from './routes/userRoutes'
 
 const app = express()
 
@@ -15,10 +14,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.use('/api/auth', auth)
-app.use(kapster)
-app.use(appointment)
-app.use(service)
-app.use(user)
+app.use('/api/kapster', kapster)
+app.use('/api/appointment', appointment)
+app.use('/api/service', service)
+app.use('/api/user', user)
 
 app.listen(port, () => {
   console.log('Server running on port 3000')

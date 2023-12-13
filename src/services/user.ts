@@ -15,7 +15,7 @@ class UserServices {
     })
   }
 
-  static getUser = async (id: string): Promise<USER> => {
+  static getUser = async (id: number): Promise<USER> => {
     return new Promise((resolve, reject) => {
       User.findOne({
         where: { id },
@@ -32,7 +32,7 @@ class UserServices {
     })
   }
 
-  static updateUser = async (id: string, user: Omit<USER, 'id'>) => {
+  static updateUser = async (id: number, user: Omit<USER, 'id'>) => {
     const userFound = await User.findOne({
       where: { id },
     })
