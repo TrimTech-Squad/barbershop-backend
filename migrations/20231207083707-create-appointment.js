@@ -5,7 +5,6 @@ module.exports = {
     await queryInterface.createTable('Appointments', {
       id: {
         allowNull: false,
-        autoIncrement: false,
         primaryKey: true,
         type: Sequelize.STRING,
       },

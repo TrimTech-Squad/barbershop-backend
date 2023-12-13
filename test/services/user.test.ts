@@ -28,7 +28,7 @@ describe('user services', async () => {
   })
 
   it('should get user info', async () => {
-    const data = await UserServices.getUser(String(1))
+    const data = await UserServices.getUser(1, 1)
     expect(data.email).toEqual(data.email)
     expect(data.password).toEqual(data.password)
     expect(data.role).toEqual(data.role)
@@ -39,7 +39,7 @@ describe('user services', async () => {
   })
 
   it('should throw error when user not found', async () => {
-    await expect(UserServices.getUser('-1')).rejects.toThrow('User not found')
+    await expect(UserServices.getUser(-1, 1)).rejects.toThrow('User not found')
   })
 
   it('should can update user', async () => {
@@ -54,7 +54,7 @@ describe('user services', async () => {
     }
 
     const data = await UserServices.updateUserInfo(
-      updatedUser.id.toString(),
+      { id: 1, idRequester: 1 },
       updatedUser,
     )
 
@@ -65,5 +65,39 @@ describe('user services', async () => {
     expect(data.photo_url).toEqual(updatedUser.photo_url)
     expect(data.number).toEqual(updatedUser.number)
     expect(data.id).toBeTypeOf('number')
+  })
+
+  it('should throw error when user not found', async () => {
+    await expect(
+      UserServices.updateUserInfo({ id: -1, idRequester: 1 }, userCtx),
+    ).rejects.toThrow('User not found')
+  })
+
+  it('it should can update password', async () => {
+    const data = await UserServices.updateUserPassword(
+      { id: 1, idRequester: 1 },
+      '12345678',
+    )
+    expect(data).toBeTypeOf('object')
+  })
+
+  it('should throw error when idRequester not same as id ', async () => {
+    await expect(
+      UserServices.updateUserPassword({ id: 1, idRequester: 6 }, '12345678'),
+    ).rejects.toThrow('User not found')
+  })
+
+  it('should can update role if ADMIN', async () => {
+    const data = await UserServices.updateUserRole(
+      { id: 0, idRequester: 1 },
+      USERROLE.ADMIN,
+    )
+    expect(data).toBeTypeOf('object')
+  })
+
+  it('should cant update role if CUSTOMER', async () => {
+    await expect(
+      UserServices.updateUserRole({ id: 0, idRequester: 3 }, USERROLE.ADMIN),
+    ).rejects.toThrow('You are not authorized to access this resource')
   })
 })

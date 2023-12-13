@@ -5,7 +5,7 @@ export enum APPOINTMENTSTATUS {
 }
 
 export type APPOINTMENT = {
-  id?: number
+  id?: string
   userId: number
   kapsterId: number
   serviceId: number
