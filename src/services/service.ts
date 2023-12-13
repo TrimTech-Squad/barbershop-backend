@@ -15,17 +15,19 @@ export default class ServiceServices {
     })
   }
 
-  static getAllServices = async (): Promise<SERVICE[]> => {
+  static getAllServices = async (query?: 'ALL'): Promise<SERVICE[]> => {
     return new Promise((resolve, reject) => {
-      Service.findAll()
+      Service.findAll({
+        where: query === 'ALL' ? {} : { isActive: true },
+      })
         .then((data: SERVICE[]) => {
-          resolve(data);
+          resolve(data)
         })
         .catch((err: Error) => {
-          reject(err);
-        });
-    });
-  };
+          reject(err)
+        })
+    })
+  }
 
   static getService = async (id: number): Promise<SERVICE> => {
     return new Promise((resolve, reject) => {
@@ -64,20 +66,20 @@ export default class ServiceServices {
     })
   }
 
-  static deleteService = async (id: string): Promise<SERVICE> => {
-    return new Promise((resolve, reject) => {
-      Service.destroy({
-        where: { id },
-      })
-        .then((data: number) => {
-          if (data) {
-            resolve({} as SERVICE)
-          }
-          reject(new NotFoundError('Service not found'))
-        })
-        .catch((err: Error) => {
-          reject(err)
-        })
-    })
-  }
+  //   static deleteService = async (id: string): Promise<SERVICE> => {
+  //     return new Promise((resolve, reject) => {
+  //       Service.destroy({
+  //         where: { id },
+  //       })
+  //         .then((data: number) => {
+  //           if (data) {
+  //             resolve({} as SERVICE)
+  //           }
+  //           reject(new NotFoundError('Service not found'))
+  //         })
+  //         .catch((err: Error) => {
+  //           reject(err)
+  //         })
+  //     })
+  //   }
 }

@@ -19,7 +19,7 @@ app.use(express.static('public'))
 app.use('/api/auth', authRoutes)
 app.use('/api/kapster', kapster)
 app.use('/api/appointment', appointment)
-app.use('/api/service', service)
+app.use('/api/services', auth, service)
 app.use('/api/user', auth, user)
 
 app.listen(port, () => {
