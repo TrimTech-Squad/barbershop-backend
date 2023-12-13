@@ -10,7 +10,7 @@ export default class AuthService {
       User.findOne({ where: { email } })
         .then((user: USER) => {
           if (!user) throw new UnauthorizedError('Invalid email or password')
-          bcrypt.compare(password, user.password, (err, result) => {
+          bcrypt.compare(password, user.password!, (err, result) => {
             if (err) reject(new UnauthorizedError('Invalid email or password'))
             if (!result)
               reject(new UnauthorizedError('Invalid email or password'))

@@ -20,14 +20,16 @@ class UserServices {
       User.findOne({
         where: { id },
       })
-        .then((data: USER | null) => {
+        .then((data: { dataValues: USER } | null) => {
           if (!data) {
             return reject(new NotFoundError('User not found'))
           }
-          if (data?.id !== idRequester) {
+          if (data?.dataValues.id !== idRequester) {
             return reject(new NotFoundError('User not found'))
           }
-          return resolve(data)
+          const dataUser = { ...data.dataValues }
+          delete dataUser.password
+          return resolve(dataUser)
         })
         .catch((err: Error) => {
           reject(err)
@@ -35,14 +37,27 @@ class UserServices {
     })
   }
 
-  static updateUser = async (id: number, user: Omit<USER, 'id'>) => {
+  static updateUserInfo = async (
+    { id, idRequester }: { id: number; idRequester: number },
+    user: {
+      name: string
+      photo_url: string
+      number: string
+      email: string
+    },
+  ) => {
     const userFound = await User.findOne({
       where: { id },
     })
-    if (userFound) {
-      return await userFound.update(user)
+    if (!userFound) {
+      throw new NotFoundError('User not found')
     }
-    throw new NotFoundError('User not found')
+
+    if (userFound.id !== idRequester) {
+      throw new NotFoundError('User not found')
+    }
+
+    return await userFound.update(user)
   }
 }
 

@@ -1,4 +1,4 @@
-import { object, string, number, mixed } from 'yup'
+import { object, string, number } from 'yup'
 import UserService from '../services/user'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher from '../helpers/error'
@@ -6,11 +6,9 @@ import ErrorCatcher from '../helpers/error'
 // Validasi Yup Schema
 const userUpdateSchema = object({
   name: string().required('Nama harus diisi'),
-  password: string().required('Password harus diisi'),
   email: string().required('Email harus diisi').email('Email tidak valid'),
   number: string().required('Nomor harus diisi'),
   photo_url: string(),
-  role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
 })
 
 export const getUserById = async (
@@ -46,7 +44,10 @@ export const updateDataUser = async (
     // Validasi request menggunakan Yup
     await userUpdateSchema.validate(body)
 
-    const user = await UserService.updateUser(id, body)
+    const user = await UserService.updateUserInfo(
+      { id, idRequester: res.locals.user.id },
+      body,
+    )
 
     return ResponseBuilder(
       {

@@ -53,7 +53,7 @@ describe('user services', async () => {
       number: '232121321',
     }
 
-    const data = await UserServices.updateUser(
+    const data = await UserServices.updateUserInfo(
       updatedUser.id.toString(),
       updatedUser,
     )
