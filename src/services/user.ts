@@ -15,16 +15,19 @@ class UserServices {
     })
   }
 
-  static getUser = async (id: number): Promise<USER> => {
+  static getUser = async (id: number, idRequester: number): Promise<USER> => {
     return new Promise((resolve, reject) => {
       User.findOne({
         where: { id },
       })
         .then((data: USER | null) => {
-          if (data) {
-            resolve(data)
+          if (!data) {
+            return reject(new NotFoundError('User not found'))
           }
-          reject(new NotFoundError('User not found'))
+          if (data?.id !== idRequester) {
+            return reject(new NotFoundError('User not found'))
+          }
+          return resolve(data)
         })
         .catch((err: Error) => {
           reject(err)

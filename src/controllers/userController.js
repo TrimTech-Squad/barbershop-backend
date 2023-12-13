@@ -14,13 +14,13 @@ const userUpdateSchema = object({
 })
 
 export const getUserById = async (
-  /** @type {{ body: any;params:{id:number} }} */ req,
-  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+  /** @type {{ body: any;params:{id:number}; }} */ req,
+  /** @type {import("express").Response} */ res,
 ) => {
   try {
     const { id } = req.params
     await number().validate(id)
-    const user = await UserService.getUser(id)
+    const user = await UserService.getUser(id, res.locals.user.id)
 
     return ResponseBuilder(
       {

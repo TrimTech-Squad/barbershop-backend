@@ -19,6 +19,10 @@ export const register = async (
   })
   try {
     const body = req.body
+    /* The line `body.role = 'Customer'` is assigning the value `'Customer'` to the `role` property of
+   the `body` object. This is done before validating the `body` object against the `userSchema`. It
+   ensures that the `role` property is always set to `'Customer'` before creating a new user. */
+    body.role = 'Customer'
     await userSchema.validate(body)
     await UserServices.createUser(body)
     return ResponseBuilder(
@@ -29,8 +33,7 @@ export const register = async (
       },
       res,
     )
-  } catch (error) {
-    // @ts-ignore
+  } catch (/** @type {any} */ error) {
     return ResponseBuilder(ErrorCatcher(error), res)
   }
 }
@@ -45,6 +48,7 @@ export const login = async (
   })
   try {
     const body = req.body
+
     await userSchema.validate(body)
     const token = await AuthService.login(body.email, body.password)
     /* The line `res.cookie('token', token, { httpOnly: true, maxAge: 3600 * 1000 })` is setting a cookie

@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "Zulfaa",
-    "password": null,
+    "username": "postgres",
+    "password": "7882",
     "database": "barberbook_app",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "test": {
-    "username": "Zulfaa",
-    "password": null,
+    "username": "postgres",
+    "password": "7882",
     "database": "barberbook_app",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "production": {
     "username": "Zulfaa",
     "password": null,
     "database": "barberbook_app",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }
