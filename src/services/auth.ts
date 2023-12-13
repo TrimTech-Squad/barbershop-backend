@@ -27,4 +27,13 @@ export default class AuthService {
         })
     })
   }
+
+  static verifyToken(token: string): Promise<{ id: number; email: string }> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, decoded) => {
+        if (err) reject(new UnauthorizedError('Invalid token'))
+        resolve(decoded as { id: number; email: string })
+      })
+    })
+  }
 }

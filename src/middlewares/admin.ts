@@ -1,13 +1,11 @@
 import { User } from '../../models'
-import { Request, Response, NextFunction } from 'express'
-import { USERROLE, USERTOKENOBJECT } from '../../types/user'
+import { Response, NextFunction } from 'express'
+import { USERROLE } from '../../types/user'
 import ErrorCatcher, { ForbiddenError } from '../helpers/error'
 import ResponseBuilder from '../helpers/response-builder'
+import { RequestMiddleware } from './auth'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export interface RequestMiddleware extends Request {
-  user?: USERTOKENOBJECT
-}
 
 const isAdmin = async (
   req: RequestMiddleware,

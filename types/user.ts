@@ -14,6 +14,6 @@ export enum USERROLE {
 }
 
 export type USERTOKENOBJECT = {
-  id: string
+  id: number
   email: string
 }

@@ -49,7 +49,7 @@ export const login = async (
     const token = await AuthService.login(body.email, body.password)
     /* The line `res.cookie('token', token, { httpOnly: true, maxAge: 3600 * 1000 })` is setting a cookie
   named 'token' in the response object (`res`). */
-    res.cookie('token', `Bearer ${token}`, {
+    res.cookie('access-token', `Bearer ${token}`, {
       httpOnly: true,
       maxAge: 3600 * 1000,
     })
@@ -66,4 +66,4 @@ export const login = async (
   }
 }
 
-module.exports = {register, login}
+module.exports = { register, login }
