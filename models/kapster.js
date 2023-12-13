@@ -1,4 +1,5 @@
-'use strict'
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Kapster extends Model {

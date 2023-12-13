@@ -2,6 +2,12 @@ export type SERVICE = {
   id?: number
   serviceName: string
   description: string
+  isActive: ISACTIVESTATUS
+}
+
+export enum ISACTIVESTATUS {
+  INACTIVE = 'Inactive',
+  ACTIVE = 'Active',
 }
 
 export type SERVICE_KAPSTER = {
@@ -9,4 +15,5 @@ export type SERVICE_KAPSTER = {
   kapsterId: number
   serviceId: number
   price: number
+  isActive: ISACTIVESTATUS
 }

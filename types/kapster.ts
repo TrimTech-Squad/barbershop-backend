@@ -3,6 +3,12 @@ export enum KAPSTERGENDER {
   WOMAN = 'Woman',
 }
 
+export enum KAPSTERSTATUS {
+  AVAILABLE = 'Available',
+  UNAVAILABLE = 'Unavailable',
+  RESIGNED = 'Resigned',
+}
+
 export type KAPSTERSERVICE = {
   kapsterId: number
   serviceId: number
@@ -14,4 +20,5 @@ export type KAPSTER = {
   name: string
   gender: KAPSTERGENDER
   specialization: string
+  status: KAPSTERSTATUS
 }
