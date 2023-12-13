@@ -76,14 +76,17 @@ describe('user services', async () => {
   it('it should can update password', async () => {
     const data = await UserServices.updateUserPassword(
       { id: 1, idRequester: 1 },
-      '12345678',
+      { old_password: '12345678', new_password: '12345678' },
     )
     expect(data).toBeTypeOf('object')
   })
 
   it('should throw error when idRequester not same as id ', async () => {
     await expect(
-      UserServices.updateUserPassword({ id: 1, idRequester: 6 }, '12345678'),
+      UserServices.updateUserPassword(
+        { id: 1, idRequester: 6 },
+        { old_password: '12345678', new_password: '12345678' },
+      ),
     ).rejects.toThrow('User not found')
   })
 

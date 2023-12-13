@@ -55,7 +55,7 @@ export const login = async (
   named 'token' in the response object (`res`). */
     res.cookie('access-token', `Bearer ${token}`, {
       httpOnly: true,
-      maxAge: 3600 * 1000,
+      maxAge: 24 * 3600 * 1000,
     })
     return ResponseBuilder(
       {

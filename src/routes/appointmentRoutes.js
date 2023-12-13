@@ -4,7 +4,6 @@ import {
   createAppointment,
   getAppointmentById,
   updateDataAppointment,
-  deleteAppointment,
 } from '../controllers/appointmentController'
 
 const router = Router()
@@ -12,6 +11,5 @@ const router = Router()
 router.post('/appointment', createAppointment)
 router.get('/appointment/:id', getAppointmentById)
 router.put('/appointment/:id', updateDataAppointment)
-router.delete('/appointment/:id', deleteAppointment)
 
 export default router

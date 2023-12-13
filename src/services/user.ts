@@ -31,7 +31,7 @@ class UserServices {
   }
 
   static updateUserInfo = async (
-    { id, idRequester }: { id: number; idRequester: number },
+    id: number,
     user: {
       name: string
       photo_url: string
@@ -46,21 +46,20 @@ class UserServices {
     if (!userFound) {
       throw new NotFoundError('User not found')
     }
-    if (userFound?.dataValues.id !== idRequester) {
-      throw new NotFoundError('User not found')
-    }
 
     return userFound.update(user)
   }
 
   static updateUserPassword = async (
-    { id, idRequester }: { id: number; idRequester: number },
-    password: string,
+    id: number,
+    {
+      old_password: oldPassword,
+      new_password: newPassword,
+    }: { old_password: string; new_password: string },
   ) => {
     return new Promise((resolve, reject) => {
       User.findOne({
         where: { id },
-        attributes: { exclude: ['password'] },
       })
         .then(
           (
@@ -72,15 +71,20 @@ class UserServices {
             if (!data) {
               return reject(new NotFoundError('User not found'))
             }
-            if (data?.dataValues.id !== idRequester) {
-              return reject(new NotFoundError('User not found'))
-            }
-            bcrypt.hash(password, 10, async (err, hash) => {
+
+            bcrypt.compare(oldPassword, data.dataValues.password!, err => {
               if (err) {
-                return reject(err)
+                return reject(new UnauthorizedError('Wrong password'))
               }
-              const user = await data.update({ password: hash })
-              return resolve(user)
+
+              bcrypt.hash(newPassword, 10, async (err, hash) => {
+                if (err) {
+                  return reject(err)
+                }
+                await data.update({ password: hash })
+
+                return resolve('Password updated')
+              })
             })
           },
         )

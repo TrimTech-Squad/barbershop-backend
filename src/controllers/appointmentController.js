@@ -1,4 +1,4 @@
-import { object, string, date, mixed, number } from 'yup'
+import { object, string, date, mixed } from 'yup'
 import AppointmentService from '../services/appointment'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher from '../helpers/error'
@@ -38,12 +38,12 @@ export const createAppointment = async (
 }
 
 export const getAppointmentById = async (
-  /** @type {{ params: {id:number}; }} */ req,
+  /** @type {{ params: {id:string}; }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
     const { id } = req.params
-    await number().validate(id)
+    await string().validate(id)
     const appointment = await AppointmentService.getAppointment(id)
 
     if (!appointment) {
@@ -66,12 +66,12 @@ export const getAppointmentById = async (
 }
 
 export const updateDataAppointment = async (
-  /** @type {{ params: {id:number};body:any }} */ req,
+  /** @type {{ params: {id:string};body:any }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
     const { id } = req.params
-    await number().validate(id)
+    await string().validate(id)
     const body = req.body
 
     // Validasi request menggunakan Yup
@@ -92,24 +92,24 @@ export const updateDataAppointment = async (
   }
 }
 
-export const deleteAppointment = async (
-  /** @type {{ params: {id:number}; }} */ req,
-  /** @type {import("express").Response<any, Record<string, any>>} */ res,
-) => {
-  try {
-    const { id } = req.params
-    await number().validate(id)
-    await AppointmentService.deleteAppointment(id)
+// export const deleteAppointment = async (
+//   /** @type {{ params: {id:string}; }} */ req,
+//   /** @type {import("express").Response<any, Record<string, any>>} */ res,
+// ) => {
+//   try {
+//     const { id } = req.params
+//     await string().validate(id)
+//     await AppointmentService.deleteAppointment(id)
 
-    return ResponseBuilder(
-      {
-        code: 200,
-        message: `Appointment dengan id ${id} berhasil dihapus`,
-        data: null,
-      },
-      res,
-    )
-  } catch (/** @type {any} */ error) {
-    return ResponseBuilder(ErrorCatcher(error), res)
-  }
-}
+//     return ResponseBuilder(
+//       {
+//         code: 200,
+//         message: `Appointment dengan id ${id} berhasil dihapus`,
+//         data: null,
+//       },
+//       res,
+//     )
+//   } catch (/** @type {any} */ error) {
+//     return ResponseBuilder(ErrorCatcher(error), res)
+//   }
+// }
