@@ -12,12 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Service.hasMany(models.Appointment, {
-        as: 'appointment1',
+        as: 'appointment',
         foreignKey: 'serviceId',
-      }),
-        Service.belongsToMany(models.Kapster, {
-          through: 'Service_Kapster',
-        })
+      })
+      Service.belongsTo(models.ServiceKapster, {
+        foreignKey: 'serviceId',
+        as: 'serviceKapster',
+      })
     }
   }
   Service.init(

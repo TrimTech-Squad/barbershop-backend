@@ -1,5 +1,5 @@
 import { NotFoundError } from '../helpers/error'
-import { KAPSTER, KAPSTERSERVICE } from '../../types/kapster'
+import { KAPSTER, KAPSTERSERVICE, KAPSTERSTATUS } from '../../types/kapster'
 import { Kapster, Service, ServiceKapster } from '../../models'
 import { SERVICE } from '../../types/service'
 
@@ -70,9 +70,11 @@ export default class KapsterServices {
     })
   }
 
-  static getKapsters = async (): Promise<KAPSTER[]> => {
+  static getKapsters = async (admin: boolean = false): Promise<KAPSTER[]> => {
     return new Promise((resolve, reject) => {
-      Kapster.findAll()
+      Kapster.findAll({
+        where: admin ? {} : { status: KAPSTERSTATUS.AVAILABLE },
+      })
         .then((data: KAPSTER[]) => {
           resolve(data)
         })
@@ -90,10 +92,13 @@ export default class KapsterServices {
         where: {
           kapsterId: id,
         },
-        include: {
-          model: Service,
-          as: 'service',
-        },
+        attributes: ['price'],
+        include: [
+          {
+            model: Service,
+            as: 'service',
+          },
+        ],
       })
         .then(
           (

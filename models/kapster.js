@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'kapsterId',
       })
       Kapster.belongsToMany(models.Service, {
-        through: 'Service_Kapster',
+        through: 'ServiceKapster',
       })
       Kapster.hasMany(models.ServiceKapster, {
         as: 'service',

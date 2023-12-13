@@ -1,6 +1,6 @@
 import express from 'express'
 import authRoutes from './routes/auth'
-import kapster from './routes/kapsterRoutes'
+import kapsters from './routes/kapsterRoutes'
 import appointment from './routes/appointmentRoutes'
 import service from './routes/serviceRoutes'
 import user from './routes/userRoutes'
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.use('/api/auth', authRoutes)
-app.use('/api/kapster', kapster)
+app.use('/api/kapsters', auth, kapsters)
 app.use('/api/appointment', appointment)
 app.use('/api/services', auth, service)
 app.use('/api/user', auth, user)

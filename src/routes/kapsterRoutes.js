@@ -1,15 +1,19 @@
+import { isAdmin } from '../middlewares/admin'
+
 // src/routes/kapsterRoutes.js
 const { Router } = require('express')
 const {
   createKapster,
   getAllKapster,
+  getKapsterById,
+  updateKapsterData,
 } = require('../controllers/kapsterController')
 
 const router = Router()
 
-console.log(createKapster)
+router.get('/', isAdmin, getAllKapster)
+router.post('/', isAdmin, createKapster)
+router.get('/:id', getKapsterById)
+router.put('/:id', isAdmin, updateKapsterData)
 
-router.post('/kapster', createKapster)
-router.get('/kapster', getAllKapster)
-
-module.exports = router
+export default router
