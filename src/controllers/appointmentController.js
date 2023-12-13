@@ -1,23 +1,28 @@
-const ResponseBuilder = require('../helpers/response-builder');
-const AppointmentService = require('../services/appointment');
-const ErrorCatcher = require('../helpers/error');
-const { object, string, date, mixed } = require('yup');
+import { object, string, date, mixed, number } from 'yup'
+import AppointmentService from '../services/appointment'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher from '../helpers/error'
 
 const appointmentSchema = object({
   kapsterId: string().required('Kapster ID harus diisi'),
   serviceId: string().required('Service ID harus diisi'),
   date: date().required('Tanggal harus diisi'),
   time: string().required('Waktu harus diisi'),
-  status: mixed().oneOf(['Customer', 'Admin']).required('Status harus diisi'),
-});
+  status: mixed()
+    .oneOf(['Booked', 'Completted', 'Cancelled'])
+    .required('Status harus diisi'),
+})
 
-const createAppointment = async (req, res) => {
+export const createAppointment = async (
+  /** @type {{ body: any; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
   try {
-    const request = req.body;
+    const request = req.body
 
-    await appointmentSchema.validate(request, { abortEarly: false });
+    await appointmentSchema.validate(request)
 
-    const newAppointment = await AppointmentService.createAppointment(request);
+    const newAppointment = await AppointmentService.createAppointment(request)
 
     return ResponseBuilder(
       {
@@ -26,83 +31,85 @@ const createAppointment = async (req, res) => {
         message: 'Appointment berhasil dibuat',
       },
       res,
-    );
-  } catch (error) {
-    return ResponseBuilder(ErrorCatcher(error), res);
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
+}
 
-const getAppointmentById = async (req, res) => {
+export const getAppointmentById = async (
+  /** @type {{ params: {id:number}; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
   try {
-    const { id } = req.params;
-    const appointment = await AppointmentService.getAppointment(id);
+    const { id } = req.params
+    await number().validate(id)
+    const appointment = await AppointmentService.getAppointment(id)
 
     if (!appointment) {
       return res.status(404).json({
         error: 'Jadwal tidak ditemukan',
-      });
+      })
     }
 
-    res.status(200).json(appointment);
-  } catch (error) {
-    return ResponseBuilder(ErrorCatcher(error), res);
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointment,
+        message: 'Data Appointment berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
+}
 
-const updateDataAppointment = async (req, res) => {
+export const updateDataAppointment = async (
+  /** @type {{ params: {id:number};body:any }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
   try {
-    const { id } = req.params;
-    const { kapsterId, serviceId, date, time, status } = req.body;
+    const { id } = req.params
+    await number().validate(id)
+    const body = req.body
 
     // Validasi request menggunakan Yup
-    await appointmentSchema.validate(
-      { kapsterId, serviceId, date, time, status },
-      { abortEarly: false },
-    );
+    await appointmentSchema.validate(body)
 
-    const appointment = await AppointmentService.updateAppointment(id);
-    if (!appointment) {
-      return res.status(404).json({
-        message: 'Jadwal tidak ditemukan',
-      });
-    }
+    await AppointmentService.updateAppointment(id, body)
 
-    const updatedAppointment = await AppointmentService.updateById(id, {
-      kapsterId: kapsterId || appointment.kapsterId,
-      serviceId: serviceId || appointment.serviceId,
-      date: date || appointment.date,
-      time: time || appointment.time,
-      status: status || appointment.status,
-    });
-
-    return res.status(200).json(updatedAppointment);
-  } catch (error) {
-    return ResponseBuilder(ErrorCatcher(error), res);
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: `Appointment dengan id ${id} berhasil diupdate`,
+        data: null,
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
+}
 
-const deleteAppointment = async (req, res) => {
+export const deleteAppointment = async (
+  /** @type {{ params: {id:number}; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
   try {
-    const { id } = req.params;
-    const appointment = await AppointmentService.deleteAppointment(id);
+    const { id } = req.params
+    await number().validate(id)
+    await AppointmentService.deleteAppointment(id)
 
-    if (!appointment) {
-      return res.status(404).json({ message: 'Jadwal tidak ditemukan' });
-    }
-
-    await AppointmentService.deleteById(id);
-
-    return res.status(200).json({
-      message: `Appointment dengan id ${id} berhasil dihapus`,
-    });
-  } catch (error) {
-    return ResponseBuilder(ErrorCatcher(error), res);
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: `Appointment dengan id ${id} berhasil dihapus`,
+        data: null,
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
-
-module.exports = {
-  createAppointment,
-  getAppointmentById,
-  updateDataAppointment,
-  deleteAppointment,
-};
+}

@@ -19,11 +19,11 @@ export default class AppointmentService {
     return await updateAppointment.update(appointment)
   }
 
-  static async deleteAppointment(id: string) {
+  static async deleteAppointment(id: number) {
     const appointment = await Appointment.findByPk(id)
     if (!appointment) throw new NotFoundError('Appointment not found')
     await appointment.destroy()
-    return {}
+    return true
   }
 
   static async getAppointmentByUserId(userId: number): Promise<APPOINTMENT[]> {

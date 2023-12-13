@@ -3,7 +3,7 @@ import { KAPSTER, KAPSTERSERVICE } from '../../types/kapster'
 import { Kapster, Service, ServiceKapster } from '../../models'
 import { SERVICE } from '../../types/service'
 
-export default class KapsterService {
+export default class KapsterServices {
   static createKapster = async (kapster: KAPSTER): Promise<KAPSTER> => {
     return new Promise((resolve, reject) => {
       Kapster.create(kapster)
