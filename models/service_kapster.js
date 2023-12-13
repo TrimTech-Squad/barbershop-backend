@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -30,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
       serviceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+      },
+      isActive: {
+        allowNull: false,
+        defaultValue: true,
+        type: DataTypes.BOOLEAN,
       },
       price: {
         allowNull: false,

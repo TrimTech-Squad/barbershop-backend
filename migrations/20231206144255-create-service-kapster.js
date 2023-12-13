@@ -29,6 +29,11 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
+      isActive: {
+        allowNull: false,
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
+      },
       price: {
         allowNull: false,
         type: Sequelize.INTEGER,

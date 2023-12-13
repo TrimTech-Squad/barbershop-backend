@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -28,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         allowNull: false,
         type: DataTypes.TEXT,
+      },
+      isActive: {
+        allowNull: false,
+        defaultValue: true,
+        type: DataTypes.BOOLEAN,
       },
     },
     {

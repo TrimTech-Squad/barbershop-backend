@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -36,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       specialization: {
         allowNull: false,
         type: DataTypes.STRING,
+      },
+      status: {
+        allowNull: false,
+        defaultValue: 'Available',
+        type: DataTypes.ENUM('Available', 'Not Available', 'Resigned'),
       },
     },
     {
