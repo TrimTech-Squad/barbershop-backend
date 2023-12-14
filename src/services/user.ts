@@ -16,15 +16,12 @@ class UserServices {
     })
   }
 
-  static getUser = async (id: number, idRequester: number) => {
+  static getUser = async (id: number) => {
     const userFound = await User.findOne({
       where: { id },
       attributes: { exclude: ['password'] },
     })
     if (!userFound) {
-      throw new NotFoundError('User not found')
-    }
-    if (userFound?.dataValues.id !== idRequester) {
       throw new NotFoundError('User not found')
     }
     return userFound

@@ -9,7 +9,7 @@ import {
 
 const router = Router()
 
-router.get('/:id', getUserById)
+router.get('/', getUserById)
 router.put('/', updateDataUser)
 router.put('/password', updateUserPassword)
 router.put('/:id/changerole', updateUserRole)

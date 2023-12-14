@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict'
+const bcrypt = require('bcrypt')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,19 +17,9 @@ module.exports = {
       [
         {
           name: 'John Doe',
-          email: 'customer@mail.com',
-          password: '12345678',
-          role: 'Admin',
-          number: '08123456789',
-          photo_url: 'https://www.google.com',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          name: 'John Doe',
           email: 'admin@mail.com',
-          password: '12345678',
-          role: 'Customer',
+          password: await bcrypt.hash('12345678', 10),
+          role: 'Admin',
           number: '08123456789',
           photo_url: 'https://www.google.com',
           createdAt: new Date(),

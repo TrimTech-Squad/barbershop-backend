@@ -6,12 +6,13 @@ import {
   getAppointmentById,
   updateDataAppointment,
 } from '../controllers/appointmentController'
+import { isAdmin } from '../middlewares/admin'
 
 const router = Router()
 
 router.post('/', createAppointment)
 router.get('/:id', getAppointmentById)
 router.put('/:id', updateDataAppointment)
-router.get('/', getAllAppointment)
+router.get('/', isAdmin, getAllAppointment)
 
 export default router

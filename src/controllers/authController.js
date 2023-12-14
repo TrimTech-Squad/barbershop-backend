@@ -24,12 +24,12 @@ export const register = async (
    ensures that the `role` property is always set to `'Customer'` before creating a new user. */
     body.role = 'Customer'
     await userSchema.validate(body)
-    await UserServices.createUser(body)
+    const user = await UserServices.createUser(body)
     return ResponseBuilder(
       {
         code: 201,
         message: 'User successfully created.',
-        data: null,
+        data: { id: user.id },
       },
       res,
     )
@@ -53,6 +53,7 @@ export const login = async (
     const token = await AuthService.login(body.email, body.password)
     /* The line `res.cookie('token', token, { httpOnly: true, maxAge: 3600 * 1000 })` is setting a cookie
   named 'token' in the response object (`res`). */
+    res.clearCookie('access-token')
     res.cookie('access-token', `Bearer ${token}`, {
       httpOnly: true,
       maxAge: 24 * 3600 * 1000,

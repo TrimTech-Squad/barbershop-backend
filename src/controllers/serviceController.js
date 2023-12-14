@@ -39,6 +39,7 @@ export const createService = async (
     await string()
       .required('Masukan deskripsi Serive')
       .validate(body.description)
+
     const service = await ServiceServices.createService(body)
     return ResponseBuilder(
       {

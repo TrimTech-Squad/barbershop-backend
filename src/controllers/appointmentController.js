@@ -111,10 +111,7 @@ export const getAllAppointment = async (
     const { page, limit, status } = req.query
     await string().validate(page)
     await string().validate(limit)
-    await mixed()
-      .oneOf(['Booked', 'Completed', 'Cancelled'])
-      .required('Status harus diisi')
-      .validate(status)
+    await mixed().oneOf(['Booked', 'Completed', 'Cancelled']).validate(status)
 
     const appointments = await AppointmentService.getAllAppointments(
       parseInt(page),

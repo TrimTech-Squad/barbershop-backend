@@ -41,7 +41,15 @@ export default class AppointmentService {
     limit = 0,
     status: APPOINTMENTSTATUS,
   ): Promise<APPOINTMENT[]> {
-    return await Appointment.findAll({ where: { status }, offset, limit })
+    if (isNaN(offset) || isNaN(limit)) {
+      limit = 10
+      offset = 0
+    }
+    return await Appointment.findAll({
+      where: status ? { status } : {},
+      offset,
+      limit,
+    })
   }
 
   static async getAppointmentByUserId(userId: number): Promise<APPOINTMENT[]> {

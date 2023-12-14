@@ -14,7 +14,12 @@ export const isAdmin = async (
       throw new ForbiddenError('You are not authorized to access this resource')
     }
 
-    const user = await User.findOne({ id: res.locals.user.id })
+    const user = await User.findOne({
+      where: {
+        id: res.locals.user.id,
+        email: res.locals.user.email,
+      },
+    })
 
     if (!user) {
       throw new ForbiddenError('You are not authorized to access this resource')
