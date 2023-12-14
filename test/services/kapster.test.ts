@@ -1,7 +1,11 @@
 import KapsterServices from '../../src/services/kapster'
 import { describe, it, expect } from 'vitest'
-import { KAPSTER, KAPSTERGENDER } from '../../types/kapster'
-import { SERVICE_KAPSTER } from '../../types/service'
+import {
+  KAPSTER,
+  KAPSTERGENDER,
+  KAPSTERSERVICE,
+  KAPSTERSTATUS,
+} from '../../types/kapster'
 import ServiceServices from '../../src/services/service'
 
 describe('kapster services', () => {
@@ -10,6 +14,7 @@ describe('kapster services', () => {
     name: 'kapster',
     gender: KAPSTERGENDER.MAN,
     specialization: 'specialization',
+    status: KAPSTERSTATUS.AVAILABLE,
   }
 
   it('should can create kapster', async () => {
@@ -38,6 +43,7 @@ describe('kapster services', () => {
       name: 'kapster',
       gender: KAPSTERGENDER.MAN,
       specialization: 'specialization',
+      status: KAPSTERSTATUS.AVAILABLE,
     }
     const data = await KapsterServices.updateKapster(
       updateKapster.id!,
@@ -53,10 +59,11 @@ describe('kapster services', () => {
     expect(data).toEqual({})
   })
 
-  const kapsterService: SERVICE_KAPSTER = {
+  const kapsterService: KAPSTERSERVICE = {
     id: 1,
     kapsterId: 2,
     serviceId: 2,
+    isActive: true,
     price: 10000,
   }
 
@@ -66,6 +73,7 @@ describe('kapster services', () => {
         id: 2,
         serviceName: 'service',
         description: 'description',
+        isActive: true,
       })
       await KapsterServices.createKapster({ ...kapster, id: 2 })
     } catch (err) {
@@ -91,10 +99,11 @@ describe('kapster services', () => {
   })
 
   it('should can update service', async () => {
-    const updatedService: SERVICE_KAPSTER = {
+    const updatedService: KAPSTERSERVICE = {
       id: 1,
       kapsterId: 2,
       serviceId: 2,
+      isActive: true,
       price: 20000,
     }
 

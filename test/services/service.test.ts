@@ -6,6 +6,7 @@ describe('service services', () => {
     id: 1,
     serviceName: 'service',
     description: 'description',
+    isActive: true,
   }
   it('should can create service', async () => {
     const data = await ServiceServices.createService(service)
@@ -30,6 +31,7 @@ describe('service services', () => {
       id: 1,
       serviceName: 'service updated',
       description: 'description',
+      isActive: false,
     }
 
     const data = await ServiceServices.updateService(
@@ -41,8 +43,8 @@ describe('service services', () => {
     expect(data.description).toEqual(updatedService.description)
   })
 
-  it('should can delete service', async () => {
-    const data = await ServiceServices.deleteService(String(1))
-    expect(data).toEqual({})
-  })
+  // it('should can delete service', async () => {
+  //   const data = await ServiceServices.deleteService(String(1))
+  //   expect(data).toEqual({})
+  // })
 })

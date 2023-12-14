@@ -42,7 +42,7 @@ describe('appointment services', async () => {
     }
   })
   it('should get appointment info', async () => {
-    const data = await AppointmentService.getAppointment(appointment.id!)
+    const data = await AppointmentService.getAppointment(appointment.id!, 0)
     expect(data.userId).toEqual(appointment.userId)
     expect(data.kapsterId).toEqual(appointment.kapsterId)
     expect(data.serviceId).toEqual(appointment.serviceId)
@@ -51,10 +51,14 @@ describe('appointment services', async () => {
     expect(data.status).toEqual(appointment.status)
   })
   it('should update appointment info', async () => {
-    const data = await AppointmentService.updateAppointment(appointment.id!, {
-      ...appointment,
-      status: APPOINTMENTSTATUS.COMPLETED,
-    })
+    const data = await AppointmentService.updateAppointment(
+      appointment.id!,
+      0,
+      {
+        ...appointment,
+        status: APPOINTMENTSTATUS.COMPLETED,
+      },
+    )
     expect(data.userId).toEqual(appointment.userId)
     expect(data.kapsterId).toEqual(appointment.kapsterId)
     expect(data.serviceId).toEqual(appointment.serviceId)

@@ -28,7 +28,7 @@ describe('user services', async () => {
   })
 
   it('should get user info', async () => {
-    const data = await UserServices.getUser(1, 1)
+    const data = await UserServices.getUser(0)
     expect(data.email).toEqual(data.email)
     expect(data.password).toEqual(data.password)
     expect(data.role).toEqual(data.role)
@@ -39,12 +39,12 @@ describe('user services', async () => {
   })
 
   it('should throw error when user not found', async () => {
-    await expect(UserServices.getUser(-1, 1)).rejects.toThrow('User not found')
+    await expect(UserServices.getUser(-1)).rejects.toThrow('User not found')
   })
 
   it('should can update user', async () => {
     const updatedUser = {
-      id: 1,
+      id: 0,
       email: Math.random() * 100 + '@gmail.com',
       password: '12345678',
       role: USERROLE.ADMIN,
@@ -53,10 +53,7 @@ describe('user services', async () => {
       number: '232121321',
     }
 
-    const data = await UserServices.updateUserInfo(
-      { id: 1, idRequester: 1 },
-      updatedUser,
-    )
+    const data = await UserServices.updateUserInfo(0, updatedUser)
 
     expect(data.email).toEqual(updatedUser.email)
     expect(data.password).toEqual(updatedUser.password)
@@ -68,25 +65,25 @@ describe('user services', async () => {
   })
 
   it('should throw error when user not found', async () => {
-    await expect(
-      UserServices.updateUserInfo({ id: -1, idRequester: 1 }, userCtx),
-    ).rejects.toThrow('User not found')
+    await expect(UserServices.updateUserInfo(0, userCtx)).rejects.toThrow(
+      'User not found',
+    )
   })
 
   it('it should can update password', async () => {
-    const data = await UserServices.updateUserPassword(
-      { id: 1, idRequester: 1 },
-      { old_password: '12345678', new_password: '12345678' },
-    )
+    const data = await UserServices.updateUserPassword(0, {
+      old_password: '12345678',
+      new_password: '12345678',
+    })
     expect(data).toBeTypeOf('object')
   })
 
   it('should throw error when idRequester not same as id ', async () => {
     await expect(
-      UserServices.updateUserPassword(
-        { id: 1, idRequester: 6 },
-        { old_password: '12345678', new_password: '12345678' },
-      ),
+      UserServices.updateUserPassword(0, {
+        old_password: '12345678',
+        new_password: '12345678',
+      }),
     ).rejects.toThrow('User not found')
   })
 
