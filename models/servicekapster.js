@@ -14,11 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       models.ServiceKapster.belongsTo(models.Service, {
         as: 'service',
         foreignKey: 'serviceId',
+        sourceKey: 'serviceId',
       })
 
       models.ServiceKapster.belongsTo(models.Kapster, {
         as: 'kapster',
         foreignKey: 'kapsterId',
+        sourceKey: 'kapsterId',
       })
     }
   }
@@ -27,10 +29,18 @@ module.exports = (sequelize, DataTypes) => {
       kapsterId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Kapsters',
+          key: 'id',
+        },
       },
       serviceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Services',
+          key: 'id',
+        },
       },
       isActive: {
         allowNull: false,
@@ -45,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'ServiceKapster',
-      tableName: 'Service_Kapsters',
     },
   )
   return ServiceKapster

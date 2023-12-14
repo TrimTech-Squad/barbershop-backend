@@ -15,9 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'appointment',
         foreignKey: 'serviceId',
       })
-      Service.belongsTo(models.ServiceKapster, {
+      Service.hasOne(models.ServiceKapster, {
         foreignKey: 'serviceId',
         as: 'serviceKapster',
+        sourceKey: 'id',
       })
     }
   }

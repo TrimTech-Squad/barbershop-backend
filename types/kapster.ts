@@ -10,9 +10,11 @@ export enum KAPSTERSTATUS {
 }
 
 export type KAPSTERSERVICE = {
+  id?: number
   kapsterId: number
   serviceId: number
   price: number
+  isActive: boolean
 }
 
 export type KAPSTER = {

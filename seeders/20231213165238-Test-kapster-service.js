@@ -15,7 +15,7 @@ module.exports = {
      */
 
     await queryInterface.bulkInsert(
-      'Service_Kapsters',
+      'ServiceKapsters',
       [
         {
           kapsterId: 1,

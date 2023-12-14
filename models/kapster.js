@@ -14,12 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'appointment',
         foreignKey: 'kapsterId',
       })
-      Kapster.belongsToMany(models.Service, {
-        through: 'ServiceKapster',
-      })
       Kapster.hasMany(models.ServiceKapster, {
         as: 'service',
         foreignKey: 'kapsterId',
+        sourceKey: 'id',
       })
     }
   }

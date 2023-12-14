@@ -47,8 +47,8 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
-;(async () => {
-  await sequelize.sync({ alter: true })
-})()
+// ;(async () => {
+//   await sequelize.sync({ alter: true })
+// })()
 
 module.exports = db

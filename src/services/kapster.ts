@@ -144,15 +144,30 @@ export default class KapsterServices {
     kapsterService: KAPSTERSERVICE,
   ): Promise<KAPSTERSERVICE> => {
     return new Promise((resolve, reject) => {
-      ServiceKapster.update(kapsterService, {
+      ServiceKapster.findOne({
         where: { id },
       })
-        .then((data: [number, KAPSTERSERVICE[]]) => {
-          if (data[0]) {
-            resolve(kapsterService)
-          }
-          reject(new NotFoundError('Service not found'))
-        })
+        .then(
+          (
+            data:
+              | (KAPSTERSERVICE & { save: () => Promise<KAPSTERSERVICE> })
+              | null,
+          ) => {
+            if (!data) return reject(new NotFoundError('Service not found'))
+
+            data.price = Math.round(kapsterService.price)
+            data.isActive = kapsterService.isActive
+
+            data
+              .save()
+              .then((data: KAPSTERSERVICE) => {
+                resolve(data)
+              })
+              .catch((err: Error) => {
+                reject(err)
+              })
+          },
+        )
         .catch((err: Error) => {
           reject(err)
         })
