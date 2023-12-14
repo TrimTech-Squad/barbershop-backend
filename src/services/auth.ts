@@ -32,7 +32,15 @@ export default class AuthService {
     return new Promise((resolve, reject) => {
       jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, decoded) => {
         if (err) reject(new UnauthorizedError('Invalid token'))
-        resolve(decoded as { id: number; email: string })
+
+        User.findOne({ where: { id: (decoded as { id: number }).id } })
+          .then((user: USER) => {
+            if (user) return resolve(decoded as { id: number; email: string })
+            return reject(new UnauthorizedError('Invalid token'))
+          })
+          .catch((err: Error) => {
+            reject(err)
+          })
       })
     })
   }

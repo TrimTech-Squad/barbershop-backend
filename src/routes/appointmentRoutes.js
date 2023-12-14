@@ -2,14 +2,16 @@
 import { Router } from 'express'
 import {
   createAppointment,
+  getAllAppointment,
   getAppointmentById,
   updateDataAppointment,
 } from '../controllers/appointmentController'
 
 const router = Router()
 
-router.post('/appointment', createAppointment)
-router.get('/appointment/:id', getAppointmentById)
-router.put('/appointment/:id', updateDataAppointment)
+router.post('/', createAppointment)
+router.get('/:id', getAppointmentById)
+router.put('/:id', updateDataAppointment)
+router.get('/', getAllAppointment)
 
 export default router

@@ -6,18 +6,25 @@ import { appointmentIdMaker } from '../utils/id_maker'
 export default class AppointmentService {
   static async createAppointment(appointment: APPOINTMENT) {
     appointment.status = APPOINTMENTSTATUS.BOOKED
+    appointment.date = new Date().toISOString()
     appointment.id = appointmentIdMaker((await this.getAppointmentCounts()) + 1)
     return await Appointment.create(appointment)
   }
 
-  static async getAppointment(id: string) {
-    const appointment = await Appointment.findOne({ where: { id } })
+  static async getAppointment(id: string, userId: number) {
+    const appointment = await Appointment.findOne({ where: { id, userId } })
     if (!appointment) throw new NotFoundError('Appointment not found')
     return appointment
   }
 
-  static async updateAppointment(id: string, appointment: APPOINTMENT) {
-    const updateAppointment = await Appointment.findByPk(id)
+  static async updateAppointment(
+    id: string,
+    userId: number,
+    appointment: { status: APPOINTMENTSTATUS; time: string },
+  ) {
+    const updateAppointment = await Appointment.findOne({
+      where: { id, userId },
+    })
     if (!updateAppointment) throw new NotFoundError('Appointment not found')
     return await updateAppointment.update(appointment)
   }
@@ -28,6 +35,14 @@ export default class AppointmentService {
   //   await appointment.destroy()
   //   return true
   // }
+
+  static async getAllAppointments(
+    offset = 0,
+    limit = 0,
+    status: APPOINTMENTSTATUS,
+  ): Promise<APPOINTMENT[]> {
+    return await Appointment.findAll({ where: { status }, offset, limit })
+  }
 
   static async getAppointmentByUserId(userId: number): Promise<APPOINTMENT[]> {
     return await Appointment.findAll({ where: { userId } })

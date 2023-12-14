@@ -14,6 +14,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     res.locals.user = decoded
     return next()
   } catch (err) {
+    res.clearCookie('access-token')
     return ResponseBuilder(ErrorCatcher(err as Error), res)
   }
 }

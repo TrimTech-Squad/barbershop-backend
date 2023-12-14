@@ -20,7 +20,7 @@ app.use(express.static('public'))
 app.use('/api/auth', authRoutes)
 app.use('/api/kapsters', auth, kapsters)
 app.use('/api/kapster-service', auth, kapsterServiceRouter)
-app.use('/api/appointment', appointment)
+app.use('/api/appointment', auth, appointment)
 app.use('/api/services', auth, service)
 app.use('/api/user', auth, user)
 

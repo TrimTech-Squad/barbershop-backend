@@ -1,16 +1,13 @@
-import { object, string, date, mixed } from 'yup'
+import { mixed, object, string } from 'yup'
 import AppointmentService from '../services/appointment'
 import ResponseBuilder from '../helpers/response-builder'
-import ErrorCatcher from '../helpers/error'
+import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 
 const appointmentSchema = object({
+  userId: string().required('User ID harus diisi'),
   kapsterId: string().required('Kapster ID harus diisi'),
   serviceId: string().required('Service ID harus diisi'),
-  date: date().required('Tanggal harus diisi'),
   time: string().required('Waktu harus diisi'),
-  status: mixed()
-    .oneOf(['Booked', 'Completted', 'Cancelled'])
-    .required('Status harus diisi'),
 })
 
 export const createAppointment = async (
@@ -18,10 +15,14 @@ export const createAppointment = async (
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
+    if (res.locals.isAdmin)
+      throw new UnauthorizedError(
+        'Anda tidak memiliki akses untuk membuat appointment',
+      )
+
     const request = req.body
-
+    request.userId = res.locals.user.id
     await appointmentSchema.validate(request)
-
     const newAppointment = await AppointmentService.createAppointment(request)
 
     return ResponseBuilder(
@@ -44,13 +45,10 @@ export const getAppointmentById = async (
   try {
     const { id } = req.params
     await string().validate(id)
-    const appointment = await AppointmentService.getAppointment(id)
-
-    if (!appointment) {
-      return res.status(404).json({
-        error: 'Jadwal tidak ditemukan',
-      })
-    }
+    const appointment = await AppointmentService.getAppointment(
+      id,
+      res.locals.user.id,
+    )
 
     return ResponseBuilder(
       {
@@ -72,18 +70,65 @@ export const updateDataAppointment = async (
   try {
     const { id } = req.params
     await string().validate(id)
-    const body = req.body
+    const body = { status: req.body.status, time: req.body.time }
 
     // Validasi request menggunakan Yup
-    await appointmentSchema.validate(body)
+    await mixed()
+      .oneOf(['Booked', 'Completed', 'Cancelled'])
+      .required('Status harus diisi')
+      .validate(body.status)
+    await string().required('Waktu harus diisi').validate(body.time)
 
-    await AppointmentService.updateAppointment(id, body)
+    const updatedAppointment = await AppointmentService.updateAppointment(
+      id,
+      res.locals.user.id,
+      body,
+    )
 
     return ResponseBuilder(
       {
         code: 200,
         message: `Appointment dengan id ${id} berhasil diupdate`,
-        data: null,
+        data: updatedAppointment,
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
+export const getAllAppointment = async (
+  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    if (!res.locals.isAdmin)
+      throw new UnauthorizedError(
+        'Anda tidak memiliki akses untuk melihat appointment',
+      )
+
+    const { page, limit, status } = req.query
+    await string().validate(page)
+    await string().validate(limit)
+    await mixed()
+      .oneOf(['Booked', 'Completed', 'Cancelled'])
+      .required('Status harus diisi')
+      .validate(status)
+
+    const appointments = await AppointmentService.getAllAppointments(
+      parseInt(page),
+      parseInt(limit),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      status,
+    )
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointments,
+        message: 'Data Appointment berhasil diambil',
       },
       res,
     )
