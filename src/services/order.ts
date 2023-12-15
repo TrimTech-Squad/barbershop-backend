@@ -1,6 +1,7 @@
 import { ORDER } from '../../types/order'
 import { Order } from '../../models'
 import { NotFoundError } from '../helpers/error'
+import crypto from 'crypto'
 
 export default class OrderServices {
   static async createOrder(order: ORDER) {
@@ -12,6 +13,45 @@ export default class OrderServices {
         .catch((err: Error) => {
           reject(err)
         })
+    })
+  }
+
+  static async getOrder(id: number): Promise<ORDER> {
+    return new Promise((resolve, reject) => {
+      Order.findOne({ where: { id } })
+        .then(data => {
+          if (data) {
+            resolve(data as unknown as ORDER)
+          } else {
+            reject(new NotFoundError('Order not found'))
+          }
+        })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
+  static getSigntatureKey(
+    orderId: string,
+    status_code: string,
+    groos_amount: string,
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const hash = crypto.createHash('sha512')
+        //passing the data to be hashed
+        const data = hash.update(
+          orderId + status_code + groos_amount + process.env.SERVERKEY,
+          'utf-8',
+        )
+        //Creating the hash in the required format
+        const gen_hash = data.digest('hex')
+        //Printing the output on the console
+        resolve(gen_hash)
+      } catch (err) {
+        reject(err)
+      }
     })
   }
 
@@ -27,7 +67,7 @@ export default class OrderServices {
     })
   }
 
-  static async updateOrder(id: number, order: ORDER) {
+  static async updateOrder(id: string, order: ORDER) {
     return new Promise((resolve, reject) => {
       Order.findOne({ where: { id } })
         .then(data => {

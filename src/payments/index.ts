@@ -48,19 +48,73 @@ function getDateFormated(date: Date) {
   return `${year}-${month}-${day} ${hour}:${minute}:${second} +0700`
 }
 
+const enabled_payments = [
+  'credit_card',
+  'cimb_clicks',
+  'bca_klikbca',
+  'bca_klikpay',
+  'bri_epay',
+  'echannel',
+  'permata_va',
+  'bca_va',
+  'bni_va',
+  'bri_va',
+  'cimb_va',
+  'other_va',
+  'gopay',
+  'indomaret',
+  'danamon_online',
+  'akulaku',
+  'shopeepay',
+  'kredivo',
+  'uob_ezpay',
+]
+
 export const fetchTransactionToken = async (
   data: TransactionRequest,
 ): Promise<SnapResponse> => {
+  const formatedDate = getDateFormated(new Date())
   const requestObject = {
     ...data,
+    enabled_payments,
     expiry: {
-      start_time: getDateFormated(new Date()),
+      start_time: formatedDate,
       unit: 'day',
       duration: 1,
     },
     page_expiry: {
       duration: 2,
       unit: 'hours',
+    },
+
+    bni_va: {
+      va_number: '12345678',
+    },
+    bri_va: {
+      va_number: '1234567891234',
+    },
+
+    permata_va: {
+      va_number: '1234567890',
+      recipient_name: 'SUDARSONO',
+    },
+    shopeepay: {
+      callback_url: 'http://shopeepay.com',
+    },
+    gopay: {
+      enable_callback: true,
+      callback_url: 'http://gopay.com',
+    },
+    callbacks: {
+      finish: 'https://demo.midtrans.com',
+    },
+    uob_ezpay: {
+      callback_url: 'http://uobezpay.com',
+    },
+    recurring: {
+      required: true,
+      start_time: formatedDate,
+      interval_unit: 'week',
     },
   }
   return new Promise((resolve, reject) => {

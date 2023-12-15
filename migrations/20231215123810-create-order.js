@@ -46,7 +46,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
-      tranaction_status: {
+      transaction_status: {
         allowNull: true,
         type: Sequelize.ENUM(
           'pending',

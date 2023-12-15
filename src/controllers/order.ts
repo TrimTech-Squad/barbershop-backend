@@ -75,3 +75,41 @@ export const createOrder = async (req: Request, res: Response) => {
     return ResponseBuilder(ErrorCatcher(error as Error), res)
   }
 }
+
+export const updateOrder = async (req: Request, res: Response) => {
+  try {
+    if (res.locals.isAdmin)
+      throw new UnauthorizedError('Admin cannot update order')
+
+    const { body } = req
+
+    await string().required().validate(body.order_id)
+    await string().required().validate(body.status_code)
+    await string().required().validate(body.gross_amount)
+    await string().required().validate(body.transaction_status)
+
+    const order = await OrderServices.getOrder(body.order_id)
+
+    const signature = await OrderServices.getSigntatureKey(
+      order.id!,
+      body.status_code,
+      `${order.gross_amount}.00`,
+    )
+
+    if (signature !== body.signature_key)
+      throw new UnauthorizedError('Invalid signature key')
+
+    if (body) await OrderServices.updateOrder(order.id!, body)
+
+    // await AppointmentService.createAppointment({
+    //   userId: order.userId,
+    //   kapsterId: order.kapsterId,
+    //   serviceId: order.serviceId,
+    //   booking_time: order.booking_time,
+    // })
+
+    return res.end()
+  } catch (error) {
+    return ResponseBuilder(ErrorCatcher(error as Error), res)
+  }
+}
