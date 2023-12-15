@@ -30,6 +30,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.FLOAT,
       },
+      token: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      redirect_url: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+      },
+      booking_time: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
       transaction_id: {
         allowNull: true,
         type: Sequelize.STRING,

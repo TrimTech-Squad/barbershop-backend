@@ -22,6 +22,9 @@ export type ORDER = {
   kapsterServiceId: number
   userId: number
   gross_amount: number
+  booking_time: string
+  token: string
+  redirect_url: string
   transaction_id?: string
   transaction_status?: TRANSACTION_STATUS
   expiry_time?: string

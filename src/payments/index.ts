@@ -1,6 +1,5 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
-
 dotenv.config()
 export type SnapResponse = {
   token: string
@@ -13,7 +12,7 @@ export type TransactionDetails = {
 }
 
 export type ItemDetails = {
-  id: string
+  id: string | number
   price: number
   name: string
   //   brand: 'TrimTech'
@@ -55,7 +54,7 @@ export const fetchTransactionToken = async (
       .post<{
         token: string
         redirect_url: string
-      }>('http://localhost:3000/api/payments', JSON.stringify(requestObject), {
+      }>(process.env.PAYMENTGATEWAYURL ?? '', JSON.stringify(requestObject), {
         headers: {
           Authorization: 'Basic ' + process.env.MIDTRANSERVERSTOKEN,
           'Content-Type': 'application/json',

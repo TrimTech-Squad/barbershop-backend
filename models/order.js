@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static associate(models) {
       models.ServiceKapster.hasOne(models.Order, {
         foreignKey: 'kapsterServiceId',
@@ -43,6 +42,18 @@ module.exports = (sequelize, DataTypes) => {
       gross_amount: {
         allowNull: false,
         type: DataTypes.FLOAT,
+      },
+      token: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      redirect_url: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+      },
+      booking_time: {
+        allowNull: false,
+        type: DataTypes.DATE,
       },
       transaction_id: {
         allowNull: true,

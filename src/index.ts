@@ -7,6 +7,7 @@ import user from './routes/userRoutes'
 import { auth } from './middlewares/auth'
 import cookieParser from 'cookie-parser'
 import kapsterServiceRouter from './routes/kapsterServiceRoutes'
+import orderRouter from './routes/order'
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(express.static('public'))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/kapsters', auth, kapsters)
+app.use('/api/order', orderRouter)
 app.use('/api/kapster-service', auth, kapsterServiceRouter)
 app.use('/api/appointment', auth, appointment)
 app.use('/api/services', auth, service)

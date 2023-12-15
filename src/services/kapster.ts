@@ -84,6 +84,31 @@ export default class KapsterServices {
     })
   }
 
+  static getKapsterServiceById = async (
+    id: number,
+  ): Promise<KAPSTERSERVICE & { service: SERVICE }> => {
+    return new Promise((resolve, reject) => {
+      ServiceKapster.findOne({
+        where: { id },
+        include: [
+          {
+            model: Service,
+            as: 'service',
+          },
+        ],
+      })
+        .then((data: KAPSTERSERVICE & { service: SERVICE }) => {
+          if (data) {
+            return resolve(data)
+          }
+          reject(new NotFoundError('KapsterService not found'))
+        })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
   static getKapsterServices = async (
     id: number,
   ): Promise<({ price: number } & SERVICE)[]> => {
