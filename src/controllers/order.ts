@@ -1,4 +1,4 @@
-import { number, object } from 'yup'
+import { number, object, string } from 'yup'
 import { Request, Response } from 'express'
 import OrderServices from '../services/order'
 import fetchTransactionToken from '../payments'
@@ -9,8 +9,7 @@ import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 
 const orderSchema = object({
-  userId: number().required(),
-  booking_time: number().required(),
+  booking_time: string().required(),
   kapsterServiceId: number().required(),
 })
 
@@ -22,13 +21,13 @@ export const createOrder = async (req: Request, res: Response) => {
     const { body } = req
     await orderSchema.validate(body)
 
+    body.userId = res.locals.user.id
+
     const userDetail = await UserServices.getUser(body.userId)
 
     const kapsterService = await KapsterServices.getKapsterServiceById(
       body.kapsterServiceId,
     )
-
-    body.groos_order = kapsterService.price
 
     const paymentCharge = await fetchTransactionToken({
       transaction_details: {
@@ -41,6 +40,7 @@ export const createOrder = async (req: Request, res: Response) => {
           price: kapsterService.price,
           name: kapsterService.service.serviceName,
           merchant_name: 'TrimTech',
+          quantity: 1,
           url: 'https://trimtech.id/service/' + kapsterService.service.id,
         },
       ],
@@ -54,6 +54,8 @@ export const createOrder = async (req: Request, res: Response) => {
 
     body.token = paymentCharge.token
     body.redirect_url = paymentCharge.redirect_url
+    body.gross_amount = paymentCharge.gross_amount
+    body.id = paymentCharge.order_id
 
     await OrderServices.createOrder(body)
 
@@ -64,6 +66,7 @@ export const createOrder = async (req: Request, res: Response) => {
         data: {
           token: paymentCharge.token,
           redirect_url: paymentCharge.redirect_url,
+          groos_amount: paymentCharge.gross_amount,
         },
       },
       res,

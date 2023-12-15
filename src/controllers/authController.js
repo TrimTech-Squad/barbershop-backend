@@ -38,14 +38,14 @@ export const register = async (
   }
 }
 
+const userSchema = object({
+  email: string().required('Email harus diisi').email('Email tidak valid'),
+  password: string().required('Password harus diisi'),
+})
 export const login = async (
   /** @type {{ body: any; }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
-  const userSchema = object({
-    email: string().required('Email harus diisi').email('Email tidak valid'),
-    password: string().required('Password harus diisi'),
-  })
   try {
     const body = req.body
 
