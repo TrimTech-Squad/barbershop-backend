@@ -1,5 +1,6 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
+import { FRAUD_STATUS, TRANSACTION_STATUS } from '../../types/order'
 dotenv.config()
 export type SnapResponse = {
   token: string
@@ -143,3 +144,45 @@ export const fetchTransactionToken = async (
 }
 
 export default fetchTransactionToken
+
+export type TypeResponseStatus = {
+  status_code: string
+  transaction_id: string
+  gross_amount: string
+  currency: string
+  order_id: string
+  payment_type: string
+  signature_key: string
+  transaction_status: TRANSACTION_STATUS
+  fraud_status: FRAUD_STATUS
+  status_message: string
+  merchant_id: string
+  payment_code: string
+  store: string
+  transaction_time: string
+  expiry_time: string
+}
+
+export const fetchTransactionStatus = async (
+  orderId: string,
+): Promise<TypeResponseStatus> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get<TypeResponseStatus>(
+        `${process.env.PAYMENTGATEWAYSTATUSURL ?? ''}/${orderId}/status`,
+        {
+          headers: {
+            Authorization: 'Basic ' + btoa(process.env.SERVERKEY ?? '' + ':'),
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+      )
+      .then(res => {
+        resolve(res.data as TypeResponseStatus)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}

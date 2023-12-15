@@ -16,12 +16,12 @@ export default class OrderServices {
     })
   }
 
-  static async getOrder(id: number): Promise<ORDER> {
+  static async getOrder(id: number): Promise<ORDER & { dataValues: ORDER }> {
     return new Promise((resolve, reject) => {
       Order.findOne({ where: { id } })
         .then(data => {
           if (data) {
-            resolve(data as unknown as ORDER)
+            resolve(data as unknown as ORDER & { dataValues: ORDER })
           } else {
             reject(new NotFoundError('Order not found'))
           }

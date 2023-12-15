@@ -1,7 +1,7 @@
 import { number, object, string } from 'yup'
 import { Request, Response } from 'express'
 import OrderServices from '../services/order'
-import fetchTransactionToken from '../payments'
+import fetchTransactionToken, { fetchTransactionStatus } from '../payments'
 import { orderIdMaker } from '../utils/id_maker'
 import KapsterServices from '../services/kapster'
 import UserServices from '../services/user'
@@ -9,6 +9,7 @@ import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 import AppointmentService from '../services/appointment'
 import { APPOINTMENTSTATUS } from '../../types/appointment'
+import { TRANSACTION_STATUS } from '../../types/order'
 
 const orderSchema = object({
   booking_time: string().required(),
@@ -92,6 +93,13 @@ export const updateOrder = async (req: Request, res: Response) => {
 
     const order = await OrderServices.getOrder(body.order_id)
 
+    /* The `signature` variable is being assigned the result of calling the `getSigntatureKey` function
+from the `OrderServices` module. This function takes three arguments: `order.id`,
+`body.status_code`, and a string representation of `order.gross_amount` with `.00` appended to it.
+The purpose of this function is to generate a signature key based on the provided arguments. The
+generated signature key is then used to verify the authenticity of the request by comparing it with
+the `body.signature_key` value. If the generated signature key matches the provided signature key,
+the request is considered valid. */
     const signature = await OrderServices.getSigntatureKey(
       order.id!,
       body.status_code,
@@ -101,9 +109,21 @@ export const updateOrder = async (req: Request, res: Response) => {
     if (signature !== body.signature_key)
       throw new UnauthorizedError('Invalid signature key')
 
-    if (body) await OrderServices.updateOrder(order.id!, body)
+    /* The line `const response = await fetchTransactionStatus(body.order_id)` is calling the
+   `fetchTransactionStatus` function and passing the `order_id` from the request body as an
+   argument. It is awaiting the response from this function, which is likely an asynchronous API
+   call to fetch the transaction status for the given order ID. The response is then stored in the
+   `response` variable for further processing. */
+    const response = await fetchTransactionStatus(body.order_id)
 
-    if (body.transaction_status === 'settlement') {
+    if (response)
+      await OrderServices.updateOrder(order.id!, {
+        ...order.dataValues,
+        ...response,
+        gross_amount: parseFloat(response.gross_amount),
+      })
+
+    if (response.transaction_status === TRANSACTION_STATUS.SETTLEMENT) {
       await AppointmentService.createAppointment({
         userId: order.userId,
         kapsterServiceId: order.kapsterServiceId,
