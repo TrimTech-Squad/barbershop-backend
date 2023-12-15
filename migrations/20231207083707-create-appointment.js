@@ -18,25 +18,21 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      kapsterId: {
+      kapsterServiceId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Kapsters',
+          model: 'ServiceKapsters',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
-      serviceId: {
+      orderId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
-          model: 'Services',
+          model: 'Orders',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
       date: {
         allowNull: false,

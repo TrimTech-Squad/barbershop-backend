@@ -7,6 +7,8 @@ import KapsterServices from '../services/kapster'
 import UserServices from '../services/user'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
+import AppointmentService from '../services/appointment'
+import { APPOINTMENTSTATUS } from '../../types/appointment'
 
 const orderSchema = object({
   booking_time: string().required(),
@@ -101,14 +103,25 @@ export const updateOrder = async (req: Request, res: Response) => {
 
     if (body) await OrderServices.updateOrder(order.id!, body)
 
-    // await AppointmentService.createAppointment({
-    //   userId: order.userId,
-    //   kapsterId: order.kapsterId,
-    //   serviceId: order.serviceId,
-    //   booking_time: order.booking_time,
-    // })
+    if (body.transaction_status === 'settlement') {
+      await AppointmentService.createAppointment({
+        userId: order.userId,
+        kapsterServiceId: order.kapsterServiceId,
+        time: order.booking_time,
+        status: APPOINTMENTSTATUS.BOOKED,
+        orderId: order.id!,
+        date: new Date().toISOString(),
+      })
+    }
 
-    return res.end()
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: 'Order updated',
+        data: null,
+      },
+      res,
+    )
   } catch (error) {
     return ResponseBuilder(ErrorCatcher(error as Error), res)
   }

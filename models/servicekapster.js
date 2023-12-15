@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'serviceId',
       })
 
+      models.ServiceKapster.hasMany(models.Appointment, {
+        as: 'appointments',
+        foreignKey: 'kapsterServiceId',
+        sourceKey: 'id',
+      })
+
       models.ServiceKapster.belongsTo(models.Kapster, {
         as: 'kapster',
         foreignKey: 'kapsterId',

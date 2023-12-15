@@ -11,8 +11,8 @@ describe('appointment services', async () => {
       (await AppointmentService.getAppointmentCounts()) + 1,
     ),
     userId: 0,
-    kapsterId: 2,
-    serviceId: 2,
+    kapsterServiceId: 10,
+    orderId: 'ORDER-00000000001',
     date: '2021-01-01T00:00:00.000Z',
     time: new Date().toISOString(),
     status: APPOINTMENTSTATUS.BOOKED,
@@ -34,8 +34,7 @@ describe('appointment services', async () => {
     } finally {
       const data = await AppointmentService.createAppointment(appointment)
       expect(data.userId).toEqual(appointment.userId)
-      expect(data.kapsterId).toEqual(appointment.kapsterId)
-      expect(data.serviceId).toEqual(appointment.serviceId)
+      expect(data.kapsterServiceId).toEqual(appointment.kapsterServiceId)
       expect(new Date(data.date)).toBeInstanceOf(Date)
       expect(new Date(data.time)).toBeInstanceOf(Date)
       expect(data.status).toEqual(appointment.status)
@@ -44,8 +43,7 @@ describe('appointment services', async () => {
   it('should get appointment info', async () => {
     const data = await AppointmentService.getAppointment(appointment.id!, 0)
     expect(data.userId).toEqual(appointment.userId)
-    expect(data.kapsterId).toEqual(appointment.kapsterId)
-    expect(data.serviceId).toEqual(appointment.serviceId)
+    expect(data.kapsterServiceId).toEqual(appointment.kapsterServiceId)
     expect(new Date(data.date)).toBeInstanceOf(Date)
     expect(new Date(data.time)).toBeInstanceOf(Date)
     expect(data.status).toEqual(appointment.status)
@@ -60,8 +58,7 @@ describe('appointment services', async () => {
       },
     )
     expect(data.userId).toEqual(appointment.userId)
-    expect(data.kapsterId).toEqual(appointment.kapsterId)
-    expect(data.serviceId).toEqual(appointment.serviceId)
+    expect(data.kapsterServiceId).toEqual(appointment.kapsterServiceId)
     expect(new Date(data.date)).toBeInstanceOf(Date)
     expect(new Date(data.time)).toBeInstanceOf(Date)
     expect(data.status).toEqual(APPOINTMENTSTATUS.COMPLETED)

@@ -1,7 +1,7 @@
 // src/routes/kapsterRoutes.js
 import { Router } from 'express'
 import {
-  createAppointment,
+  // createAppointment,
   getAllAppointment,
   getAppointmentById,
   updateDataAppointment,
@@ -10,7 +10,7 @@ import { isAdmin } from '../middlewares/admin'
 
 const router = Router()
 
-router.post('/', createAppointment)
+// router.post('/', createAppointment)
 router.get('/:id', getAppointmentById)
 router.put('/:id', updateDataAppointment)
 router.get('/', isAdmin, getAllAppointment)

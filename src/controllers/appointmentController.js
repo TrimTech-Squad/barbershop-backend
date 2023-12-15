@@ -1,42 +1,42 @@
-import { mixed, object, string } from 'yup'
+import { mixed, string } from 'yup'
 import AppointmentService from '../services/appointment'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 
-const appointmentSchema = object({
-  userId: string().required('User ID harus diisi'),
-  kapsterId: string().required('Kapster ID harus diisi'),
-  serviceId: string().required('Service ID harus diisi'),
-  time: string().required('Waktu harus diisi'),
-})
+// const appointmentSchema = object({
+//   userId: string().required('User ID harus diisi'),
+//   kapsterId: string().required('Kapster ID harus diisi'),
+//   serviceId: string().required('Service ID harus diisi'),
+//   time: string().required('Waktu harus diisi'),
+// })
 
-export const createAppointment = async (
-  /** @type {{ body: any; }} */ req,
-  /** @type {import("express").Response<any, Record<string, any>>} */ res,
-) => {
-  try {
-    if (res.locals.isAdmin)
-      throw new UnauthorizedError(
-        'Anda tidak memiliki akses untuk membuat appointment',
-      )
+// export const createAppointment = async (
+//   /** @type {{ body: any; }} */ req,
+//   /** @type {import("express").Response<any, Record<string, any>>} */ res,
+// ) => {
+//   try {
+//     if (res.locals.isAdmin)
+//       throw new UnauthorizedError(
+//         'Anda tidak memiliki akses untuk membuat appointment',
+//       )
 
-    const request = req.body
-    request.userId = res.locals.user.id
-    await appointmentSchema.validate(request)
-    const newAppointment = await AppointmentService.createAppointment(request)
+//     const request = req.body
+//     request.userId = res.locals.user.id
+//     await appointmentSchema.validate(request)
+//     const newAppointment = await AppointmentService.createAppointment(request)
 
-    return ResponseBuilder(
-      {
-        code: 201,
-        data: newAppointment,
-        message: 'Appointment berhasil dibuat',
-      },
-      res,
-    )
-  } catch (/** @type {any} */ error) {
-    return ResponseBuilder(ErrorCatcher(error), res)
-  }
-}
+//     return ResponseBuilder(
+//       {
+//         code: 201,
+//         data: newAppointment,
+//         message: 'Appointment berhasil dibuat',
+//       },
+//       res,
+//     )
+//   } catch (/** @type {any} */ error) {
+//     return ResponseBuilder(ErrorCatcher(error), res)
+//   }
+// }
 
 export const getAppointmentById = async (
   /** @type {{ params: {id:string}; }} */ req,

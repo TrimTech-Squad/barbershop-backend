@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Kapster.hasMany(models.Appointment, {
-        as: 'appointment',
-        foreignKey: 'kapsterId',
-      })
       Kapster.hasMany(models.ServiceKapster, {
         as: 'service',
         foreignKey: 'kapsterId',
