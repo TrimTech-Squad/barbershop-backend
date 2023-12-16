@@ -1,4 +1,5 @@
-import { Service } from '../../models'
+import { Kapster, Service, ServiceKapster } from '../../models'
+import { KAPSTER, KAPSTERSERVICE } from '../../types/kapster'
 import { SERVICE } from '../../types/service'
 import { NotFoundError } from '../helpers/error'
 
@@ -60,6 +61,37 @@ export default class ServiceServices {
           }
           reject(new NotFoundError('Service not found'))
         })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
+  static async getKapsterService(
+    id: number,
+  ): Promise<KAPSTERSERVICE & { service: SERVICE; kapster: KAPSTER }> {
+    return new Promise((resolve, reject) => {
+      ServiceKapster.findOne({
+        where: { id },
+        include: [
+          {
+            model: Service,
+            as: 'service',
+          },
+          {
+            model: Kapster,
+            as: 'kapster',
+          },
+        ],
+      })
+        .then(
+          (data: KAPSTERSERVICE & { service: SERVICE; kapster: KAPSTER }) => {
+            if (data) {
+              resolve(data)
+            }
+            reject(new NotFoundError('Kapster Service not found'))
+          },
+        )
         .catch((err: Error) => {
           reject(err)
         })

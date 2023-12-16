@@ -6,7 +6,10 @@ import { orderIdMaker } from '../utils/id_maker'
 import KapsterServices from '../services/kapster'
 import UserServices from '../services/user'
 import ResponseBuilder from '../helpers/response-builder'
-import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
+import ErrorCatcher, {
+  BadRequestError,
+  UnauthorizedError,
+} from '../helpers/error'
 import AppointmentService from '../services/appointment'
 import { APPOINTMENTSTATUS } from '../../types/appointment'
 import { TRANSACTION_STATUS } from '../../types/order'
@@ -139,6 +142,80 @@ the request is considered valid. */
         code: 200,
         message: 'Order updated',
         data: null,
+      },
+      res,
+    )
+  } catch (error) {
+    return ResponseBuilder(ErrorCatcher(error as Error), res)
+  }
+}
+
+const orderCancelSchema = object({
+  reason: string().required("Reason can't be empty"),
+  amount: number().required("Amount can't be empty"),
+})
+
+export const requsetCancleOrder = async (req: Request, res: Response) => {
+  try {
+    if (res.locals.isAdmin)
+      throw new UnauthorizedError('Admin cannot update order')
+
+    const orderId = req.params.id
+    const { body } = req
+
+    await orderCancelSchema.validate(body)
+    await string().required().validate(orderId)
+
+    const { dataValues: order } = await OrderServices.getOrder({
+      id: orderId,
+      userId: res.locals.user.id,
+    })
+
+    if (order.transaction_status === TRANSACTION_STATUS.CANCEL) {
+      throw new BadRequestError('Order already canceled')
+    } else if (order.transaction_status === TRANSACTION_STATUS.DENY) {
+      throw new BadRequestError('Order already denied')
+    } else if (order.transaction_status === TRANSACTION_STATUS.EXPIRE) {
+      throw new BadRequestError('Order already expired')
+    } else if (order.transaction_status === TRANSACTION_STATUS.REFUND) {
+      throw new BadRequestError('Order already refunded')
+    } else if (order.transaction_status === TRANSACTION_STATUS.PARTIAL_REFUND) {
+      throw new BadRequestError('Order already partially refunded')
+    } else if (order.transaction_status === TRANSACTION_STATUS.FAILURE) {
+      throw new BadRequestError('Order already failed')
+    }
+
+    const request: {
+      reason: string
+      amount: number
+      order_id: string
+      cancel_state: 'SETTLED' | 'UNSETTLED'
+    } = {
+      reason: body.reason,
+      amount: body.amount,
+      order_id: order.id!,
+      cancel_state: 'SETTLED',
+    }
+
+    if (order.transaction_status === TRANSACTION_STATUS.SETTLEMENT)
+      request.cancel_state = 'SETTLED'
+    else request.cancel_state = 'UNSETTLED'
+
+    if (order.gross_amount < body.amount) {
+      throw new BadRequestError("Amount can't be greater than gross amount")
+    }
+
+    OrderServices.sendRequestCancleOrder(order, {
+      reason: request.reason,
+      amount: request.amount,
+      cancel_state: request.cancel_state,
+    })
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: 'Order cancel request successfuly issued',
+        data: request,
       },
       res,
     )

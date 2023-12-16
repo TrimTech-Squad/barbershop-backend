@@ -35,4 +35,5 @@ export type ORDER = {
   fraud_status?: FRAUD_STATUS
   merchant_id?: string
   store?: string
+  createdAt?: string
 }
