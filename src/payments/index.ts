@@ -186,3 +186,67 @@ export const fetchTransactionStatus = async (
       })
   })
 }
+
+export const fetchTransactionCancel = async (
+  orderId: string,
+): Promise<TypeResponseStatus> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get<TypeResponseStatus>(
+        `${process.env.PAYMENTGATEWAYSTATUSURL ?? ''}/${orderId}/cancel`,
+        {
+          headers: {
+            Authorization: 'Basic ' + btoa(process.env.SERVERKEY ?? '' + ':'),
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+      )
+      .then(res => {
+        resolve(res.data as TypeResponseStatus)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+export type TypeResponseRefund = {
+  status_code: string
+  status_message: string
+  transaction_id: string
+  order_id: string
+  payment_type: string
+  transaction_time: string
+  transaction_status: TRANSACTION_STATUS
+  gross_amount: string
+  refund_chargeback_id: number
+  refund_amount: string
+  refund_key: string
+}
+
+export const fetchTransactionRefund = async (
+  orderId: string,
+  { amount, reason }: { amount: number; reason: string },
+): Promise<TypeResponseRefund> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post<TypeResponseRefund>(
+        `${process.env.PAYMENTGATEWAYSTATUSURL ?? ''}/${orderId}/refund`,
+        JSON.stringify({ amount, reason }),
+        {
+          headers: {
+            Authorization: 'Basic ' + btoa(process.env.SERVERKEY ?? '' + ':'),
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+      )
+      .then(res => {
+        resolve(res.data as TypeResponseRefund)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}

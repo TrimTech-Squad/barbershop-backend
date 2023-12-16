@@ -31,9 +31,12 @@ export type ORDER = {
   transaction_time?: string
   payment_type?: string
   currency?: string
-  signature_key?: string
+  signature_key?: string | null
   fraud_status?: FRAUD_STATUS
   merchant_id?: string
   store?: string
+  refund_amount?: number
+  refund_key?: string
+  refund_reason?: string
   createdAt?: string
 }

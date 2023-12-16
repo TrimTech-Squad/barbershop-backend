@@ -113,6 +113,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.STRING,
       },
+      refund_key: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      refund_reason: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      refund_amount: {
+        allowNull: true,
+        type: DataTypes.FLOAT,
+      },
     },
     {
       sequelize,

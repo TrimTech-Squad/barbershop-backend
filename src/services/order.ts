@@ -65,6 +65,8 @@ export default class OrderServices {
     await OrderServices.updateOrder(order.id!, {
       ...order,
       signature_key: generatedSigntatureKey,
+      refund_amount: cancel.amount,
+      refund_reason: cancel.reason,
     })
 
     const emailRequest: {

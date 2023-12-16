@@ -1,7 +1,10 @@
 import { number, object, string } from 'yup'
 import { Request, Response } from 'express'
 import OrderServices from '../services/order'
-import fetchTransactionToken, { fetchTransactionStatus } from '../payments'
+import fetchTransactionToken, {
+  fetchTransactionRefund,
+  fetchTransactionStatus,
+} from '../payments'
 import { orderIdMaker } from '../utils/id_maker'
 import KapsterServices from '../services/kapster'
 import UserServices from '../services/user'
@@ -95,7 +98,7 @@ export const updateOrder = async (req: Request, res: Response) => {
     await string().required().validate(body.gross_amount)
     await string().required().validate(body.transaction_status)
 
-    const order = await OrderServices.getOrder(body.order_id)
+    const order = await OrderServices.getOrder({ id: body.order_id })
 
     /* The `signature` variable is being assigned the result of calling the `getSigntatureKey` function
 from the `OrderServices` module. This function takes three arguments: `order.id`,
@@ -227,14 +230,28 @@ export const requsetCancleOrder = async (req: Request, res: Response) => {
 
 export const getCancelationRequest = async (req: Request, res: Response) => {
   try {
-    // if (!res.locals.isAdmin)
-    //   throw new UnauthorizedError('Only admin can access this route')
-
     const { id } = req.params
     await string().required().validate(id)
 
-    await OrderServices.getOrder({
+    const order = await OrderServices.getOrder({
       signature_key: id,
+    })
+
+    const response = await fetchTransactionRefund(order.id!, {
+      amount: order.refund_amount!,
+      reason: order.refund_reason!,
+    })
+
+    if (response.status_code !== '200') {
+      throw response
+    }
+
+    await OrderServices.updateOrder(order.id!, {
+      ...order.dataValues,
+      ...response,
+      signature_key: null,
+      gross_amount: parseFloat(response.gross_amount),
+      refund_amount: parseFloat(response.refund_amount),
     })
 
     return res.send(
@@ -244,17 +261,26 @@ export const getCancelationRequest = async (req: Request, res: Response) => {
           order: {
             isExist: true,
           },
+          state: {
+            ok: true,
+            status_message: response.status_message,
+          },
         },
         {},
       ),
     )
-  } catch (error) {
+  } catch (error: unknown) {
     return res.send(
       await renderHTML(
         __dirname + '/../templates/page/order/cancel.ejs',
         {
           order: {
             isExist: false,
+          },
+          state: {
+            ok: false,
+            status_message: (error as { status_message: string })
+              .status_message,
           },
         },
         {},

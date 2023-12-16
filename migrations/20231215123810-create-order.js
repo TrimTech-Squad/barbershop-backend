@@ -98,6 +98,18 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
+      refund_key: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      refund_reason: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      refund_amount: {
+        allowNull: true,
+        type: Sequelize.FLOAT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
