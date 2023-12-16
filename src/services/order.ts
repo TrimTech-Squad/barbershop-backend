@@ -3,7 +3,7 @@ import { Order, User } from '../../models'
 import { NotFoundError } from '../helpers/error'
 import UserServices from './user'
 import ServiceServices from './service'
-import { generateSha512 } from '../utils/sha'
+import { generateHashString } from '../utils/sha'
 import { USERROLE } from '../../types/user'
 import { sendMail } from './mail'
 import { renderHTML } from '../utils/ejs'
@@ -21,10 +21,9 @@ export default class OrderServices {
     })
   }
 
-  static async getOrder(querry: {
-    id: string
-    userId?: number
-  }): Promise<ORDER & { dataValues: ORDER }> {
+  static async getOrder(
+    querry: Partial<ORDER>,
+  ): Promise<ORDER & { dataValues: ORDER }> {
     return new Promise((resolve, reject) => {
       Order.findOne({ where: querry })
         .then(data => {
@@ -53,7 +52,7 @@ export default class OrderServices {
       order.kapsterServiceId,
     )
 
-    const generatedSigntatureKey = generateSha512(
+    const generatedSigntatureKey = generateHashString(
       user.email +
         order.id! +
         cancel.reason +
@@ -115,7 +114,8 @@ export default class OrderServices {
         reason: cancel.reason,
         amount: cancel.amount,
         url:
-          'https://trimtech.id/cancel/' +
+          process.env.SERVERBASEURL +
+          '/order/confirmation-cancel/' +
           generatedSigntatureKey +
           '?state=' +
           cancel.cancel_state,
@@ -150,7 +150,7 @@ export default class OrderServices {
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       try {
-        const signature = generateSha512(
+        const signature = generateHashString(
           orderId + status_code + groos_amount + process.env.SERVERKEY,
         )
 

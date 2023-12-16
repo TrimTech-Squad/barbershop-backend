@@ -1,12 +1,19 @@
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 
-export const generateSha512 = (decoded: string) => {
-  const hash = crypto.createHash('sha512')
+export const generateHashString = (
+  decoded: string,
+  opts: {
+    disgest: 'hex' | 'base64'
+    encoding: 'utf-8'
+    aggorithm: 'sha256' | 'sha512'
+  } = { disgest: 'hex', aggorithm: 'sha512', encoding: 'utf-8' },
+) => {
+  const hash = crypto.createHash(opts.aggorithm)
   //passing the data to be hashed
-  const data = hash.update(decoded, 'utf-8')
+  const data = hash.update(decoded, opts.encoding)
   //Creating the hash in the required format
-  const gen_hash = data.digest('hex')
+  const gen_hash = data.digest(opts.disgest)
   //Printing the output on the console
   return gen_hash
 }

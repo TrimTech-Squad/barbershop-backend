@@ -13,6 +13,7 @@ import ErrorCatcher, {
 import AppointmentService from '../services/appointment'
 import { APPOINTMENTSTATUS } from '../../types/appointment'
 import { TRANSACTION_STATUS } from '../../types/order'
+import { renderHTML } from '../utils/ejs'
 
 const orderSchema = object({
   booking_time: string().required(),
@@ -221,5 +222,43 @@ export const requsetCancleOrder = async (req: Request, res: Response) => {
     )
   } catch (error) {
     return ResponseBuilder(ErrorCatcher(error as Error), res)
+  }
+}
+
+export const getCancelationRequest = async (req: Request, res: Response) => {
+  try {
+    // if (!res.locals.isAdmin)
+    //   throw new UnauthorizedError('Only admin can access this route')
+
+    const { id } = req.params
+    await string().required().validate(id)
+
+    await OrderServices.getOrder({
+      signature_key: id,
+    })
+
+    return res.send(
+      await renderHTML(
+        __dirname + '/../templates/page/order/cancel.ejs',
+        {
+          order: {
+            isExist: true,
+          },
+        },
+        {},
+      ),
+    )
+  } catch (error) {
+    return res.send(
+      await renderHTML(
+        __dirname + '/../templates/page/order/cancel.ejs',
+        {
+          order: {
+            isExist: false,
+          },
+        },
+        {},
+      ),
+    )
   }
 }

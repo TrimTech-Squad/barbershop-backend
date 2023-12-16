@@ -24,7 +24,10 @@ export const sendMail = async (to: string, subject: string, html: string) => {
       },
       (err, info) => {
         if (err) reject(err)
-        else resolve(info)
+        else {
+          console.log('Email sent to : ' + info.envelope.to.join(', '))
+          resolve(info)
+        }
       },
     )
   })

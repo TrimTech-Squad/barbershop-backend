@@ -4,12 +4,12 @@
     "password": "7882",
     "database": "barberbook_app",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "test": {
     "username": "postgres",
     "password": "7882",
-    "database": "barberbook_app",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
