@@ -4,6 +4,7 @@ import UserServices from '../services/user'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher from '../helpers/error'
 import AuthService from '../services/auth'
+import brypt from 'bcrypt'
 
 export const register = async (
   /** @type {{ body: any; }} */ req,
@@ -24,15 +25,22 @@ export const register = async (
    ensures that the `role` property is always set to `'Customer'` before creating a new user. */
     body.role = 'Customer'
     await userSchema.validate(body)
-    const user = await UserServices.createUser(body)
-    return ResponseBuilder(
-      {
-        code: 201,
-        message: 'User successfully created.',
-        data: { id: user.id },
-      },
-      res,
-    )
+
+    return brypt.hash(body.password, 10, async (err, hash) => {
+      if (err) throw new Error(err.message)
+      body.password = hash
+      body.photo_url =
+        'https://i.ibb.co/7tBZVZg/blank-profile-picture-973460-640.png'
+      const user = await UserServices.createUser(body)
+      return ResponseBuilder(
+        {
+          code: 201,
+          message: 'User successfully created.',
+          data: { id: user.id },
+        },
+        res,
+      )
+    })
   } catch (/** @type {any} */ error) {
     return ResponseBuilder(ErrorCatcher(error), res)
   }

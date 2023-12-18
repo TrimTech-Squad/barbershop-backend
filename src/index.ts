@@ -9,10 +9,16 @@ import cookieParser from 'cookie-parser'
 import kapsterServiceRouter from './routes/kapsterServiceRoutes'
 import orderRouter from './routes/order'
 import { getRefundRequest } from './controllers/order'
+import compression from 'compression'
 
 const app = express()
 
 const port = process.env.PORT || 3000
+
+/* `app.use(compression())` is enabling compression middleware in the Express application. Compression
+middleware compresses the response bodies for all requests that pass through it, reducing the size
+of the response and improving the performance of the application. */
+app.use(compression())
 
 app.use(cookieParser())
 app.use(express.json())
