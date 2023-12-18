@@ -8,7 +8,7 @@ import { auth } from './middlewares/auth'
 import cookieParser from 'cookie-parser'
 import kapsterServiceRouter from './routes/kapsterServiceRoutes'
 import orderRouter from './routes/order'
-import { getCancelationRequest } from './controllers/order'
+import { getRefundRequest } from './controllers/order'
 
 const app = express()
 
@@ -27,7 +27,7 @@ app.use('/api/appointment', auth, appointment)
 app.use('/api/services', auth, service)
 app.use('/api/user', auth, user)
 
-app.get('/order/confirmation-cancel/:id', getCancelationRequest)
+app.get('/order/confirm-refund/:id', getRefundRequest)
 
 app.listen(port, () => {
   console.log('Server running on port 3000')

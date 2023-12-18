@@ -111,7 +111,8 @@
     "./src/**/*.ts",
     "./test/**/*.ts",
     "./model/**/*.ts,js",
-    "./types/**/*.ts,.d.ts"
+    "./types/**/*.ts,.d.ts",
+    "src/services/mail.ts"
   ],
   "ts-node": {
     // these options are overrides used only by ts-node

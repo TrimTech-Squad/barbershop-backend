@@ -1,34 +1,19 @@
-import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
+import { SentMessageInfo } from 'nodemailer/lib/smtp-transport'
+import { Worker } from 'worker_threads'
 
-dotenv.config()
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
-  secure: true,
-  auth: {
-    user: process.env.MAIL_USERNAME,
-    pass: process.env.MAIL_PASSWORD,
-  },
-})
-
-export const sendMail = async (to: string, subject: string, html: string) => {
+export const sendMail = (
+  to: string,
+  subject: string,
+  html: string,
+): Promise<SentMessageInfo> => {
   return new Promise((resolve, reject) => {
-    transporter.sendMail(
-      {
-        from: process.env.MAIL_FROM,
-        to,
-        subject,
-        html,
-      },
-      (err, info) => {
-        if (err) reject(err)
-        else {
-          console.log('Email sent to : ' + info.envelope.to.join(', '))
-          resolve(info)
-        }
-      },
-    )
+    const worker = new Worker('./src/worker/email.js', {
+      workerData: { to, subject, html },
+    })
+    worker.on('message', resolve)
+    worker.on('error', reject)
+    worker.on('exit', exitCode => {
+      console.log('Mail worker closed with exic code ' + exitCode)
+    })
   })
 }

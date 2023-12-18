@@ -7,7 +7,7 @@ export const renderHTML = (
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     ejs.renderFile(path, data, opts, (err, str) => {
-      if (err) reject(err)
+      if (err) return reject(err)
       return resolve(str)
     })
   })

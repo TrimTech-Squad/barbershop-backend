@@ -159,7 +159,7 @@ const orderCancelSchema = object({
   amount: number().required("Amount can't be empty"),
 })
 
-export const requsetCancleOrder = async (req: Request, res: Response) => {
+export const requsetRefundOrder = async (req: Request, res: Response) => {
   try {
     if (res.locals.isAdmin)
       throw new UnauthorizedError('Admin cannot update order')
@@ -209,7 +209,7 @@ export const requsetCancleOrder = async (req: Request, res: Response) => {
       throw new BadRequestError("Amount can't be greater than gross amount")
     }
 
-    OrderServices.sendRequestCancleOrder(order, {
+    OrderServices.sendRequestRefundOrder(order, {
       reason: request.reason,
       amount: request.amount,
       cancel_state: request.cancel_state,
@@ -228,7 +228,7 @@ export const requsetCancleOrder = async (req: Request, res: Response) => {
   }
 }
 
-export const getCancelationRequest = async (req: Request, res: Response) => {
+export const getRefundRequest = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
     await string().required().validate(id)
