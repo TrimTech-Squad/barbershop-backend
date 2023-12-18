@@ -10,6 +10,9 @@ import kapsterServiceRouter from './routes/kapsterServiceRoutes'
 import orderRouter from './routes/order'
 import { getRefundRequest } from './controllers/order'
 import compression from 'compression'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 
