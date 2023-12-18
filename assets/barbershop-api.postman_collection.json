@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "40810e5e-2eef-40ab-89ed-6a0138489cf7",
-		"name": "barbershop-api Copy",
+		"name": "barbershop-api",
 		"description": "The API for barbershop project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28284845"
@@ -23,7 +23,7 @@
 											"pm.environment.set(\"name\", pm.variables.replaceIn(\"{{$randomFullName}}\"));\r",
 											"pm.environment.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));\r",
 											"pm.environment.set(\"number\", pm.variables.replaceIn(\"{{$randomPhoneNumber}}\"));\r",
-											"pm.environment.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));\r",
+											"pm.environment.set(\"password\",pm.variables.replaceIn(\"{{$randomPassword}}\"));\r",
 											"pm.environment.set(\"photo_url\", pm.variables.replaceIn(\"{{$randomAvatarImage}}\"));"
 										],
 										"type": "text/javascript"
@@ -930,240 +930,7 @@
 					"name": "{id}",
 					"item": [
 						{
-							"name": "To fetch user data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"pm.test(\"Response time is less than 200ms\", function () {\r",
-											"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/user",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"user"
-									]
-								},
-								"description": "To fetch user data"
-							},
-							"response": [
-								{
-									"name": "Successfuly get user data",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/user/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"user",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"id\": \"<number>\",\n  \"name\": \"<string>\",\n  \"passwod\": \"<string>\",\n  \"email\": \"<string>\",\n  \"number\": \"<string>\",\n  \"photo_url\": \"<string>\"\n}"
-								},
-								{
-									"name": "Unauthorized Error",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/user/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"user",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
-											]
-										}
-									},
-									"status": "Unauthorized",
-									"code": 401,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
-								},
-								{
-									"name": "To fetch user data",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/api/user/{{id_user}}",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"api",
-												"user",
-												"{{id_user}}"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "X-Powered-By",
-											"value": "Express"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "277"
-										},
-										{
-											"key": "ETag",
-											"value": "W/\"115-0dHgmzukKr7FybfANMmJVKKZYMg\""
-										},
-										{
-											"key": "Date",
-											"value": "Wed, 13 Dec 2023 13:59:29 GMT"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=5"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"vocasia\",\n        \"email\": \"customer@mail.com\",\n        \"number\": \"08122222222\",\n        \"photo_url\": \"https://i.imgur.com/5NvPv4U.png\",\n        \"role\": \"Customer\",\n        \"createdAt\": \"2023-12-10T21:48:07.230Z\",\n        \"updatedAt\": \"2023-12-10T21:48:07.230Z\"\n    },\n    \"message\": \"Data User berhasil diambil\"\n}"
-								},
-								{
-									"name": "To fetch user data",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/api/user/{{id_user}}",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"api",
-												"user",
-												"{{id_user}}"
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "X-Powered-By",
-											"value": "Express"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "39"
-										},
-										{
-											"key": "ETag",
-											"value": "W/\"27-FljjMJ0XAHunGVEBxPsq0kubdf4\""
-										},
-										{
-											"key": "Date",
-											"value": "Wed, 13 Dec 2023 14:00:07 GMT"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=5"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"code\": 404,\n    \"message\": \"User not found\"\n}"
-								}
-							]
-						},
-						{
-							"name": "Change User Password",
+							"name": "To user change password",
 							"event": [
 								{
 									"listen": "test",
@@ -1207,7 +974,7 @@
 							"response": []
 						},
 						{
-							"name": "Change User Role",
+							"name": "To change user role",
 							"event": [
 								{
 									"listen": "test",
@@ -1379,14 +1146,9 @@
 							]
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "services",
-			"item": [
+				},
 				{
-					"name": "To get all serives available",
+					"name": "To fetch user data",
 					"event": [
 						{
 							"listen": "test",
@@ -1412,20 +1174,20 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/services",
+							"raw": "{{baseUrl}}/api/user",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"services"
+								"user"
 							]
 						},
-						"description": "To get all serives available"
+						"description": "To fetch user data"
 					},
 					"response": [
 						{
-							"name": "Successfuly get all services data",
+							"name": "Successfuly get user data",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1435,12 +1197,18 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/services",
+									"raw": "{{baseUrl}}/user/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"services"
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
 									]
 								}
 							},
@@ -1454,7 +1222,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}"
+							"body": "{\n  \"id\": \"<number>\",\n  \"name\": \"<string>\",\n  \"passwod\": \"<string>\",\n  \"email\": \"<string>\",\n  \"number\": \"<string>\",\n  \"photo_url\": \"<string>\"\n}"
 						},
 						{
 							"name": "Unauthorized Error",
@@ -1467,12 +1235,18 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/services",
+									"raw": "{{baseUrl}}/user/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"services"
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
 									]
 								}
 							},
@@ -1489,7 +1263,7 @@
 							"body": "{\n  \"message\": \"<string>\"\n}"
 						},
 						{
-							"name": "To get all serives available",
+							"name": "To fetch user data",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1499,13 +1273,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/services",
+									"raw": "{{baseUrl}}/api/user/{{id_user}}",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
-										"services"
+										"user",
+										"{{id_user}}"
 									]
 								}
 							},
@@ -1523,15 +1298,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "437"
+									"value": "277"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1b5-pP279pijSWUOrYMg+/iSvglLUsM\""
+									"value": "W/\"115-0dHgmzukKr7FybfANMmJVKKZYMg\""
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Dec 2023 17:19:44 GMT"
+									"value": "Wed, 13 Dec 2023 13:59:29 GMT"
 								},
 								{
 									"key": "Connection",
@@ -1543,10 +1318,10 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"serviceName\": \"Haircut\",\n            \"description\": \"A haircut is the style in which hair is cut. Haircuts of medium length are very popular due to their wide variety, which allows you to find the most suitable haircut and create with its help an individual and extraordinary image.\",\n            \"isActive\": false,\n            \"createdAt\": \"2023-12-13T16:55:39.515Z\",\n            \"updatedAt\": \"2023-12-13T16:55:39.515Z\"\n        }\n    ],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+							"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"vocasia\",\n        \"email\": \"customer@mail.com\",\n        \"number\": \"08122222222\",\n        \"photo_url\": \"https://i.imgur.com/5NvPv4U.png\",\n        \"role\": \"Customer\",\n        \"createdAt\": \"2023-12-10T21:48:07.230Z\",\n        \"updatedAt\": \"2023-12-10T21:48:07.230Z\"\n    },\n    \"message\": \"Data User berhasil diambil\"\n}"
 						},
 						{
-							"name": "To get all serives available",
+							"name": "To fetch user data",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -1556,18 +1331,19 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/services",
+									"raw": "{{baseUrl}}/api/user/{{id_user}}",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
-										"services"
+										"user",
+										"{{id_user}}"
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Not Found",
+							"code": 404,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -1580,15 +1356,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "64"
+									"value": "39"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"40-KwUVGiIRgIAK3ut4USWQc7FrULo\""
+									"value": "W/\"27-FljjMJ0XAHunGVEBxPsq0kubdf4\""
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Dec 2023 17:26:31 GMT"
+									"value": "Wed, 13 Dec 2023 14:00:07 GMT"
 								},
 								{
 									"key": "Connection",
@@ -1600,10 +1376,15 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"code\": 200,\n    \"data\": [],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+							"body": "{\n    \"code\": 404,\n    \"message\": \"User not found\"\n}"
 						}
 					]
-				},
+				}
+			]
+		},
+		{
+			"name": "services",
+			"item": [
 				{
 					"name": "To create service",
 					"event": [
@@ -1772,6 +1553,161 @@
 					]
 				},
 				{
+					"name": "To get all serives available",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						},
+						"description": "To get all serives available"
+					},
+					"response": [
+						{
+							"name": "To get all serives available",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "437"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1b5-pP279pijSWUOrYMg+/iSvglLUsM\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 13 Dec 2023 17:19:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"serviceName\": \"Haircut\",\n            \"description\": \"A haircut is the style in which hair is cut. Haircuts of medium length are very popular due to their wide variety, which allows you to find the most suitable haircut and create with its help an individual and extraordinary image.\",\n            \"isActive\": false,\n            \"createdAt\": \"2023-12-13T16:55:39.515Z\",\n            \"updatedAt\": \"2023-12-13T16:55:39.515Z\"\n        }\n    ],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+						},
+						{
+							"name": "To get all serives available",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-KwUVGiIRgIAK3ut4USWQc7FrULo\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 13 Dec 2023 17:26:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+						}
+					]
+				},
+				{
 					"name": "To update the service",
 					"event": [
 						{
@@ -1884,7 +1820,7 @@
 			"name": "kapster",
 			"item": [
 				{
-					"name": "Create new Kapster",
+					"name": "To create new kapster (admin)",
 					"event": [
 						{
 							"listen": "test",
@@ -2103,7 +2039,7 @@
 					]
 				},
 				{
-					"name": "Get Kapster Services",
+					"name": "To get kapter service",
 					"event": [
 						{
 							"listen": "test",
@@ -2138,7 +2074,7 @@
 					"response": []
 				},
 				{
-					"name": "Update kapster",
+					"name": "To update kapster",
 					"event": [
 						{
 							"listen": "test",
@@ -2253,7 +2189,7 @@
 					"name": "{id}",
 					"item": [
 						{
-							"name": "Update Kapster Service (price, isActive)",
+							"name": "To update kapster service (price, isActive)",
 							"event": [
 								{
 									"listen": "test",
@@ -2362,7 +2298,7 @@
 					]
 				},
 				{
-					"name": "Create New Kapster Service",
+					"name": "To create new kapster service",
 					"event": [
 						{
 							"listen": "test",
@@ -2414,7 +2350,7 @@
 					"name": "{id}",
 					"item": [
 						{
-							"name": "Get appointment",
+							"name": "To get appointment",
 							"event": [
 								{
 									"listen": "test",
@@ -2608,7 +2544,7 @@
 							]
 						},
 						{
-							"name": "Update appointment",
+							"name": "To update appointment",
 							"event": [
 								{
 									"listen": "test",
@@ -2822,7 +2758,7 @@
 					]
 				},
 				{
-					"name": "Create New Appointment",
+					"name": "To create new appointment",
 					"event": [
 						{
 							"listen": "test",
@@ -2949,7 +2885,7 @@
 					]
 				},
 				{
-					"name": "Get all appointment (admin)",
+					"name": "To get all appointment (admin)",
 					"event": [
 						{
 							"listen": "test",
@@ -3036,8 +2972,92 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Payment gateway",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "To  request refund",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/order/ORDER-00000000002/refund",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"ORDER-00000000002",
+								"refund"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To create new order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "code",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -3060,12 +3080,13 @@
 	],
 	"variable": [
 		{
-			"key": "baseUrl",
-			"value": "http://127.0.0.1:3000"
-		},
-		{
 			"key": "email",
 			"value": "customer@mail.com",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
 			"type": "string"
 		},
 		{
