@@ -1,7 +1,10 @@
-import { Kapster, Service, ServiceKapster } from '../../models'
-import { KAPSTER, KAPSTERSERVICE } from '../../types/kapster'
+import { Op } from 'sequelize'
+import { Appointment, Kapster, Service, ServiceKapster } from '../../models'
+import { KAPSTER, KAPSTERSERVICE, KAPSTERSTATUS } from '../../types/kapster'
 import { SERVICE } from '../../types/service'
 import { NotFoundError } from '../helpers/error'
+import { APPOINTMENT } from '../../types/appointment'
+// import { Op } from 'sequelize'
 
 export default class ServiceServices {
   static createService = async (service: SERVICE): Promise<SERVICE> => {
@@ -30,16 +33,61 @@ export default class ServiceServices {
     })
   }
 
-  static getService = async (id: number): Promise<SERVICE> => {
+  static getServiceAndKaptserAvailable = async (
+    id: number,
+  ): Promise<
+    {
+      kapster: string
+      price: number
+      status: KAPSTERSTATUS
+    }[]
+  > => {
     return new Promise((resolve, reject) => {
-      Service.findOne({
-        where: { id },
+      ServiceKapster.findAll({
+        where: { serviceId: id },
+        include: [
+          {
+            model: Kapster,
+            as: 'kapster',
+            where: { status: KAPSTERSTATUS.AVAILABLE },
+          },
+        ],
       })
-        .then((data: SERVICE | null) => {
-          if (data) {
-            resolve(data)
+        .then(async (data: (KAPSTERSERVICE & { kapster: KAPSTER })[]) => {
+          const date = new Date()
+          const bookingEndDate = new Date(date.getTime() + 30 * 60 * 1000)
+          try {
+            const foundAppointment = (await Appointment.findAll({
+              where: {
+                time: {
+                  [Op.between]: [date, bookingEndDate],
+                },
+              },
+              include: {
+                model: ServiceKapster,
+                as: 'kapster',
+                where: {
+                  id: data.map(e => e.id),
+                },
+              },
+            })) as APPOINTMENT[]
+
+            const filteredData = data.filter(
+              e => !foundAppointment.find(f => f.kapsterServiceId === e.id),
+            )
+
+            const mappedData = filteredData.map(e => {
+              return {
+                kapster: e.kapster.name,
+                price: e.price,
+                status: e.kapster.status,
+              }
+            })
+
+            resolve(mappedData)
+          } catch (err) {
+            reject(err)
           }
-          reject(new NotFoundError('Service not found'))
         })
         .catch((err: Error) => {
           reject(err)

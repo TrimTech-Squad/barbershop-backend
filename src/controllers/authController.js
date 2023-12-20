@@ -58,11 +58,11 @@ export const login = async (
     const body = req.body
 
     await userSchema.validate(body)
-    const token = await AuthService.login(body.email, body.password)
+    const user = await AuthService.login(body.email, body.password)
     /* The line `res.cookie('token', token, { httpOnly: true, maxAge: 3600 * 1000 })` is setting a cookie
   named 'token' in the response object (`res`). */
     res.clearCookie('access-token')
-    res.cookie('access-token', `Bearer ${token}`, {
+    res.cookie('access-token', `Bearer ${user.token}`, {
       httpOnly: true,
       maxAge: 24 * 3600 * 1000,
     })
@@ -70,7 +70,10 @@ export const login = async (
       {
         code: 200,
         message: 'Login success.',
-        data: token,
+        data: {
+          token: user.token,
+          role: user.role,
+        },
       },
       res,
     )

@@ -54,6 +54,29 @@ export const createService = async (
   }
 }
 
+export const getAvailableService = async (
+  /** @type {import("express").Request} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    await number().validate(id)
+    const services = await ServiceServices.getServiceAndKaptserAvailable(
+      parseInt(id),
+    )
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: services,
+        message: 'Data Service berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
 export const updateService = async (
   /** @type {import("express").Request} */ req,
   /** @type {import("express").Response} */ res,

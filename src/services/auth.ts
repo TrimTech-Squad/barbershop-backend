@@ -5,7 +5,10 @@ import { USER } from '../../types/user'
 import jwt from 'jsonwebtoken'
 
 export default class AuthService {
-  static login(email: string, password: string): Promise<string> {
+  static login(
+    email: string,
+    password: string,
+  ): Promise<{ token: string; role: string }> {
     return new Promise((resolve, reject) => {
       User.findOne({ where: { email } })
         .then((user: USER) => {
@@ -19,7 +22,7 @@ export default class AuthService {
               process.env.JWT_SECRET || 'secret',
               { expiresIn: '1d' },
             )
-            resolve(token)
+            resolve({ token, role: user.role })
           })
         })
         .catch((err: Error) => {

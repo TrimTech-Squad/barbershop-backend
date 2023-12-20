@@ -11,6 +11,7 @@ import orderRouter from './routes/order'
 import { getRefundRequest } from './controllers/order'
 import compression from 'compression'
 import dotenv from 'dotenv'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ middleware compresses the response bodies for all requests that pass through it,
 of the response and improving the performance of the application. */
 app.use(compression())
 
+app.use(cors({ credentials: true, origin: 'http://localhost:5173  ' }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
