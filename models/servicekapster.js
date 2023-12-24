@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    // Mendefinisikan asosiasi antara model ServiceKapster dengan Service, Appointment, dan Kapster.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static associate(models) {
       models.ServiceKapster.belongsTo(models.Service, {

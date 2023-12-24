@@ -4,7 +4,9 @@ import { USER, USERROLE } from '../../types/user'
 import bcrypt from 'bcrypt'
 
 class UserServices {
+  // Membuat pengguna baru
   static createUser = async (user: Omit<USER, 'id'>): Promise<USER> => {
+    // Menggunakan Promise untuk menangani proses asinkron
     return new Promise((resolve, reject) => {
       User.create(user)
         .then((data: USER | PromiseLike<USER>) => {
@@ -16,6 +18,7 @@ class UserServices {
     })
   }
 
+   // Mendapatkan informasi pengguna berdasarkan ID
   static getUser = async (id: number) => {
     const userFound = await User.findOne({
       where: { id },
@@ -27,6 +30,7 @@ class UserServices {
     return userFound
   }
 
+  // Memperbarui informasi pengguna
   static updateUserInfo = async (
     id: number,
     user: {
@@ -47,6 +51,7 @@ class UserServices {
     return userFound.update(user)
   }
 
+   // Memperbarui kata sandi pengguna
   static updateUserPassword = async (
     id: number,
     {
@@ -69,11 +74,13 @@ class UserServices {
               return reject(new NotFoundError('User not found'))
             }
 
+            // Membandingkan kata sandi lama
             bcrypt.compare(oldPassword, data.dataValues.password!, err => {
               if (err) {
                 return reject(new UnauthorizedError('Wrong password'))
               }
 
+              // Mengenkripsi dan memperbarui kata sandi baru
               bcrypt.hash(newPassword, 10, async (err, hash) => {
                 if (err) {
                   return reject(err)
@@ -91,10 +98,12 @@ class UserServices {
     })
   }
 
+  // Memperbarui user role
   static updateUserRole = async (
     { id, idRequester }: { id: number; idRequester: number },
     role: USERROLE,
   ) => {
+     // Memeriksa apakah pemberi otorisasi memiliki peran ADMIN
     const isAuthorized = await User.findOne({
       where: { id: idRequester, role: USERROLE.ADMIN },
     })
@@ -105,6 +114,7 @@ class UserServices {
       )
     }
 
+    // Mendapatkan pengguna dan memperbarui peran
     const userFound = await User.findOne({
       where: { id },
       attributes: { exclude: ['password'] },

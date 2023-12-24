@@ -6,8 +6,11 @@ import { NotFoundError } from '../helpers/error'
 import { APPOINTMENT } from '../../types/appointment'
 // import { Op } from 'sequelize'
 
+// ServiceServices berisi berbagai layanan terkait layanan salon (service)
 export default class ServiceServices {
+  // membuat layanan baru
   static createService = async (service: SERVICE): Promise<SERVICE> => {
+    // Mengembalikan promise yang menciptakan layanan atau menolak dengan kesalahan
     return new Promise((resolve, reject) => {
       Service.create(service)
         .then((data: SERVICE) => {
@@ -19,6 +22,7 @@ export default class ServiceServices {
     })
   }
 
+  // mendapatkan semua layanan, dengan opsi untuk mendapatkan semua atau hanya yang aktif
   static getAllServices = async (query?: 'ALL'): Promise<SERVICE[]> => {
     return new Promise((resolve, reject) => {
       Service.findAll({
@@ -33,6 +37,7 @@ export default class ServiceServices {
     })
   }
 
+  // mendapatkan layanan dan kapster yang tersedia untuk pemesanan
   static getServiceAndKaptserAvailable = async (
     id: number,
   ): Promise<
@@ -42,6 +47,7 @@ export default class ServiceServices {
       status: KAPSTERSTATUS
     }[]
   > => {
+     // Mengembalikan promise yang mencari dan mengembalikan data layanan dan kapster yang tersedia
     return new Promise((resolve, reject) => {
       ServiceKapster.findAll({
         where: { serviceId: id },
@@ -95,6 +101,7 @@ export default class ServiceServices {
     })
   }
 
+  // memperbarui informasi layanan
   static updateService = async (
     id: number,
     service: SERVICE,
@@ -115,6 +122,7 @@ export default class ServiceServices {
     })
   }
 
+  // mendapatkan layanan kapster berdasarkan ID
   static async getKapsterService(
     id: number,
   ): Promise<KAPSTERSERVICE & { service: SERVICE; kapster: KAPSTER }> {

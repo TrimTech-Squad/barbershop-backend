@@ -8,6 +8,7 @@ import { USERROLE } from '../../types/user'
 import { sendMail } from './mail'
 import { renderHTML } from '../utils/ejs'
 
+//tipe objek untuk template email
 type EmailTemplateObject = {
   service: {
     name: string
@@ -38,8 +39,13 @@ type EmailTemplateObject = {
   }
 }
 
+// OrderServices berisi berbagai layanan terkait pesanan
 export default class OrderServices {
+  
+  // membuat pesanan baru
   static async createOrder(order: ORDER) {
+
+     // Mengembalikan promise yang menciptakan pesanan atau menolak dengan kesalahan
     return new Promise((resolve, reject) => {
       Order.create(order)
         .then(data => {
@@ -51,9 +57,11 @@ export default class OrderServices {
     })
   }
 
+  // mendapatkan pesanan berdasarkan kriteria pencarian
   static async getOrder(
     querry: Partial<ORDER>,
   ): Promise<ORDER & { dataValues: ORDER }> {
+    // Mengembalikan promise yang mencari pesanan atau menolak dengan kesalahan jika tidak ditemukan
     return new Promise((resolve, reject) => {
       Order.findOne({ where: querry })
         .then(data => {
@@ -69,6 +77,7 @@ export default class OrderServices {
     })
   }
 
+  // mengirim permintaan pembatalan pesanan
   static async sendRequestRefundOrder(
     order: ORDER,
     cancel: {
@@ -78,11 +87,13 @@ export default class OrderServices {
     },
   ) {
     try {
+      // Mendapatkan informasi pengguna dan layanan kapster terkait
       const user = await UserServices.getUser(order.userId)
       const kapsterService = await ServiceServices.getKapsterService(
         order.kapsterServiceId,
       )
 
+      // Membuat tanda tangan untuk konfirmasi pembatalan
       const generatedSigntatureKey = generateHashString(
         user.email +
           order.id! +
@@ -93,6 +104,7 @@ export default class OrderServices {
           Date.now(),
       )
 
+      // Memperbarui pesanan dengan informasi pembatalan
       await OrderServices.updateOrder(order.id!, {
         ...order,
         signature_key: generatedSigntatureKey,
@@ -100,6 +112,7 @@ export default class OrderServices {
         refund_reason: cancel.reason,
       })
 
+      // Membuat objek untuk template email
       const emailObject: EmailTemplateObject = {
         service: {
           name: kapsterService.service.serviceName,
@@ -136,6 +149,7 @@ export default class OrderServices {
         },
       }
 
+      // Mengirim email ke admin untuk konfirmasi pembatalan
       const adminUser = await User.findAll({ where: { role: USERROLE.ADMIN } })
 
       if (adminUser.length === 0) return console.log('Admin not found')
@@ -160,6 +174,7 @@ export default class OrderServices {
     }
   }
 
+  // mendapatkan kunci tanda tangan untuk pesanan
   static getSigntatureKey(
     orderId: string,
     status_code: string,
@@ -178,7 +193,9 @@ export default class OrderServices {
     })
   }
 
+  // mendapatkan jumlah total pesanan
   static async getOrderCount(): Promise<number> {
+    // Mengembalikan promise yang menghasilkan jumlah total pesanan atau menolak dengan kesalahan
     return new Promise((resolve, reject) => {
       Order.count()
         .then(data => {
@@ -190,6 +207,7 @@ export default class OrderServices {
     })
   }
 
+  // memperbarui pesanan
   static async updateOrder(id: string, order: ORDER) {
     return new Promise((resolve, reject) => {
       Order.findOne({ where: { id } })

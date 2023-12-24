@@ -1,3 +1,4 @@
+// Tipe data USER merepresentasikan informasi mengenai pengguna dalam sistem
 export type USER = {
   id?: number
   email: string
@@ -8,11 +9,13 @@ export type USER = {
   role: USERROLE
 }
 
+// Enum USERROLE mendefinisikan peran atau jabatan pengguna 
 export enum USERROLE {
   CUSTOMER = 'Customer',
   ADMIN = 'Admin',
 }
 
+// Tipe data USERTOKENOBJECT merepresentasikan informasi yang disertakan dalam token pengguna
 export type USERTOKENOBJECT = {
   id: number
   email: string

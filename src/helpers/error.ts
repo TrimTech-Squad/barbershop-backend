@@ -1,25 +1,33 @@
 import { ValidationError } from 'sequelize'
 import { ValidationError as YupError } from 'yup'
 
+// Fungsi ErrorCatcher menerima objek error dan mengembalikan objek dengan format yang telah ditentukan.
 export default function ErrorCatcher(error: Error): {
   code: number
   data: null
   message: string
 } {
+  // Jika error yang diterima merupakan instance dari YupError (dari Yup library),
+  // maka hasilnya adalah objek dengan code 400, data null, dan message dari pesan error pertama.
   if (error instanceof YupError) {
     return {
       code: 400,
       data: null,
       message: error.errors[0],
     }
-  } else if (error instanceof ValidationError) {
+  } 
+  // Jika error yang diterima merupakan instance dari ValidationError (dari Sequelize library),
+  // maka hasilnya adalah objek dengan code 400, data null, dan message dari pesan error pertama.
+  else if (error instanceof ValidationError) {
     const errors = error.errors.map(err => err.message)
     return {
       code: 400,
       data: null,
       message: errors[0],
     }
-  } else if (error.name === 'SequelizeUniqueConstraintError') {
+  } 
+  // jika error adalah SequelizeUniqueConstraintError, maka hasilnya memiliki code 409. 
+  else if (error.name === 'SequelizeUniqueConstraintError') {
     return {
       code: 409,
       data: null,
@@ -63,6 +71,8 @@ export default function ErrorCatcher(error: Error): {
     }
   }
 
+  // Jika tidak ada kategori yang cocok, maka hasilnya adalah objek dengan code 500, data null,
+  // dan message dari pesan error yang diterima.
   return {
     code: 500,
     data: null,
@@ -70,6 +80,7 @@ export default function ErrorCatcher(error: Error): {
   }
 }
 
+//melakukan penanganan error spesifik dalam fungsi ErrorCatcher.
 export class ForbiddenError extends Error {
   constructor(message: string) {
     super(message)

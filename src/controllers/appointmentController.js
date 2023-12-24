@@ -38,18 +38,22 @@ import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 //   }
 // }
 
+// Mendapatkan data Appointment berdasarkan ID
 export const getAppointmentById = async (
   /** @type {{ params: {id:string}; }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
     const { id } = req.params
+    // Validasi ID menggunakan Yup
     await string().validate(id)
+    // Memanggil AppointmentService untuk mendapatkan data Appointment
     const appointment = await AppointmentService.getAppointment(
       id,
       res.locals.user.id,
     )
 
+    // Mengembalikan response apabila appointment berhasil di ambil
     return ResponseBuilder(
       {
         code: 200,
@@ -59,10 +63,12 @@ export const getAppointmentById = async (
       res,
     )
   } catch (/** @type {any} */ error) {
+    //Response apabila error
     return ResponseBuilder(ErrorCatcher(error), res)
   }
 }
 
+//Memperbarui data Appointment berdasarkan ID
 export const updateDataAppointment = async (
   /** @type {{ params: {id:string};body:any }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
@@ -70,6 +76,7 @@ export const updateDataAppointment = async (
   try {
     const { id } = req.params
     await string().validate(id)
+    //Membuat objek body yang berisi data yang akan diupdate
     const body = { status: req.body.status, time: req.body.time }
 
     // Validasi request menggunakan Yup
@@ -79,12 +86,14 @@ export const updateDataAppointment = async (
       .validate(body.status)
     await string().required('Waktu harus diisi').validate(body.time)
 
+    // Melakukan update appointment berdasarkan id, id user, dan data body
     const updatedAppointment = await AppointmentService.updateAppointment(
       id,
       res.locals.user.id,
       body,
     )
 
+    // Mengembalikan response dengan data appointment yang berhasil diambil
     return ResponseBuilder(
       {
         code: 200,
@@ -98,21 +107,25 @@ export const updateDataAppointment = async (
   }
 }
 
+// Mendapatkan semua data Appointment
 export const getAllAppointment = async (
   /** @type {{ query: {page:string;limit:string;status:string;}; }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
+    // Mengecek apakah user yang melakukan request adalah admin
     if (!res.locals.isAdmin)
       throw new UnauthorizedError(
         'Anda tidak memiliki akses untuk melihat appointment',
       )
 
+    // Mendapatkan informasi page, limit, dan status dari parameter query
     const { page, limit, status } = req.query
     await string().validate(page)
     await string().validate(limit)
     await mixed().oneOf(['Booked', 'Completed', 'Cancelled']).validate(status)
 
+    // Mendapatkan semua appointment berdasarkan parameter yang diberikan
     const appointments = await AppointmentService.getAllAppointments(
       parseInt(page),
       parseInt(limit),
@@ -121,6 +134,7 @@ export const getAllAppointment = async (
       status,
     )
 
+    // Mengembalikan respons dengan data semua appointment yang berhasil diambil
     return ResponseBuilder(
       {
         code: 200,

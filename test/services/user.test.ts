@@ -3,6 +3,7 @@ import { USER, USERROLE } from '../../types/user'
 import { describe, it, expect } from 'vitest'
 
 describe('user services', async () => {
+  // Konteks pengguna yang digunakan dalam setiap pengujian
   const userCtx: USER = {
     id: 0,
     email: Math.random() * 100 + '@gmail.com',
@@ -13,11 +14,15 @@ describe('user services', async () => {
     number: '08123456789',
   }
 
+  // Pengujian untuk memastikan bahwa fungsi createUser berfungsi dengan baik
   it('should can create user', async () => {
+    // Membuat salinan objek pengguna tanpa properti 'id'
     const user = { ...userCtx }
     delete user.id
+     // Memanggil fungsi createUser dari UserServices
     const data = await UserServices.createUser(user)
 
+    // Membandingkan properti hasil pembuatan pengguna dengan properti yang diharapkan
     expect(data.email).toEqual(data.email)
     expect(data.password).toEqual(data.password)
     expect(data.role).toEqual(data.role)

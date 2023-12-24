@@ -1,3 +1,4 @@
+// Enum untuk status transaksi
 export enum TRANSACTION_STATUS {
   PENDING = 'pending',
   SETTLEMENT = 'settlement',
@@ -12,11 +13,13 @@ export enum TRANSACTION_STATUS {
   FAILURE = 'failure',
 }
 
+// Definisi status kecurangan yang mungkin terjadi
 export enum FRAUD_STATUS {
   ACCEPT = 'accept',
   DENY = 'deny',
 }
 
+// Tipe data untuk objek ORDER
 export type ORDER = {
   id?: string
   kapsterServiceId: number

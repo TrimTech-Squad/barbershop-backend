@@ -2,6 +2,8 @@ import axios from 'axios'
 import dotenv from 'dotenv'
 import { FRAUD_STATUS, TRANSACTION_STATUS } from '../../types/order'
 dotenv.config()
+
+// Definisi tipe data untuk respons Snap API dari Midtrans.
 export type SnapResponse = {
   token: string
   redirect_url: string
@@ -9,11 +11,13 @@ export type SnapResponse = {
   order_id: string
 }
 
+// Definisi tipe data untuk detail transaksi.
 export type TransactionDetails = {
   order_id: string
   gross_amount: number
 }
 
+// Definisi tipe data untuk detail item yang akan dibeli.
 export type ItemDetails = {
   id: string | number
   price: number
@@ -23,6 +27,7 @@ export type ItemDetails = {
   url: string
 }[]
 
+// Definisi tipe data untuk detail pelanggan.
 export type CustomerDetails = {
   first_name: string
   last_name: string
@@ -30,12 +35,14 @@ export type CustomerDetails = {
   phone: string
 }
 
+// Definisi tipe data untuk permintaan transaksi.
 export type TransactionRequest = {
   transaction_details: TransactionDetails
   item_details: ItemDetails
   customer_details: CustomerDetails
 }
 
+// Fungsi untuk memformat tanggal
 function getDateFormated(date: Date) {
   const year = date.getFullYear()
   const month =
@@ -49,6 +56,7 @@ function getDateFormated(date: Date) {
   return `${year}-${month}-${day} ${hour}:${minute}:${second} +0700`
 }
 
+// Metode pembayaran yang diizinkan
 const enabled_payments = [
   'credit_card',
   'cimb_clicks',
@@ -71,10 +79,13 @@ const enabled_payments = [
   'uob_ezpay',
 ]
 
+// Fungsi untuk meminta token pembayaran (Snap)
 export const fetchTransactionToken = async (
   data: TransactionRequest,
 ): Promise<SnapResponse> => {
   const formatedDate = getDateFormated(new Date())
+
+  // Objek permintaan dengan berbagai detail
   const requestObject = {
     ...data,
     enabled_payments,
@@ -118,6 +129,8 @@ export const fetchTransactionToken = async (
       interval_unit: 'week',
     },
   }
+
+  // Mengembalikan janji (Promise) hasil dari permintaan POST ke API pembayaran
   return new Promise((resolve, reject) => {
     axios
       .post<{
@@ -131,6 +144,7 @@ export const fetchTransactionToken = async (
         },
       })
       .then(res => {
+        // Resolve janji dengan data hasil response, termasuk gross_amount dan order_id dari data awal
         resolve({
           ...res.data,
           gross_amount: data.transaction_details.gross_amount,
@@ -138,13 +152,16 @@ export const fetchTransactionToken = async (
         })
       })
       .catch(err => {
+        // Reject janji jika terjadi kesalahan
         reject(err)
       })
   })
 }
 
+// Ekspor fungsi fetchTransactionToken sebagai default
 export default fetchTransactionToken
 
+// Definisi tipe data untuk respons status transaksi
 export type TypeResponseStatus = {
   status_code: string
   transaction_id: string
@@ -163,6 +180,7 @@ export type TypeResponseStatus = {
   expiry_time: string
 }
 
+// Fungsi untuk meminta status transaksi berdasarkan order_id
 export const fetchTransactionStatus = async (
   orderId: string,
 ): Promise<TypeResponseStatus> => {
@@ -187,6 +205,7 @@ export const fetchTransactionStatus = async (
   })
 }
 
+// Fungsi untuk membatalkan transaksi berdasarkan order_id
 export const fetchTransactionCancel = async (
   orderId: string,
 ): Promise<TypeResponseStatus> => {
@@ -211,6 +230,7 @@ export const fetchTransactionCancel = async (
   })
 }
 
+// Definisi tipe data untuk respons refund transaksi
 export type TypeResponseRefund = {
   status_code: string
   status_message: string
@@ -225,6 +245,7 @@ export type TypeResponseRefund = {
   refund_key: string
 }
 
+// Fungsi untuk meminta refund transaksi berdasarkan order_id, jumlah, dan alasan
 export const fetchTransactionRefund = async (
   orderId: string,
   { amount, reason }: { amount: number; reason: string },

@@ -4,6 +4,7 @@ export enum APPOINTMENTSTATUS {
   CANCELLED = 'Cancelled',
 }
 
+// Tipe data untuk merepresentasikan informasi janji temu
 export type APPOINTMENT = {
   id?: string
   userId: number

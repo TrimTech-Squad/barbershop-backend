@@ -9,12 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    // Mendefinisikan hubungan antara Appointment dengan User dan ServiceKapster
     static associate(models) {
-      // define association here
+      // Menghubungkan Appointment dengan User
       Appointment.belongsTo(models.User, {
         as: 'user',
         foreignKey: 'userId',
       })
+
+      //Menghubungkan Appointment dengan ServiceKapster
       Appointment.belongsTo(models.ServiceKapster, {
         as: 'kapster',
         foreignKey: 'kapsterServiceId',

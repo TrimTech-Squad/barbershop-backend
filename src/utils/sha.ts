@@ -18,8 +18,11 @@ export const generateHashString = (
   return gen_hash
 }
 
+// menghasilkan hash menggunakan bcrypt
 export const generateHash = (decoded: string) => {
   return new Promise((resolve, reject) => {
+
+    // Menggunakan bcrypt untuk membuat hash dengan tingkat keamanan 10
     bcrypt.hash(decoded, 10, (err, hash) => {
       if (err) reject(err)
       resolve(hash)
@@ -27,10 +30,13 @@ export const generateHash = (decoded: string) => {
   })
 }
 
+//  membandingkan data dengan hash menggunakan bcrypt
 export const compareHash = (decoded: string, hash: string) => {
   return new Promise((resolve, reject) => {
     bcrypt.compare(decoded, hash, (err, res) => {
       if (err) reject(err)
+
+      // Mengembalikan hasil perbandingan (true jika cocok, false jika tidak)
       resolve(res)
     })
   })

@@ -8,8 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    // Mendefinisikan hubungan antara Kapster dengan ServiceKapster
     static associate(models) {
-      // define association here
+      // Menghubungkan Kapster dengan ServiceKapster
       Kapster.hasMany(models.ServiceKapster, {
         as: 'service',
         foreignKey: 'kapsterId',

@@ -4,6 +4,7 @@ const { workerData, parentPort } = require('worker_threads')
 
 dotenv.config()
 
+// Buat transporter untuk mengirim email menggunakan Gmail
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: process.env.MAIL_HOST,
@@ -15,6 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+// Kirim email dengan konfigurasi yang diberikan
 transporter.sendMail(
   {
     from: process.env.MAIL_USERNAME,
@@ -23,13 +25,15 @@ transporter.sendMail(
     html: workerData.html,
   },
   (err, info) => {
-    if (err) return parentPort.postMessage()
+
+    // Callback yang dipanggil setelah pengiriman email selesai
+    if (err) return parentPort.postMessage() // Jika terjadi error, kirim pesan ke parent thread
     console.info(
       'Email with subject ' +
         workerData.subject +
         ' successfuly sent to ->' +
         info.envelope.to.join(', '),
     )
-    parentPort.postMessage(info)
+    parentPort.postMessage(info) // Kirim info pengiriman email ke parent thread
   },
 )

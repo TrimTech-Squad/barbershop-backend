@@ -4,6 +4,7 @@ import { Kapster, Service, ServiceKapster } from '../../models'
 import { SERVICE } from '../../types/service'
 
 export default class KapsterServices {
+  // membuat kapster baru
   static createKapster = async (kapster: KAPSTER): Promise<KAPSTER> => {
     return new Promise((resolve, reject) => {
       Kapster.create(kapster)
@@ -16,6 +17,7 @@ export default class KapsterServices {
     })
   }
 
+  // mendapatkan informasi kapster berdasarkan ID.
   static getKapster = async (id: number): Promise<KAPSTER> => {
     return new Promise((resolve, reject) => {
       Kapster.findOne({
@@ -33,6 +35,7 @@ export default class KapsterServices {
     })
   }
 
+  // mengupdate informasi kapster berdasarkan ID.
   static updateKapster = async (
     id: number,
     kapster: KAPSTER,
@@ -53,6 +56,7 @@ export default class KapsterServices {
     })
   }
 
+  // menghapus kapster berdasarkan ID.
   static deleteKapster = async (id: string): Promise<KAPSTER> => {
     return new Promise((resolve, reject) => {
       Kapster.destroy({
@@ -70,6 +74,7 @@ export default class KapsterServices {
     })
   }
 
+  // mendapatkan daftar kapster.
   static getKapsters = async (admin: boolean = false): Promise<KAPSTER[]> => {
     return new Promise((resolve, reject) => {
       Kapster.findAll({
@@ -84,6 +89,7 @@ export default class KapsterServices {
     })
   }
 
+  // mendapatkan informasi layanan yang diberikan oleh seorang kapster berdasarkan ID.
   static getKapsterServiceById = async (
     id: number,
   ): Promise<KAPSTERSERVICE & { service: SERVICE }> => {
@@ -109,6 +115,7 @@ export default class KapsterServices {
     })
   }
 
+  // mendapatkan daftar layanan yang diberikan oleh seorang kapster berdasarkan ID.
   static getKapsterServices = async (
     id: number,
   ): Promise<({ price: number } & SERVICE)[]> => {
@@ -150,6 +157,7 @@ export default class KapsterServices {
     })
   }
 
+  // membuat layanan baru yang diberikan oleh seorang kapster.
   static createKapsterService = async (
     kapsterService: KAPSTERSERVICE,
   ): Promise<KAPSTERSERVICE> => {
@@ -164,6 +172,7 @@ export default class KapsterServices {
     })
   }
 
+  // mengupdate informasi layanan yang diberikan oleh seorang kapster berdasarkan ID.
   static updateKapsterService = async (
     id: number,
     kapsterService: KAPSTERSERVICE,
@@ -199,6 +208,7 @@ export default class KapsterServices {
     })
   }
 
+  // menghapus layanan yang diberikan oleh seorang kapster berdasarkan ID.
   static deleteKapsterService = async (id: string): Promise<KAPSTERSERVICE> => {
     return new Promise((resolve, reject) => {
       ServiceKapster.destroy({
