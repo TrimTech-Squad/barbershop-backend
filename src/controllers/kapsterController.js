@@ -85,6 +85,33 @@ export const getKapsterById = async (
   }
 }
 
+export const getKapsterSchedule = async (
+  /** @type {{ params:{id:string},query:{date:string} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    const { date } = req.query
+    await string().required('Tanggal harus diisi').validate(date)
+    await number().required('Id harus diisi').validate(parseInt(id))
+    const kapsterSechedules =
+      await KapsterServices.getAllKapsterScheduleByIdAndDate(
+        parseInt(id),
+        new Date(date),
+      )
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: kapsterSechedules,
+        message: 'Data Jadwal Kapster berhasil diambil.',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
 export const updateKapsterData = async (
   /** @type {{ body: any;params:{id:string} }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,

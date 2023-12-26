@@ -1,7 +1,9 @@
 import { NotFoundError } from '../helpers/error'
 import { KAPSTER, KAPSTERSERVICE, KAPSTERSTATUS } from '../../types/kapster'
-import { Kapster, Service, ServiceKapster } from '../../models'
+import { Appointment, Kapster, Service, ServiceKapster } from '../../models'
 import { SERVICE } from '../../types/service'
+import { APPOINTMENT, APPOINTMENTSTATUS } from '../../types/appointment'
+import { Op } from 'sequelize'
 
 export default class KapsterServices {
   static createKapster = async (kapster: KAPSTER): Promise<KAPSTER> => {
@@ -150,6 +152,71 @@ export default class KapsterServices {
           }
           reject(new NotFoundError('KapsterService not found'))
         })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
+  static getAllKapsterScheduleByIdAndDate = async (
+    id: number,
+    date: Date,
+  ): Promise<unknown> => {
+    console.log(date)
+    const begin = new Date(date)
+    begin.setHours(0, 0, 0, 0)
+    begin.setDate(begin.getDate() + 1)
+    const end = new Date(begin.getTime() + 86400000)
+
+    console.log(begin, end)
+
+    return new Promise((resolve, reject) => {
+      ServiceKapster.findAll({
+        include: [
+          {
+            model: Kapster,
+            as: 'kapster',
+            where: { status: KAPSTERSTATUS.AVAILABLE, id },
+          },
+          {
+            model: Appointment,
+            as: 'appointments',
+            where: {
+              time: {
+                [Op.between]: [begin, end],
+              },
+              status: APPOINTMENTSTATUS.BOOKED,
+            },
+          },
+        ],
+      })
+        .then(
+          async (
+            data: (KAPSTERSERVICE & {
+              kapster: KAPSTER
+              appointments: APPOINTMENT[]
+            })[],
+          ) => {
+            try {
+              const mappedData = data.map(e => {
+                const date = new Date(e.appointments[0].time)
+                const hour =
+                  date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+                const minute =
+                  date.getMinutes() < 10
+                    ? '0' + date.getMinutes()
+                    : date.getMinutes()
+                return {
+                  time: `${hour}:${minute}`,
+                }
+              })
+
+              resolve(mappedData)
+            } catch (err) {
+              reject(err)
+            }
+          },
+        )
         .catch((err: Error) => {
           reject(err)
         })

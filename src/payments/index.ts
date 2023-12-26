@@ -36,7 +36,7 @@ export type TransactionRequest = {
   customer_details: CustomerDetails
 }
 
-function getDateFormated(date: Date) {
+export function getDateFormated(date: Date) {
   const year = date.getFullYear()
   const month =
     date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
