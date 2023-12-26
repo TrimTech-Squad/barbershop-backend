@@ -45,3 +45,12 @@ app.get('/order/confirm-refund/:id', getRefundRequest)
 app.listen(port, () => {
   console.log('Server running on port 3000')
 })
+
+import { Worker } from 'worker_threads'
+const worker = new Worker('./src/worker/corn.js')
+
+worker.on('message', () => console.log('Corn worker started'))
+worker.on('error', e => console.error('Corn worker error! ' + e))
+worker.on('exit', exitCode => {
+  console.log('Corn worker closed with exic code ' + exitCode)
+})
