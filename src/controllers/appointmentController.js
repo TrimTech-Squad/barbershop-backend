@@ -63,6 +63,28 @@ export const getAppointmentById = async (
   }
 }
 
+export const getAppointmentsByUserId = async (
+  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ _req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const appointments = await AppointmentService.getAppointmentByUserId(
+      res.locals.user.id,
+    )
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointments,
+        message: 'Data Appointments berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
 export const updateDataAppointment = async (
   /** @type {{ params: {id:string};body:any }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,

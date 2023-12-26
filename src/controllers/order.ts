@@ -139,6 +139,18 @@ the request is considered valid. */
         orderId: order.id!,
         date: new Date().toISOString(),
       })
+    } else if (
+      response.transaction_status === TRANSACTION_STATUS.CANCEL ||
+      response.transaction_status === TRANSACTION_STATUS.DENY ||
+      response.transaction_status === TRANSACTION_STATUS.EXPIRE ||
+      response.transaction_status === TRANSACTION_STATUS.REFUND ||
+      response.transaction_status === TRANSACTION_STATUS.PARTIAL_REFUND ||
+      response.transaction_status === TRANSACTION_STATUS.FAILURE
+    ) {
+      await AppointmentService.updateAppointmentStatus(
+        order.id!,
+        APPOINTMENTSTATUS.CANCELLED,
+      )
     }
 
     return ResponseBuilder(

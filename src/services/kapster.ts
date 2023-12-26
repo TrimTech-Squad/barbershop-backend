@@ -72,6 +72,18 @@ export default class KapsterServices {
     })
   }
 
+  static getAllKapsters = async (): Promise<KAPSTER[]> => {
+    return new Promise((resolve, reject) => {
+      Kapster.findAll()
+        .then((data: KAPSTER[]) => {
+          resolve(data)
+        })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
   static getKapsters = async (
     admin: boolean = false,
     activeServices = false,
@@ -114,7 +126,6 @@ export default class KapsterServices {
                   specialization: kapster.specialization,
                   photo_url: kapster.photo_url,
                   services: kapster.services.map(serviceKapster => {
-                    console.log(serviceKapster.service)
                     return {
                       serviceKapsterid: serviceKapster.id,
                       id: serviceKapster.service.id,
@@ -162,13 +173,10 @@ export default class KapsterServices {
     id: number,
     date: Date,
   ): Promise<unknown> => {
-    console.log(date)
     const begin = new Date(date)
     begin.setHours(0, 0, 0, 0)
     begin.setDate(begin.getDate() + 1)
     const end = new Date(begin.getTime() + 86400000)
-
-    console.log(begin, end)
 
     return new Promise((resolve, reject) => {
       ServiceKapster.findAll({
@@ -198,19 +206,21 @@ export default class KapsterServices {
             })[],
           ) => {
             try {
-              const mappedData = data.map(e => {
-                const date = new Date(e.appointments[0].time)
-                const hour =
-                  date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-                const minute =
-                  date.getMinutes() < 10
-                    ? '0' + date.getMinutes()
-                    : date.getMinutes()
-                return {
-                  time: `${hour}:${minute}`,
+              const mappedData: Record<string, string> = {}
+              for (const service of data) {
+                for (const appointment of service.appointments) {
+                  const date = new Date(appointment.time)
+                  const hour =
+                    date.getHours() < 10
+                      ? '0' + date.getHours()
+                      : date.getHours().toString()
+                  const minute =
+                    date.getMinutes() < 10
+                      ? '0' + date.getMinutes()
+                      : date.getMinutes().toString()
+                  mappedData[`${hour}:${minute}`] = `${hour}:${minute}`
                 }
-              })
-
+              }
               resolve(mappedData)
             } catch (err) {
               reject(err)

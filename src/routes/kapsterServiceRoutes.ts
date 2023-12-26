@@ -9,7 +9,7 @@ import { isAdmin } from '../middlewares/admin'
 
 const router = Router()
 
-router.get('/', isAdmin, getKapsterServices)
+router.get('/', getKapsterServices)
 router.post('/', isAdmin, createKapsterService)
 router.put('/:id', isAdmin, updateKapsterService)
 

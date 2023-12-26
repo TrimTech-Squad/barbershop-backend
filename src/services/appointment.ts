@@ -1,6 +1,7 @@
 import {
   Appointment,
   Kapster,
+  Order,
   Service,
   ServiceKapster,
   User,
@@ -35,6 +36,14 @@ export default class AppointmentService {
     return await updateAppointment.update(appointment)
   }
 
+  static updateAppointmentStatus(orderId: string, status: APPOINTMENTSTATUS) {
+    const updateAppointment = Appointment.findOne({
+      where: { orderId },
+    })
+    if (!updateAppointment) throw new NotFoundError('Appointment not found')
+    return updateAppointment.update({ status })
+  }
+
   static async getAllAppointments(): Promise<APPOINTMENT[]> {
     return await Appointment.findAll({
       include: [
@@ -64,7 +73,14 @@ export default class AppointmentService {
   }
 
   static async getAppointmentByUserId(userId: number): Promise<APPOINTMENT[]> {
-    return await Appointment.findAll({ where: { userId } })
+    return await Appointment.findAll({
+      where: { userId },
+      include: {
+        model: Order,
+        as: 'order',
+        attributes: ['id', 'redirect_url', 'gross_amount'],
+      },
+    })
   }
 
   static async getAppointmentCounts() {

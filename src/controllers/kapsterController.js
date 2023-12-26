@@ -40,14 +40,11 @@ export const createKapster = async (
 
 // READ ALL
 export const getAllKapster = async (
-  /** @type {{ body: any;query:{all:string,available:string} }} */ req,
+  /** @type {{ body: any;query:{all:string,available:string} }} */ _req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
-    const kapsters = await KapsterServices.getKapsters(
-      !!req.query.all,
-      !!req.query.available,
-    )
+    const kapsters = await KapsterServices.getAllKapsters()
 
     return ResponseBuilder(
       {

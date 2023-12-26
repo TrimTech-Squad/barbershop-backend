@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       models.Order.belongsTo(models.ServiceKapster, {
         foreignKey: 'kapsterServiceId',
       })
+
+      models.Order.hasOne(models.Appointment, {
+        foreignKey: 'orderId',
+      })
     }
   }
   Order.init(

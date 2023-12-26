@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'kapsterService',
         foreignKey: 'kapsterServiceId',
       })
+      Appointment.belongsTo(models.Order, {
+        as: 'order',
+        foreignKey: 'orderId',
+      })
     }
   }
   Appointment.init(
