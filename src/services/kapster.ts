@@ -174,8 +174,6 @@ export default class KapsterServices {
     date: Date,
   ): Promise<unknown> => {
     const begin = new Date(date)
-    begin.setHours(0, 0, 0, 0)
-    begin.setDate(begin.getDate() + 1)
     const end = new Date(begin.getTime() + 86400000)
 
     return new Promise((resolve, reject) => {
