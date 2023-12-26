@@ -26,7 +26,7 @@ app.use(compression())
 
 app.use('/static', express.static('uploads'))
 
-app.use(cors({ credentials: true, origin: 'http://localhost:5173  ' }))
+app.use(cors({ credentials: true, origin: process.env.ORIGINS?.split(',') }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
