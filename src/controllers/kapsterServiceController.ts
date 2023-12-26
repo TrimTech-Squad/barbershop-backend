@@ -30,6 +30,25 @@ export const createKapsterService = async (req: Request, res: Response) => {
   }
 }
 
+export const getKapsterServices = async (_req: Request, res: Response) => {
+  try {
+    if (!res.locals.isAdmin) throw new UnauthorizedError("You're not admin")
+
+    const kapsterServices = await KapsterServices.getKapsterServices()
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: 'Kapster services retrieved',
+        data: kapsterServices,
+      },
+      res,
+    )
+  } catch (error) {
+    return ResponseBuilder(ErrorCatcher(error as Error), res)
+  }
+}
+
 export const updateKapsterService = async (req: Request, res: Response) => {
   try {
     if (!res.locals.isAdmin) throw new UnauthorizedError("You're not admin")

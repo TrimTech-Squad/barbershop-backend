@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Kapster.hasMany(models.ServiceKapster, {
-        as: 'service',
+        as: 'services',
         foreignKey: 'kapsterId',
         sourceKey: 'id',
       })
@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       specialization: {
         allowNull: false,
         type: DataTypes.STRING,
+      },
+      photo_url: {
+        allowNull: true,
+        type: DataTypes.TEXT,
       },
       status: {
         allowNull: false,

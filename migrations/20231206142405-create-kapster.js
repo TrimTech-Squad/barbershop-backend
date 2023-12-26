@@ -26,6 +26,10 @@ module.exports = {
         defaultValue: 'Available',
         type: Sequelize.ENUM('Available', 'Not Available', 'Resigned'),
       },
+      photo_url: {
+        allowNull: true,
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

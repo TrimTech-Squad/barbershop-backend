@@ -24,6 +24,8 @@ middleware compresses the response bodies for all requests that pass through it,
 of the response and improving the performance of the application. */
 app.use(compression())
 
+app.use('/static', express.static('uploads'))
+
 app.use(cors({ credentials: true, origin: 'http://localhost:5173  ' }))
 app.use(cookieParser())
 app.use(express.json())
@@ -31,11 +33,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.use('/api/auth', authRoutes)
-app.use('/api/kapsters', auth, kapsters)
+app.use('/api/kapsters', kapsters)
 app.use('/api/order', orderRouter)
 app.use('/api/kapster-service', auth, kapsterServiceRouter)
 app.use('/api/appointment', auth, appointment)
-app.use('/api/services', auth, service)
+app.use('/api/services', service)
 app.use('/api/user', auth, user)
 
 app.get('/order/confirm-refund/:id', getRefundRequest)

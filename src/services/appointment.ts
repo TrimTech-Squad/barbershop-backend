@@ -1,4 +1,10 @@
-import { Appointment } from '../../models'
+import {
+  Appointment,
+  Kapster,
+  Service,
+  ServiceKapster,
+  User,
+} from '../../models'
 import { APPOINTMENT, APPOINTMENTSTATUS } from '../../types/appointment'
 import { NotFoundError } from '../helpers/error'
 import { appointmentIdMaker } from '../utils/id_maker'
@@ -29,19 +35,31 @@ export default class AppointmentService {
     return await updateAppointment.update(appointment)
   }
 
-  static async getAllAppointments(
-    offset = 0,
-    limit = 0,
-    status: APPOINTMENTSTATUS,
-  ): Promise<APPOINTMENT[]> {
-    if (isNaN(offset) || isNaN(limit)) {
-      limit = 10
-      offset = 0
-    }
+  static async getAllAppointments(): Promise<APPOINTMENT[]> {
     return await Appointment.findAll({
-      where: status ? { status } : {},
-      offset,
-      limit,
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email', 'number'],
+        },
+        {
+          model: ServiceKapster,
+          as: 'kapsterService',
+          include: [
+            {
+              model: Kapster,
+              as: 'kapster',
+              attributes: ['id', 'name'],
+            },
+            {
+              model: Service,
+              as: 'service',
+              attributes: ['id', 'serviceName'],
+            },
+          ],
+        },
+      ],
     })
   }
 

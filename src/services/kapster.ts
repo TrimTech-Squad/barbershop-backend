@@ -70,14 +70,61 @@ export default class KapsterServices {
     })
   }
 
-  static getKapsters = async (admin: boolean = false): Promise<KAPSTER[]> => {
+  static getKapsters = async (
+    admin: boolean = false,
+    activeServices = false,
+  ): Promise<KAPSTER[]> => {
     return new Promise((resolve, reject) => {
       Kapster.findAll({
         where: admin ? {} : { status: KAPSTERSTATUS.AVAILABLE },
+        include: [
+          {
+            model: ServiceKapster,
+            as: 'services',
+            attributes: ['price', 'id'],
+            where: activeServices ? { isActive: true } : {},
+            include: [
+              {
+                model: Service,
+                as: 'service',
+                where: activeServices ? { isActive: true } : {},
+                attributes: ['serviceName', 'id'],
+              },
+            ],
+          },
+        ],
       })
-        .then((data: KAPSTER[]) => {
-          resolve(data)
-        })
+        .then(
+          (
+            data: (KAPSTER & {
+              services: (KAPSTERSERVICE & {
+                service: { serviceName: string; id: number }
+              })[]
+            })[],
+          ) => {
+            resolve(
+              data.map(kapster => {
+                return {
+                  id: kapster.id,
+                  name: kapster.name,
+                  gender: kapster.gender,
+                  status: kapster.status,
+                  specialization: kapster.specialization,
+                  photo_url: kapster.photo_url,
+                  services: kapster.services.map(serviceKapster => {
+                    console.log(serviceKapster.service)
+                    return {
+                      serviceKapsterid: serviceKapster.id,
+                      id: serviceKapster.service.id,
+                      name: serviceKapster.service.serviceName,
+                      price: serviceKapster.price,
+                    }
+                  }),
+                }
+              }),
+            )
+          },
+        )
         .catch((err: Error) => {
           reject(err)
         })
@@ -110,18 +157,34 @@ export default class KapsterServices {
   }
 
   static getKapsterServices = async (
-    id: number,
-  ): Promise<({ price: number } & SERVICE)[]> => {
+    id: number | null = null,
+  ): Promise<
+    {
+      service: {
+        dataValues: SERVICE
+      }
+      kapster: {
+        dataValues: KAPSTER
+      }
+      price: number
+      id: number
+      isActive: boolean
+    }[]
+  > => {
     return new Promise((resolve, reject) => {
       ServiceKapster.findAll({
-        where: {
-          kapsterId: id,
-        },
-        attributes: ['price'],
+        where: id ? { kapsterId: id } : {},
+        attributes: ['price', 'id', 'isActive'],
         include: [
           {
             model: Service,
             as: 'service',
+            attributes: ['serviceName', 'id'],
+          },
+          {
+            model: Kapster,
+            as: 'kapster',
+            attributes: ['name', 'id', 'gender'],
           },
         ],
       })
@@ -131,17 +194,15 @@ export default class KapsterServices {
               service: {
                 dataValues: SERVICE
               }
+              kapster: {
+                dataValues: KAPSTER
+              }
               price: number
+              id: number
+              isActive: boolean
             }[],
           ) => {
-            resolve(
-              data.map(item => {
-                return {
-                  ...item.service.dataValues,
-                  price: item.price,
-                }
-              }),
-            )
+            resolve(data)
           },
         )
         .catch((err: Error) => {

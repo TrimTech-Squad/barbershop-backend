@@ -5,12 +5,12 @@ import { number, string } from 'yup'
 
 //GET DATA
 export const getAllService = async (
-  /** @type {import("express").Request} */ _req,
+  /** @type {import("express").Request} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
     const services = await ServiceServices.getAllServices(
-      res.locals.isAdmin ? 'ALL' : undefined,
+      req.query.all === 'true' ? 'ALL' : undefined,
     )
     return ResponseBuilder(
       {

@@ -99,7 +99,7 @@ export const updateDataAppointment = async (
 }
 
 export const getAllAppointment = async (
-  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ req,
+  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ _req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
@@ -108,18 +108,7 @@ export const getAllAppointment = async (
         'Anda tidak memiliki akses untuk melihat appointment',
       )
 
-    const { page, limit, status } = req.query
-    await string().validate(page)
-    await string().validate(limit)
-    await mixed().oneOf(['Booked', 'Completed', 'Cancelled']).validate(status)
-
-    const appointments = await AppointmentService.getAllAppointments(
-      parseInt(page),
-      parseInt(limit),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      status,
-    )
+    const appointments = await AppointmentService.getAllAppointments()
 
     return ResponseBuilder(
       {

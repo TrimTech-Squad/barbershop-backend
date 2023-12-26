@@ -1,4 +1,5 @@
 import { isAdmin } from '../middlewares/admin'
+import { auth } from '../middlewares/auth'
 
 // src/routes/kapsterRoutes.js
 const { Router } = require('express')
@@ -11,9 +12,9 @@ const {
 
 const router = Router()
 
-router.get('/', isAdmin, getAllKapster)
-router.post('/', isAdmin, createKapster)
+router.get('/', getAllKapster)
+router.post('/', auth, isAdmin, createKapster)
 router.get('/:id', getKapsterById)
-router.put('/:id', isAdmin, updateKapsterData)
+router.put('/:id', auth, isAdmin, updateKapsterData)
 
 export default router

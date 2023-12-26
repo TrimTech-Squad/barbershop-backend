@@ -17,6 +17,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.TEXT,
       },
+      photo_url: {
+        allowNull: true,
+        type: Sequelize.TEXT,
+      },
       isActive: {
         allowNull: false,
         defaultValue: true,

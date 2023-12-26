@@ -3,12 +3,14 @@ import KapsterServices from '../services/kapster'
 import ResponseBuilder from '../helpers/response-builder'
 import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
 
+/* The `kapsterSchema` is a validation schema defined using the `yup` library. It is used to validate
+the data received in the request body for creating or updating a Kapster (a hairstylist). */
 const kapsterSchema = object({
   name: string().required('Nama harus diisi'),
   gender: string().required('Gender harus diisi'),
   specialization: string().required('Specialization harus diisi'),
   status: mixed()
-    .oneOf(['Available', 'Unavailable', 'Resigned'])
+    .oneOf(['Available', 'Not Available', 'Resigned'])
     .required('Status harus diisi'),
 })
 
@@ -38,12 +40,13 @@ export const createKapster = async (
 
 // READ ALL
 export const getAllKapster = async (
-  /** @type {{ body: any; }} */ _req,
+  /** @type {{ body: any;query:{all:string,available:string} }} */ req,
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
     const kapsters = await KapsterServices.getKapsters(
-      res.locals.isAdmin ? true : undefined,
+      !!req.query.all,
+      !!req.query.available,
     )
 
     return ResponseBuilder(
@@ -92,8 +95,13 @@ export const updateKapsterData = async (
     const { id } = req.params
 
     await number().required('Id harus diisi').validate(parseInt(id))
+
     const body = req.body
     await kapsterSchema.validate(body)
+
+    /* The code `const updatedKapster = await KapsterServices.updateKapster(parseInt(id), body)` is calling
+the `updateKapster` method from the `KapsterServices` module. This method is responsible for
+updating the data of a Kapster (hairstylist) with the specified `id` using the provided `body` data. */
     const updatedKapster = await KapsterServices.updateKapster(
       parseInt(id),
       body,

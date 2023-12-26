@@ -19,6 +19,7 @@ export type KAPSTERSERVICE = {
 
 export type KAPSTER = {
   id?: number
+  photo_url?: string
   name: string
   gender: KAPSTERGENDER
   specialization: string
