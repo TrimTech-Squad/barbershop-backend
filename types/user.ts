@@ -1,7 +1,7 @@
 export type USER = {
   id?: number
   email: string
-  password: string
+  password?: string
   name: string
   photo_url: string
   number: string
@@ -14,6 +14,6 @@ export enum USERROLE {
 }
 
 export type USERTOKENOBJECT = {
-  id: string
+  id: number
   email: string
 }

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -7,31 +7,41 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       gender: {
         allowNull: false,
-        type: Sequelize.ENUM('Man', 'Woman')
+        type: Sequelize.ENUM('Man', 'Woman'),
       },
       specialization: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+      },
+      status: {
+        allowNull: false,
+        defaultValue: 'Available',
+        type: Sequelize.ENUM('Available', 'Not Available', 'Resigned'),
+      },
+      photo_url: {
+        allowNull: true,
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Kapsters');
-  }
-};
+    await queryInterface.dropTable('Kapsters')
+  },
+}

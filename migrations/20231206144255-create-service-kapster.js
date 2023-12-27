@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Service_Kapsters', {
+    await queryInterface.createTable('ServiceKapsters', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,8 +16,6 @@ module.exports = {
           model: 'Kapsters',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
       serviceId: {
         allowNull: false,
@@ -26,12 +24,15 @@ module.exports = {
           model: 'Services',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+      },
+      isActive: {
+        allowNull: false,
+        defaultValue: true,
+        type: Sequelize.BOOLEAN,
       },
       price: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,

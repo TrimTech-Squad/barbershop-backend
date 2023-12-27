@@ -1,109 +1,175 @@
-const { Appointment, User, Service} = require('../models');
+import { mixed, string } from 'yup'
+import AppointmentService from '../services/appointment'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher, {
+  ForbiddenError,
+  UnauthorizedError,
+} from '../helpers/error'
 
-//POST
-const createAppointment = async (req, res) => {
-    
-    try {
-        const {kapsterId, serviceId, date, time, status} = req.body;
-        const user = req.authUser;
-        const newAppointment = await Appointment.create({
-            kapsterId,
-            serviceId,
-            date,
-            time,
-            status,
-            userId: user.id
-        });
-        const load = await newAppointment.reload({
-            include: [
-                {
-                    model: User,
-                    as: 'user'
-                }
-            ]
-        })
+// const appointmentSchema = object({
+//   userId: string().required('User ID harus diisi'),
+//   kapsterId: string().required('Kapster ID harus diisi'),
+//   serviceId: string().required('Service ID harus diisi'),
+//   time: string().required('Waktu harus diisi'),
+// })
 
-        res.status(200).json(load);
-    }catch(error){
-        console.log(error, '<-- Error Create Appointment')
-       } 
-    }
+// export const createAppointment = async (
+//   /** @type {{ body: any; }} */ req,
+//   /** @type {import("express").Response<any, Record<string, any>>} */ res,
+// ) => {
+//   try {
+//     if (res.locals.isAdmin)
+//       throw new UnauthorizedError(
+//         'Anda tidak memiliki akses untuk membuat appointment',
+//       )
 
-    //GET BY ID
-const getAppointmentById = async(req, res) => {
-    try{
-        const { id } = req.params;
-        const appointment = await Appointment.findByPk(id, {
-           include: [
-            {
-                model: Service,
-                as: 'service'
-            }
-           ]
-        });
-        
-        if (appointment === null){
-            return res.status(404).json({ 
-                error :'Jadwal tidak ditemukan'
-            });
-        }
+//     const request = req.body
+//     request.userId = res.locals.user.id
+//     await appointmentSchema.validate(request)
+//     const newAppointment = await AppointmentService.createAppointment(request)
 
-        res.status(200).json(appointment);
-    } catch (error) {
-        console.log(error, '<-- Error Get Appointment')
-    }
+//     return ResponseBuilder(
+//       {
+//         code: 201,
+//         data: newAppointment,
+//         message: 'Appointment berhasil dibuat',
+//       },
+//       res,
+//     )
+//   } catch (/** @type {any} */ error) {
+//     return ResponseBuilder(ErrorCatcher(error), res)
+//   }
+// }
+
+export const getAppointmentById = async (
+  /** @type {{ params: {id:string}; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    await string().validate(id)
+    const appointment = await AppointmentService.getAppointment(
+      id,
+      res.locals.user.id,
+    )
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointment,
+        message: 'Data Appointment berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
 }
 
+export const getAppointmentsByUserId = async (
+  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ _req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const appointments = await AppointmentService.getAppointmentByUserId(
+      res.locals.user.id,
+    )
 
-//PUT
-const updateDataAppointment = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { kapsterId, serviceId, date, time, status } = req.body;
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointments,
+        message: 'Data Appointments berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
-        const appointment = await Appointment.findByPk(id);
-        if (!appointment) {
-            return res.status(404).json({
-                 message: "Jadwal tidak ditemukan" });
-        }
+export const updateDataAppointment = async (
+  /** @type {{ params: {id:string};body:any }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    if (!res.locals.isAdmin)
+      throw new ForbiddenError(
+        'You are not authorized to update this appointment',
+      )
+    const { id } = req.params
+    await string().validate(id)
+    const body = { status: req.body.status, time: req.body.time }
 
-        appointment.kapsterId = kapsterId || appointment.kapsterId;
-        appointment.serviceId = serviceId || appointment.serviceId;
-        appointment.date = date || appointment.date;
-        appointment.time = time || appointment.time;
-        appointment.status = status || appointment.status;
+    // Validasi request menggunakan Yup
+    await mixed()
+      .oneOf(['Booked', 'Completed', 'Cancelled'])
+      .required('Status harus diisi')
+      .validate(body.status)
+    await string().required('Waktu harus diisi').validate(body.time)
 
-        await appointment.save();
+    const updatedAppointment = await AppointmentService.updateAppointment(
+      id,
+      res.locals.user.id,
+      body,
+    )
 
-        return res.status(200).json({
-            kapsterId: appointment.kapsterId,
-            serviceId: appointment.serviceId,
-            date: appointment.date,
-            time: appointment.time,
-            status: appointment.status,
-            userId: appointment.userId,
-            updatedAt: appointment.updatedAt,
-        });
-    } catch(error) {
-        console.log(error, '<-- Error Update Data Appointment')
-    }
-};
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: `Appointment dengan id ${id} berhasil diupdate`,
+        data: updatedAppointment,
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
-//DELETE
-    const deleteAppointment = async (req, res) => {
-        try{
-            const { id } = req.params
-            const appointment = await Appointment.findByPk(id)
+export const getAllAppointment = async (
+  /** @type {{ query: {page:string;limit:string;status:string;}; }} */ _req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    if (!res.locals.isAdmin)
+      throw new UnauthorizedError(
+        'Anda tidak memiliki akses untuk melihat appointment',
+      )
 
-            if (!appointment) {
-                res.status(404).json({ message: 'jadwal tidak ditemukan' });
-            }
-            appointment.destroy()
-            res.status(200).json({ message: `appointment dengan id ${id} berhasil dihapus` });
+    const appointments = await AppointmentService.getAllAppointments()
 
-        }catch(error){
-            console.log(error, '<-- Error Delete Appointment')
-        }
-    }
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: appointments,
+        message: 'Data Appointment berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
-module.exports = {createAppointment, getAppointmentById, updateDataAppointment, deleteAppointment}
+// export const deleteAppointment = async (
+//   /** @type {{ params: {id:string}; }} */ req,
+//   /** @type {import("express").Response<any, Record<string, any>>} */ res,
+// ) => {
+//   try {
+//     const { id } = req.params
+//     await string().validate(id)
+//     await AppointmentService.deleteAppointment(id)
+
+//     return ResponseBuilder(
+//       {
+//         code: 200,
+//         message: `Appointment dengan id ${id} berhasil dihapus`,
+//         data: null,
+//       },
+//       res,
+//     )
+//   } catch (/** @type {any} */ error) {
+//     return ResponseBuilder(ErrorCatcher(error), res)
+//   }
+// }

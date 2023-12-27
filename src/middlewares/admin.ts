@@ -1,26 +1,24 @@
 import { User } from '../../models'
-import { Request, Response, NextFunction } from 'express'
-import { USERROLE, USERTOKENOBJECT } from '../../types/user'
-import ErrorCatcher, { ForbiddenError } from '../utils/error'
-import ResponseBuilder from '../utils/response-builder'
+import { Response, NextFunction, Request } from 'express'
+import { USERROLE } from '../../types/user'
+import ErrorCatcher, { ForbiddenError } from '../helpers/error'
+import ResponseBuilder from '../helpers/response-builder'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export interface RequestMiddleware extends Request {
-  user?: USERTOKENOBJECT
-}
-
-const isAdmin = async (
-  req: RequestMiddleware,
+export const isAdmin = async (
+  _req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    if (!req.user) {
+    if (!res.locals.user) {
       throw new ForbiddenError('You are not authorized to access this resource')
     }
 
     const user = await User.findOne({
-      where: { id: req.user.id },
+      where: {
+        id: res.locals.user.id,
+        email: res.locals.user.email,
+      },
     })
 
     if (!user) {
@@ -28,16 +26,12 @@ const isAdmin = async (
     }
 
     if (user?.role === USERROLE.ADMIN) {
+      res.locals.isAdmin = { isAdmin: true, ...user }
       return next()
     }
 
-    throw new ForbiddenError('You are not authorized to access this resource')
+    return next()
   } catch (error) {
     return ResponseBuilder(ErrorCatcher(error as Error), res)
   }
 }
-const AdminMiddlewares = {
-  isAdmin,
-}
-
-export default AdminMiddlewares

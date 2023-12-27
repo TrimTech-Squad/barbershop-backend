@@ -1,62 +1,119 @@
-const { User, Appointment } = require('../models')
+import { object, string, number } from 'yup'
+import UserService from '../services/user'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher from '../helpers/error'
 
-//GET BY ID
-const getUserById = async(req, res) => {
-    try{
-        const { id } = req.params;
-        const user = await User.findByPk(id, {
-           include: [
-            {
-                model: Appointment,
-                as: 'appointment2'
-            }
-           ]
-        });
-        
-        if (user === null){
-            return res.status(404).json({ 
-                error :'User tidak ditemukan'
-            });
-        }
+// Validasi Yup Schema
+const userUpdateSchema = object({
+  name: string().required('Nama harus diisi'),
+  email: string().required('Email harus diisi').email('Email tidak valid'),
+  number: string().required('Nomor harus diisi'),
+  photo_url: string(),
+})
 
-        res.status(200).json(user);
-    } catch (error) {
-        console.log(error, '<-- Error Get User by id')
-    }
+export const getUserById = async (
+  /** @type {{ body: any;params:{id:number}; }} */ _req,
+  /** @type {import("express").Response} */ res,
+) => {
+  try {
+    const user = await UserService.getUser(res.locals.user.id)
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Data User berhasil diambil',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
 }
 
+export const updateDataUser = async (
+  /** @type {{ body: any;params:{id:number} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    await number().validate(id)
+    const body = req.body
+    // Validasi request menggunakan Yup
+    await userUpdateSchema.validate(body)
 
-//PUT
-const updateDataUser = async (req, res) => {
-        try{
-            //mendapatkan req params -> mendapatkan data movie berdasarkan id
-            const { id } = req.params
-            //mendapatkan req body
-            const {name, password, email, number, photo_url, role} = req.body
+    const user = await UserService.updateUserInfo(res.locals.user.id, body)
 
-            const user = await User.findByPk(id)
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Data User berhasil diupdate',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
-            if (!user) {
-                return res.status(404).json({
-                    error: 'Tidak ditemukan'
-                });
-            }
-            //update
-            user.name = name
-            user.password = password
-            user.email = email
-            user.number = number
-            user.photo_url = photo_url
-            user.role = role
-            user.updateAt = new Date()
+export const updateUserPassword = async (
+  /** @type {{ body: any;params:{id:number} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const body = req.body
+    // Validasi request menggunakan Yup
+    await string()
+      .required('Password lama harus diisi')
+      .validate(body.old_password)
+    await string()
+      .required('Password baru harus diisi')
+      .validate(body.new_password)
 
-            //save data
-            user.save()
-            //response
-            res.status(200).json(user);
-        } catch(error) {
-            console.log(error, '<-- Error Update Data User')
-        }
-    }
-    
-    module.exports = {getUserById, updateDataUser}
+    const user = await UserService.updateUserPassword(res.locals.user.id, body)
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Password User berhasil diupdate',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
+
+export const updateUserRole = async (
+  /** @type {{ body: any;params:{id:number} }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const { id } = req.params
+    await number().validate(id)
+    const body = req.body
+    // Validasi request menggunakan Yup
+    await string()
+      .required('Role harus diisi')
+      .oneOf(['Customer', 'Admin'])
+      .validate(body.role)
+
+    const user = await UserService.updateUserRole(
+      { id, idRequester: res.locals.user.id },
+      body.role,
+    )
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: user,
+        message: 'Role User berhasil diupdate',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}

@@ -1,68 +1,85 @@
-const { User } = require('../models');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { generateToken } = require('../helpers/jwt.js')
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { object, string, mixed } from 'yup'
+import UserServices from '../services/user'
+import ResponseBuilder from '../helpers/response-builder'
+import ErrorCatcher from '../helpers/error'
+import AuthService from '../services/auth'
+import brypt from 'bcrypt'
 
-const register = async (req, res) => {
+export const register = async (
+  /** @type {{ body: any; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  const userSchema = object({
+    name: string().required('Nama harus diisi'),
+    email: string().required('Email harus diisi').email('Email tidak valid'),
+    password: string().required('Password harus diisi'),
+    number: string().required('Nomor harus diisi'),
+    photo_url: string(),
+    role: mixed().oneOf(['Customer', 'Admin']).required('Role harus diisi'),
+  })
   try {
-    const { name, email, password } = req.body;
+    const body = req.body
+    /* The line `body.role = 'Customer'` is assigning the value `'Customer'` to the `role` property of
+   the `body` object. This is done before validating the `body` object against the `userSchema`. It
+   ensures that the `role` property is always set to `'Customer'` before creating a new user. */
+    body.role = 'Customer'
+    await userSchema.validate(body)
 
-    const emailUsed = await User.findOne({
-      where: { email }
-    });
-
-    if (emailUsed) {
-      return res.status(400).json({ name: 'bad request', message: "email sudah digunakan" });
-    }
-
-    // Hash the password asynchronously
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashPassword,
-      isAdmin: true
-    });
-
-    // Don't send the hashed password in the response
-    delete user.password;
-
-    res.status(201).json({ message: 'akun berhasil dibuat, silahkan login.' });
-  } catch (error) {
-    console.error('Error during registration:', error);
-    res.status(500).json({ message: 'Terjadi kesalahan saat membuat akun.' });
+    return brypt.hash(body.password, 10, async (err, hash) => {
+      if (err) throw new Error(err.message)
+      body.password = hash
+      body.photo_url =
+        'https://i.ibb.co/7tBZVZg/blank-profile-picture-973460-640.png'
+      const user = await UserServices.createUser(body)
+      return ResponseBuilder(
+        {
+          code: 201,
+          message: 'User successfully created.',
+          data: { id: user.id },
+        },
+        res,
+      )
+    })
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
   }
-};
+}
 
+const userSchema = object({
+  email: string().required('Email harus diisi').email('Email tidak valid'),
+  password: string().required('Password harus diisi'),
+})
+export const login = async (
+  /** @type {{ body: any; }} */ req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const body = req.body
 
-const login = async (req, res) => {
-  try{
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ 
-    where: { email }
-   })
-
-   if (!user){
-    return res.status(401).json({ message: 'Authentication failed. Salah menginput email / password .' });
-   }
-       
-    const Password = bcrypt.compareSync(password, user.password);
-        if(!Password) {
-          return res.status(401).json({ message: 'Authentication failed. Incorrect password.' });
-        } 
-        
-        //generateToken
-         token = generateToken({ 
-            userId: user.id, 
-            email: user.email });
-
-        return res.status(200).json({ message: 'User successfully login.', token: token})
-
-  } catch(error){
-      res.status(500).json({ message: 'Internal Server Error' });
-    };
-};
+    await userSchema.validate(body)
+    const user = await AuthService.login(body.email, body.password)
+    /* The line `res.cookie('token', token, { httpOnly: true, maxAge: 3600 * 1000 })` is setting a cookie
+  named 'token' in the response object (`res`). */
+    res.clearCookie('access-token')
+    res.cookie('access-token', `Bearer ${user.token}`, {
+      httpOnly: true,
+      maxAge: 24 * 3600 * 1000,
+    })
+    return ResponseBuilder(
+      {
+        code: 200,
+        message: 'Login success.',
+        data: {
+          token: user.token,
+          role: user.role,
+        },
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
 module.exports = { register, login }

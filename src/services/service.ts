@@ -1,6 +1,10 @@
-import { Service } from '../../models'
+import { Op } from 'sequelize'
+import { Appointment, Kapster, Service, ServiceKapster } from '../../models'
+import { KAPSTER, KAPSTERSERVICE, KAPSTERSTATUS } from '../../types/kapster'
 import { SERVICE } from '../../types/service'
-import { NotFoundError } from '../utils/error'
+import { NotFoundError } from '../helpers/error'
+import { APPOINTMENT } from '../../types/appointment'
+// import { Op } from 'sequelize'
 
 export default class ServiceServices {
   static createService = async (service: SERVICE): Promise<SERVICE> => {
@@ -15,16 +19,75 @@ export default class ServiceServices {
     })
   }
 
-  static getService = async (id: number): Promise<SERVICE> => {
+  static getAllServices = async (all = false): Promise<SERVICE[]> => {
     return new Promise((resolve, reject) => {
-      Service.findOne({
-        where: { id },
+      Service.findAll({
+        where: all ? {} : { isActive: true },
       })
-        .then((data: SERVICE | null) => {
-          if (data) {
-            resolve(data)
+        .then((data: SERVICE[]) => {
+          resolve(data)
+        })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
+  }
+
+  static getServiceAndKaptserAvailable = async (
+    id: number,
+  ): Promise<
+    {
+      kapster: string
+      price: number
+      status: KAPSTERSTATUS
+    }[]
+  > => {
+    return new Promise((resolve, reject) => {
+      ServiceKapster.findAll({
+        where: { serviceId: id },
+        include: [
+          {
+            model: Kapster,
+            as: 'kapster',
+            where: { status: KAPSTERSTATUS.AVAILABLE },
+          },
+        ],
+      })
+        .then(async (data: (KAPSTERSERVICE & { kapster: KAPSTER })[]) => {
+          const date = new Date()
+          const bookingEndDate = new Date(date.getTime() + 30 * 60 * 1000)
+          try {
+            const foundAppointment = (await Appointment.findAll({
+              where: {
+                time: {
+                  [Op.between]: [date, bookingEndDate],
+                },
+              },
+              include: {
+                model: ServiceKapster,
+                as: 'kapsterService',
+                where: {
+                  id: data.map(e => e.id),
+                },
+              },
+            })) as APPOINTMENT[]
+
+            const filteredData = data.filter(
+              e => !foundAppointment.find(f => f.kapsterServiceId === e.id),
+            )
+
+            const mappedData = filteredData.map(e => {
+              return {
+                kapster: e.kapster.name,
+                price: e.price,
+                status: e.kapster.status,
+              }
+            })
+
+            resolve(mappedData)
+          } catch (err) {
+            reject(err)
           }
-          reject(new NotFoundError('Service not found'))
         })
         .catch((err: Error) => {
           reject(err)
@@ -52,20 +115,51 @@ export default class ServiceServices {
     })
   }
 
-  static deleteService = async (id: string): Promise<SERVICE> => {
+  static async getKapsterService(
+    id: number,
+  ): Promise<KAPSTERSERVICE & { service: SERVICE; kapster: KAPSTER }> {
     return new Promise((resolve, reject) => {
-      Service.destroy({
+      ServiceKapster.findOne({
         where: { id },
+        include: [
+          {
+            model: Service,
+            as: 'service',
+          },
+          {
+            model: Kapster,
+            as: 'kapster',
+          },
+        ],
       })
-        .then((data: number) => {
-          if (data) {
-            resolve({} as SERVICE)
-          }
-          reject(new NotFoundError('Service not found'))
-        })
+        .then(
+          (data: KAPSTERSERVICE & { service: SERVICE; kapster: KAPSTER }) => {
+            if (data) {
+              resolve(data)
+            }
+            reject(new NotFoundError('Kapster Service not found'))
+          },
+        )
         .catch((err: Error) => {
           reject(err)
         })
     })
   }
+
+  //   static deleteService = async (id: string): Promise<SERVICE> => {
+  //     return new Promise((resolve, reject) => {
+  //       Service.destroy({
+  //         where: { id },
+  //       })
+  //         .then((data: number) => {
+  //           if (data) {
+  //             resolve({} as SERVICE)
+  //           }
+  //           reject(new NotFoundError('Service not found'))
+  //         })
+  //         .catch((err: Error) => {
+  //           reject(err)
+  //         })
+  //     })
+  //   }
 }

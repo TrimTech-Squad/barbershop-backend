@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head.ejs') %>
+  </head>
+
+  <body>
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+      <div class="col-md-4">
+        <div class="border border-3 border-success"></div>
+        <div class="card bg-white shadow p-5">
+          <div class="mb-4 text-center">
+          </div>
+          <div class="text-center">
+           <% if(order.isExist){ %>
+                 <h2 class="text-success"> Cancel Request Accepted </h2>
+                <% }else{ %>
+                 <h2 class="text-danger"> Cancel Request Error</h2>
+                <% } %>
+            <p>
+             <% if(order.isExist){ %>
+                Cancel Request has been propogated to payment gateway, please wait for up-to 24 hours to get the refund.
+              <% }else{ %>
+                Order Cancellation Request Not Found in the system. Either the order is already cancelled or the order is not found in the system.
+              <% } %>
+              <% if(!state.ok) {%>
+                <p class="text-danger"> <%= state?.status_message %> </p>
+              <% }else{ %>
+                 <p class="text-success"> <%= state?.status_message %> </p>
+              <% } %>
+            </p>
+            <a href="/" class="btn btn-outline-success">Back Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

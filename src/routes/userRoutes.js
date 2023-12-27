@@ -1,8 +1,17 @@
-const { getUserById, updateDataUser } = require('../controllers/userController')
+// src/routes/kapsterRoutes.js
+import { Router } from 'express'
+import {
+  getUserById,
+  updateDataUser,
+  updateUserPassword,
+  updateUserRole,
+} from '../controllers/userController'
 
-const router = require('express').Router()
+const router = Router()
 
-router.get('/user/:id', getUserById)
-router.put('/user', updateDataUser)
+router.get('/', getUserById)
+router.put('/', updateDataUser)
+router.put('/password', updateUserPassword)
+router.put('/:id/changerole', updateUserRole)
 
-module.exports = router
+export default router

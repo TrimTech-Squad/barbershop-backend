@@ -1,12 +1,7 @@
 export type SERVICE = {
   id?: number
+  photo_url?: string
   serviceName: string
   description: string
-}
-
-export type SERVICE_KAPSTER = {
-  id?: number
-  kapsterId: number
-  serviceId: number
-  price: number
+  isActive: boolean
 }

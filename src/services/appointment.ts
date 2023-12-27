@@ -1,32 +1,89 @@
-import { Appointment } from '../../models'
-import { APPOINTMENT } from '../../types/appointment'
-import { NotFoundError } from '../utils/error'
+import {
+  Appointment,
+  Kapster,
+  Order,
+  Service,
+  ServiceKapster,
+  User,
+} from '../../models'
+import { APPOINTMENT, APPOINTMENTSTATUS } from '../../types/appointment'
+import { NotFoundError } from '../helpers/error'
+import { appointmentIdMaker } from '../utils/id_maker'
 
 export default class AppointmentService {
   static async createAppointment(appointment: APPOINTMENT) {
+    appointment.status = APPOINTMENTSTATUS.BOOKED
+    appointment.date = new Date().toISOString()
+    appointment.id = appointmentIdMaker((await this.getAppointmentCounts()) + 1)
     return await Appointment.create(appointment)
   }
 
-  static async getAppointment(id: number) {
-    const appointment = await Appointment.findByPk(id)
+  static async getAppointment(id: string, userId: number) {
+    const appointment = await Appointment.findOne({ where: { id, userId } })
     if (!appointment) throw new NotFoundError('Appointment not found')
     return appointment
   }
 
-  static async updateAppointment(id: number, appointment: APPOINTMENT) {
-    const updateAppointment = await Appointment.findByPk(id)
+  static async updateAppointment(
+    id: string,
+    userId: number,
+    appointment: { status: APPOINTMENTSTATUS; time: string },
+  ) {
+    const updateAppointment = await Appointment.findOne({
+      where: { id, userId },
+    })
     if (!updateAppointment) throw new NotFoundError('Appointment not found')
     return await updateAppointment.update(appointment)
   }
 
-  static async deleteAppointment(id: string) {
-    const appointment = await Appointment.findByPk(id)
-    if (!appointment) throw new NotFoundError('Appointment not found')
-    await appointment.destroy()
-    return {}
+  static updateAppointmentStatus(orderId: string, status: APPOINTMENTSTATUS) {
+    const updateAppointment = Appointment.findOne({
+      where: { orderId },
+    })
+    if (!updateAppointment) throw new NotFoundError('Appointment not found')
+    return updateAppointment.update({ status })
+  }
+
+  static async getAllAppointments(): Promise<APPOINTMENT[]> {
+    return await Appointment.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email', 'number'],
+        },
+        {
+          model: ServiceKapster,
+          as: 'kapsterService',
+          include: [
+            {
+              model: Kapster,
+              as: 'kapster',
+              attributes: ['id', 'name'],
+            },
+            {
+              model: Service,
+              as: 'service',
+              attributes: ['id', 'serviceName'],
+            },
+          ],
+        },
+      ],
+    })
   }
 
   static async getAppointmentByUserId(userId: number): Promise<APPOINTMENT[]> {
-    return await Appointment.findAll({ where: { userId } })
+    return await Appointment.findAll({
+      where: { userId },
+      include: {
+        model: Order,
+        as: 'order',
+        attributes: ['id', 'redirect_url', 'gross_amount'],
+      },
+    })
+  }
+
+  static async getAppointmentCounts() {
+    return await Appointment.count()
   }
 }

@@ -7,6 +7,7 @@ import { USER } from '../../types/user'
 import { APPOINTMENT } from '../../types/appointment'
 import { KAPSTER } from '../../types/kapster'
 import { SERVICE, ServiceKapster } from '../../types/service'
+import { ORDER } from '../types/order'
 
 declare const User: USER &
   ModelDefined<InferAttributes<USER>, InferCreationAttributes<USER>>
@@ -24,6 +25,8 @@ declare const ServiceKapster: SERVICE_KAPSTER &
     InferAttributes<SERVICE_KAPSTER>,
     InferCreationAttributes<SERVICE_KAPSTER>
   >
+declare const Order: ORDER &
+  ModelDefined<InferAttributes<ORDER>, InferCreationAttributes<ORDER>>
 
 module.exports = {
   User,
@@ -31,4 +34,5 @@ module.exports = {
   Kapster,
   Service,
   ServiceKapster,
+  Order,
 }

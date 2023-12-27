@@ -1,4 +1,5 @@
-'use strict'
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Kapster extends Model {
@@ -9,16 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Kapster.hasMany(models.Appointment, {
-        as: 'appointment',
-        foreignKey: 'kapsterId',
-      })
-      Kapster.belongsToMany(models.Service, {
-        through: 'Service_Kapster',
-      })
       Kapster.hasMany(models.ServiceKapster, {
-        as: 'service',
+        as: 'services',
         foreignKey: 'kapsterId',
+        sourceKey: 'id',
       })
     }
   }
@@ -35,6 +30,15 @@ module.exports = (sequelize, DataTypes) => {
       specialization: {
         allowNull: false,
         type: DataTypes.STRING,
+      },
+      photo_url: {
+        allowNull: true,
+        type: DataTypes.TEXT,
+      },
+      status: {
+        allowNull: false,
+        defaultValue: 'Available',
+        type: DataTypes.ENUM('Available', 'Not Available', 'Resigned'),
       },
     },
     {

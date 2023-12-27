@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -13,13 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user',
         foreignKey: 'userId',
       })
-      Appointment.belongsTo(models.Kapster, {
-        as: 'kapster',
-        foreignKey: 'kapsterId',
+      Appointment.belongsTo(models.ServiceKapster, {
+        as: 'kapsterService',
+        foreignKey: 'kapsterServiceId',
       })
-      Appointment.belongsTo(models.Service, {
-        as: 'service',
-        foreignKey: 'serviceId',
+      Appointment.belongsTo(models.Order, {
+        as: 'order',
+        foreignKey: 'orderId',
       })
     }
   }
@@ -29,13 +31,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      kapsterId: {
+      kapsterServiceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'ServiceKapsters',
+          key: 'id',
+        },
       },
-      serviceId: {
+      orderId: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
+        references: {
+          model: 'Orders',
+          key: 'id',
+        },
       },
       date: {
         type: DataTypes.DATE,

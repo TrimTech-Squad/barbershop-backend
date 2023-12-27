@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
@@ -12,11 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       models.ServiceKapster.belongsTo(models.Service, {
         as: 'service',
         foreignKey: 'serviceId',
+        sourceKey: 'serviceId',
+      })
+
+      models.ServiceKapster.hasMany(models.Appointment, {
+        as: 'appointments',
+        foreignKey: 'kapsterServiceId',
+        sourceKey: 'id',
       })
 
       models.ServiceKapster.belongsTo(models.Kapster, {
         as: 'kapster',
         foreignKey: 'kapsterId',
+        sourceKey: 'kapsterId',
       })
     }
   }
@@ -25,10 +35,23 @@ module.exports = (sequelize, DataTypes) => {
       kapsterId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Kapsters',
+          key: 'id',
+        },
       },
       serviceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: 'Services',
+          key: 'id',
+        },
+      },
+      isActive: {
+        allowNull: false,
+        defaultValue: true,
+        type: DataTypes.BOOLEAN,
       },
       price: {
         allowNull: false,
