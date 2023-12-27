@@ -8,16 +8,18 @@
     "logging": false
   },
   "test": {
-    "username": "postgres",
-    "password": "7882",
+    "username": "root",
+    "password": null,
+    "database": "barberbook_app_test",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "production": {
-    "username": "Zulfaa",
+    "username": "root",
     "password": null,
-    "database": "barberbook_app",
+    "database": "barberbook_app_production",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql",
+    "logging": false
   }
 }

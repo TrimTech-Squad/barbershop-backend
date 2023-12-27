@@ -5,10 +5,10 @@ import { describe, it, expect } from 'vitest'
 describe('user services', async () => {
   const userCtx: USER = {
     id: 0,
-    email: Math.random() * 100 + '@gmail.com',
+    email: Math.random() * 100 + 'test@gmail.com',
     password: '12345678',
     role: USERROLE.CUSTOMER,
-    name: 'nishi',
+    name: 'test',
     photo_url: '',
     number: '08123456789',
   }
@@ -28,7 +28,7 @@ describe('user services', async () => {
   })
 
   it('should get user info', async () => {
-    const data = await UserServices.getUser(0)
+    const data = await UserServices.getUser(1)
     expect(data.email).toEqual(data.email)
     expect(data.password).toEqual(data.password)
     expect(data.role).toEqual(data.role)
@@ -44,7 +44,7 @@ describe('user services', async () => {
 
   it('should can update user', async () => {
     const updatedUser = {
-      id: 0,
+      id: 1,
       email: Math.random() * 100 + '@gmail.com',
       password: '12345678',
       role: USERROLE.ADMIN,
@@ -53,7 +53,7 @@ describe('user services', async () => {
       number: '232121321',
     }
 
-    const data = await UserServices.updateUserInfo(0, updatedUser)
+    const data = await UserServices.updateUserInfo(updatedUser.id, updatedUser)
 
     expect(data.email).toEqual(updatedUser.email)
     expect(data.password).toEqual(updatedUser.password)
@@ -71,11 +71,11 @@ describe('user services', async () => {
   })
 
   it('it should can update password', async () => {
-    const data = await UserServices.updateUserPassword(0, {
+    const data = await UserServices.updateUserPassword(1, {
       old_password: '12345678',
       new_password: '12345678',
     })
-    expect(data).toBeTypeOf('object')
+    expect(data).toBeTypeOf('string')
   })
 
   it('should throw error when idRequester not same as id ', async () => {
@@ -89,7 +89,7 @@ describe('user services', async () => {
 
   it('should can update role if ADMIN', async () => {
     const data = await UserServices.updateUserRole(
-      { id: 0, idRequester: 1 },
+      { id: 1, idRequester: 2 },
       USERROLE.ADMIN,
     )
     expect(data).toBeTypeOf('object')

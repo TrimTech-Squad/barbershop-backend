@@ -65,7 +65,7 @@ export default class ServiceServices {
               },
               include: {
                 model: ServiceKapster,
-                as: 'kapster',
+                as: 'kapsterService',
                 where: {
                   id: data.map(e => e.id),
                 },

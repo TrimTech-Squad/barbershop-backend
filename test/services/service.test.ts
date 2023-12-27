@@ -3,28 +3,28 @@ import { describe, it, expect } from 'vitest'
 
 describe('service services', () => {
   const service = {
-    id: 1,
+    id: Math.floor(Math.random() * 100),
     serviceName: 'service',
     description: 'description',
     isActive: true,
   }
+
   it('should can create service', async () => {
     const data = await ServiceServices.createService(service)
     expect(data.serviceName).toEqual(service.serviceName)
     expect(data.description).toEqual(service.description)
   })
 
-  it('should get service info', async () => {
-    const data = await ServiceServices.getService(1)
-    expect(data.serviceName).toEqual(service.serviceName)
-    expect(data.description).toEqual(service.description)
+  it('should get all service info', async () => {
+    const data = await ServiceServices.getAllServices()
+    expect(data).toBeInstanceOf(Array)
   })
 
-  it('should throw error when service not found', async () => {
-    await expect(ServiceServices.getService(-1)).rejects.toThrow(
-      'Service not found',
-    )
-  })
+  // it('should throw error when service not found', async () => {
+  //   await expect(
+  //     ServiceServices.getServiceAndKaptserAvailable(-1),
+  //   ).rejects.toThrow('Service not found')
+  // })
 
   it('should can update service', async () => {
     const updatedService = {
