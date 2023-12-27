@@ -1,7 +1,10 @@
 import { mixed, string } from 'yup'
 import AppointmentService from '../services/appointment'
 import ResponseBuilder from '../helpers/response-builder'
-import ErrorCatcher, { UnauthorizedError } from '../helpers/error'
+import ErrorCatcher, {
+  ForbiddenError,
+  UnauthorizedError,
+} from '../helpers/error'
 
 // const appointmentSchema = object({
 //   userId: string().required('User ID harus diisi'),
@@ -90,6 +93,10 @@ export const updateDataAppointment = async (
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
+    if (!res.locals.isAdmin)
+      throw new ForbiddenError(
+        'You are not authorized to update this appointment',
+      )
     const { id } = req.params
     await string().validate(id)
     const body = { status: req.body.status, time: req.body.time }

@@ -169,7 +169,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"name\": \"{{name}}\",\n  \"photo_url\": \"{{photo_url}}\",\n  \"number\": \"{{number}}\",\n  \"role\": \"Customer\"\n}",
+											"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"name\": \"{{name}}\",\n  \"photo_url\": \"{{photo_url}}\",\n  \"number\": \"{{number}}\",\n  \"role\": \"Admin\"\n}",
 											"options": {
 												"raw": {
 													"headerFamily": "json",
@@ -198,20 +198,28 @@
 											"value": "Express"
 										},
 										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
 											"key": "Content-Type",
 											"value": "application/json; charset=utf-8"
 										},
 										{
 											"key": "Content-Length",
-											"value": "51"
+											"value": "67"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"33-7yopKOrtik7mvFINugPo3PY+wlw\""
+											"value": "W/\"43-6mCP3OFSvnxPUNmE0myDMKi5ADI\""
 										},
 										{
 											"key": "Date",
-											"value": "Sun, 10 Dec 2023 21:50:00 GMT"
+											"value": "Wed, 27 Dec 2023 17:58:06 GMT"
 										},
 										{
 											"key": "Connection",
@@ -223,7 +231,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"code\": 201,\n    \"message\": \"User successfully created.\"\n}"
+									"body": "{\n    \"code\": 201,\n    \"data\": {\n        \"id\": 6\n    },\n    \"message\": \"User successfully created.\"\n}"
 								}
 							]
 						}
@@ -271,13 +279,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/auth",
+							"raw": "{{baseUrl}}/api/auth/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"auth"
+								"auth",
+								"login"
 							]
 						},
 						"description": "To Login in application"
@@ -499,81 +508,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 401,\n    \"message\": \"Invalid email or password\"\n}"
-						},
-						{
-							"name": "To Login in application",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
-									"options": {
-										"raw": {
-											"headerFamily": "json",
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api/auth",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"auth"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Set-Cookie",
-									"value": "access-token=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjdXN0b21lckBtYWlsLmNvbSIsImlhdCI6MTcwMjQ3MzQ2MiwiZXhwIjoxNzAyNTU5ODYyfQ.9EBjfto9-EVSYMtHIIMfQKFNePsIayQpFLk-7qZ-j8I; Max-Age=3600; Path=/; Expires=Wed, 13 Dec 2023 14:17:42 GMT; HttpOnly"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "224"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"e0-lmXaV43x73mfDfhei6e6RmVgrkQ\""
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 13 Dec 2023 13:17:42 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"code\": 200,\n    \"data\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjdXN0b21lckBtYWlsLmNvbSIsImlhdCI6MTcwMjQ3MzQ2MiwiZXhwIjoxNzAyNTU5ODYyfQ.9EBjfto9-EVSYMtHIIMfQKFNePsIayQpFLk-7qZ-j8I\",\n    \"message\": \"Login success.\"\n}"
 						}
 					]
 				},
@@ -619,13 +553,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/auth",
+							"raw": "{{baseUrl}}/api/auth/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"auth"
+								"auth",
+								"login"
 							]
 						},
 						"description": "To Login in application"
@@ -952,7 +887,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"old_password\":\"{{admin_password}}\",\r\n    \"new_password\":\"{{admin_password}}\"\r\n}",
+									"raw": "{\r\n    \"old_password\":\"{{password}}\",\r\n    \"new_password\":\"{{password}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -971,7 +906,152 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "To user change password",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"old_password\":\"{{admin_password}}\",\r\n    \"new_password\":\"{{admin_password}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/user/password",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"password"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:00:41 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+								},
+								{
+									"name": "To user change password",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"old_password\":\"{{password}}\",\r\n    \"new_password\":\"{{password}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/user/password",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"password"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "82"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"52-yF6Y9/PXMWBGUmZRMM0pM58JeUw\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:08:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 200,\n    \"data\": \"Password updated\",\n    \"message\": \"Password User berhasil diupdate\"\n}"
+								}
+							]
 						},
 						{
 							"name": "To change user role",
@@ -1142,6 +1222,81 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"nishi\",\n        \"email\": \"admin@mail.com\",\n        \"number\": \"232121321\",\n        \"photo_url\": \"\",\n        \"role\": \"Admin\",\n        \"createdAt\": \"2023-12-13T15:11:44.623Z\",\n        \"updatedAt\": \"2023-12-13T15:46:39.130Z\"\n    },\n    \"message\": \"Role User berhasil diupdate\"\n}"
+								},
+								{
+									"name": "To change user role",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"role\":\"Admin\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/user/{{id_user}}/changerole",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"user",
+												"{{id_user}}",
+												"changerole"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:01:00 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 								}
 							]
 						}
@@ -1186,82 +1341,6 @@
 						"description": "To fetch user data"
 					},
 					"response": [
-						{
-							"name": "Successfuly get user data",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/user/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"user",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"id\": \"<number>\",\n  \"name\": \"<string>\",\n  \"passwod\": \"<string>\",\n  \"email\": \"<string>\",\n  \"number\": \"<string>\",\n  \"photo_url\": \"<string>\"\n}"
-						},
-						{
-							"name": "Unauthorized Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/user/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"user",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"message\": \"<string>\"\n}"
-						},
 						{
 							"name": "To fetch user data",
 							"originalRequest": {
@@ -1377,6 +1456,75 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 404,\n    \"message\": \"User not found\"\n}"
+						},
+						{
+							"name": "To fetch user data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:00:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 						}
 					]
 				}
@@ -1453,67 +1601,6 @@
 									]
 								}
 							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "50"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"32-Cjdo8gev6Z/UfjXt8+pTuyGK5eE\""
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 13 Dec 2023 19:19:24 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses\"\n}"
-						},
-						{
-							"name": "New Request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"serviceName\" : \"Krimbat\",\r\n    \"description\":\"Wash hair with luxury\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api/services",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"services"
-									]
-								}
-							},
 							"status": "Created",
 							"code": 201,
 							"_postman_previewlanguage": "json",
@@ -1549,6 +1636,148 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 201,\n    \"data\": {\n        \"isActive\": true,\n        \"id\": 6,\n        \"serviceName\": \"Krimbat\",\n        \"description\": \"Wash hair with luxury\",\n        \"updatedAt\": \"2023-12-13T19:29:54.453Z\",\n        \"createdAt\": \"2023-12-13T19:29:54.453Z\"\n    },\n    \"message\": \"Data Service berhasil ditambahkan\"\n}"
+						},
+						{
+							"name": "To create service",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serviceName\" : \"{{$randomProductName}}\",\r\n    \"description\":\"{{$randomProductAdjective}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:01:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To create service",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serviceName\" : \"{{$randomProductName}}\",\r\n    \"description\":\"{{$randomProductAdjective}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-Cjdo8gev6Z/UfjXt8+pTuyGK5eE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:09:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses\"\n}"
 						}
 					]
 				},
@@ -1626,15 +1855,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "437"
+									"value": "64"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"1b5-pP279pijSWUOrYMg+/iSvglLUsM\""
+									"value": "W/\"40-KwUVGiIRgIAK3ut4USWQc7FrULo\""
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Dec 2023 17:19:44 GMT"
+									"value": "Wed, 13 Dec 2023 17:26:31 GMT"
 								},
 								{
 									"key": "Connection",
@@ -1646,7 +1875,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"serviceName\": \"Haircut\",\n            \"description\": \"A haircut is the style in which hair is cut. Haircuts of medium length are very popular due to their wide variety, which allows you to find the most suitable haircut and create with its help an individual and extraordinary image.\",\n            \"isActive\": false,\n            \"createdAt\": \"2023-12-13T16:55:39.515Z\",\n            \"updatedAt\": \"2023-12-13T16:55:39.515Z\"\n        }\n    ],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+							"body": "{\n    \"code\": 200,\n    \"data\": [],\n    \"message\": \"Data Service berhasil diambil\"\n}"
 						},
 						{
 							"name": "To get all serives available",
@@ -1678,20 +1907,28 @@
 									"value": "Express"
 								},
 								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
 									"key": "Content-Type",
 									"value": "application/json; charset=utf-8"
 								},
 								{
-									"key": "Content-Length",
-									"value": "64"
+									"key": "ETag",
+									"value": "W/\"5c9-pihm/JX0s536hfP1jCzl/IgDYfA\""
 								},
 								{
-									"key": "ETag",
-									"value": "W/\"40-KwUVGiIRgIAK3ut4USWQc7FrULo\""
+									"key": "Content-Encoding",
+									"value": "gzip"
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Dec 2023 17:26:31 GMT"
+									"value": "Wed, 27 Dec 2023 18:09:42 GMT"
 								},
 								{
 									"key": "Connection",
@@ -1700,10 +1937,14 @@
 								{
 									"key": "Keep-Alive",
 									"value": "timeout=5"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"code\": 200,\n    \"data\": [],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"serviceName\": \"HAIRCUT 1\",\n            \"description\": \"A tailored haircut entails any variation of lengths on the sides and back of the head with a custom taper at the nape of the neck.\",\n            \"isActive\": true,\n            \"photo_url\": \"/service/haircut.png\",\n            \"createdAt\": \"2023-12-26T16:35:10.000Z\",\n            \"updatedAt\": \"2023-12-27T12:34:36.000Z\"\n        },\n        {\n            \"id\": 2,\n            \"serviceName\": \"FACE SHAVE\",\n            \"description\": \"This service entails a calming pre-shave oil and hot towel service to prepare the face for the traditional straight razor shave.\",\n            \"isActive\": true,\n            \"photo_url\": \"/service/razor.png\",\n            \"createdAt\": \"2023-12-26T18:33:18.000Z\",\n            \"updatedAt\": \"2023-12-27T12:34:36.000Z\"\n        },\n        {\n            \"id\": 3,\n            \"serviceName\": \"MOUSTACHE TRIM\",\n            \"description\": \"Using scissors, a beard trimmer,  we’ll carefully trim the mustache to the desired length and check for evenness.\\n\\nMousetache Trim\",\n            \"isActive\": true,\n            \"photo_url\": \"/service/hairstyle.png\",\n            \"createdAt\": \"2023-12-26T18:41:51.000Z\",\n            \"updatedAt\": \"2023-12-27T11:57:21.000Z\"\n        },\n        {\n            \"id\": 4,\n            \"serviceName\": \"CLIPPER CUT\",\n            \"description\": \"Detailed clipper work in the back and sides is combined with a clipper-over-comb technique for short layers on top.\",\n            \"isActive\": true,\n            \"photo_url\": \"/service/trim.png\",\n            \"createdAt\": \"2023-12-26T18:52:25.000Z\",\n            \"updatedAt\": \"2023-12-27T11:57:21.000Z\"\n        },\n        {\n            \"id\": 5,\n            \"serviceName\": \"Samsul\",\n            \"description\": \"haircut color leeching\",\n            \"isActive\": true,\n            \"photo_url\": null,\n            \"createdAt\": \"2023-12-27T12:34:29.000Z\",\n            \"updatedAt\": \"2023-12-27T12:35:09.000Z\"\n        }\n    ],\n    \"message\": \"Data Service berhasil diambil\"\n}"
 						}
 					]
 				},
@@ -1811,6 +2052,303 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"serviceName\": \"Krimbat Edited\",\n        \"description\": \"Wash hair with luxury and many more\"\n    },\n    \"message\": \"Data Service berhasil diupdate\"\n}"
+						},
+						{
+							"name": "To update the service",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serviceName\" : \"Krimbat Edited\",\r\n    \"description\":\"Wash hair with luxury and many more\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/services/{{serviceId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services",
+										"{{serviceId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:02:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To update the service",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serviceName\" : \"Krimbat Edited\",\r\n    \"description\":\"Wash hair with luxury and many more\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/services/{{serviceId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services",
+										"{{serviceId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-Cjdo8gev6Z/UfjXt8+pTuyGK5eE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:10:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses\"\n}"
+						}
+					]
+				},
+				{
+					"name": "To get all avaialble kapster on service id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/services/10/available",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"10",
+								"available"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/services/10/available",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services",
+										"10",
+										"available"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "189"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"bd-5HiOlSfrfS02f9PKTgrTel6/UK8\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Dec 2023 21:44:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"kapster\": \"Dian Updated\",\n            \"price\": 100000,\n            \"status\": \"Available\"\n        },\n        {\n            \"kapster\": \"Dian Updated\",\n            \"price\": 100000,\n            \"status\": \"Available\"\n        }\n    ],\n    \"message\": \"Data Service berhasil diambil\"\n}"
+						},
+						{
+							"name": "To get all avaialble kapster on service id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/services/10/available",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"services",
+										"10",
+										"available"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:02:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 						}
 					]
 				}
@@ -1862,7 +2400,152 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To create new kapster (admin)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Dian\",\r\n    \"gender\" : \"Woman\",\r\n    \"specialization\":\"Krimbat\",\r\n    \"status\" : \"Available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:02:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To create new kapster (admin)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Dian\",\r\n    \"gender\" : \"Woman\",\r\n    \"specialization\":\"Krimbat\",\r\n    \"status\" : \"Available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-Cjdo8gev6Z/UfjXt8+pTuyGK5eE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:10:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Api to get all barberman infomation and its service",
@@ -1891,94 +2574,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/kapsters",
+							"raw": "{{baseUrl}}/api/kapsters?all=true",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"kapsters"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
 							]
 						},
 						"description": "Api to get all barberman infomation and its service"
 					},
 					"response": [
-						{
-							"name": "Successfuly get all services data",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/barberman?specialization=<string>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"barberman"
-									],
-									"query": [
-										{
-											"key": "specialization",
-											"value": "<string>"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"barberman\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"specialization\": \"<string>\"\n    },\n    \"services\": [\n      {\n        \"serviceId\": \"<integer>\",\n        \"price\": \"<integer>\"\n      },\n      {\n        \"serviceId\": \"<integer>\",\n        \"price\": \"<integer>\"\n      }\n    ]\n  },\n  {\n    \"barberman\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"specialization\": \"<string>\"\n    },\n    \"services\": [\n      {\n        \"serviceId\": \"<integer>\",\n        \"price\": \"<integer>\"\n      },\n      {\n        \"serviceId\": \"<integer>\",\n        \"price\": \"<integer>\"\n      }\n    ]\n  }\n]"
-						},
-						{
-							"name": "Unauthorized Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/barberman?specialization=<string>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"barberman"
-									],
-									"query": [
-										{
-											"key": "specialization",
-											"value": "<string>"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"message\": \"<string>\"\n}"
-						},
 						{
 							"name": "Api to get all barberman infomation and its service",
 							"originalRequest": {
@@ -2060,18 +2673,80 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/kapsters/{{kapsterId}}",
+							"raw": "{{baseUrl}}/api/kapsters/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"kapsters",
-								"{{kapsterId}}"
+								"1"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To get kapter service",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "351"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15f-4ZYVXZDt2v6md3bx8Ebqugw9j/E\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:11:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"price\": 20000,\n            \"id\": 1,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"HAIRCUT 1\",\n                \"id\": 1\n            },\n            \"kapster\": {\n                \"name\": \"Diego Santosa\",\n                \"id\": 1,\n                \"gender\": \"Man\"\n            }\n        },\n        {\n            \"price\": 50000,\n            \"id\": 5,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"MOUSTACHE TRIM\",\n                \"id\": 3\n            },\n            \"kapster\": {\n                \"name\": \"Diego Santosa\",\n                \"id\": 1,\n                \"gender\": \"Man\"\n            }\n        }\n    ],\n    \"message\": \"Data Kapster berhasil diambil.\"\n}"
+						}
+					]
 				},
 				{
 					"name": "To update kapster",
@@ -2177,6 +2852,245 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": \"7\",\n        \"name\": \"Dian Updated\",\n        \"gender\": \"Woman\",\n        \"specialization\": \"Krimbat Manalagi\",\n        \"status\": \"Resigned\"\n    },\n    \"message\": \"Kapster successfully updated.\"\n}"
+						},
+						{
+							"name": "To update kapster",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Dian Updated\",\r\n    \"gender\" : \"Woman\",\r\n    \"specialization\":\"Krimbat Manalagi\",\r\n    \"status\" : \"Resigned\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/{{kapsterId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										"{{kapsterId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:03:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To update kapster",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Dian Updated\",\r\n    \"gender\" : \"Woman\",\r\n    \"specialization\":\"Krimbat Manalagi\",\r\n    \"status\" : \"Resigned\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/{{kapsterId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										"{{kapsterId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-Cjdo8gev6Z/UfjXt8+pTuyGK5eE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:11:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses\"\n}"
+						}
+					]
+				},
+				{
+					"name": "To get kapster schedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/kapsters/1/schedules?date={{$randomDateRecent}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"kapsters",
+								"1",
+								"schedules"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "{{$randomDateRecent}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/kapsters/1/schedules?date={{$randomDateRecent}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapsters",
+										"1",
+										"schedules"
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "{{$randomDateRecent}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "72"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"48-qThFoODcPmu1yowbPXUqsnZRkSA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:11:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": {},\n    \"message\": \"Data Jadwal Kapster berhasil diambil.\"\n}"
 						}
 					]
 				}
@@ -2292,6 +3206,150 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": 3,\n        \"kapsterId\": 2,\n        \"serviceId\": 2,\n        \"isActive\": true,\n        \"price\": 291,\n        \"createdAt\": \"2023-12-14T10:15:32.679Z\",\n        \"updatedAt\": \"2023-12-14T10:33:59.830Z\"\n    },\n    \"message\": \"Kapster service updated\"\n}"
+								},
+								{
+									"name": "To update kapster service (price, isActive)",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"isActive\": {{$randomBoolean}},\r\n    \"price\": {{$randomPrice}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/kapster-service/{{kapsterServiceId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"kapster-service",
+												"{{kapsterServiceId}}"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:04:14 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+								},
+								{
+									"name": "To update kapster service (price, isActive)",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"isActive\": {{$randomBoolean}},\r\n    \"price\": {{$randomPrice}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/kapster-service/{{kapsterServiceId}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"kapster-service",
+												"{{kapsterServiceId}}"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "41"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"29-d1P9krohLxJHg4C0MaQdXyKCGwU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:12:20 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 401,\n    \"message\": \"You're not admin\"\n}"
 								}
 							]
 						}
@@ -2339,7 +3397,298 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To create new kapster service",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"kapsterId\" : {{kapsterId}},\r\n   \"serviceId\" : {{serviceId}},\r\n   \"price\": 100000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapster-service",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapster-service"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:04:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To create new kapster service",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"kapsterId\" : {{kapsterId}},\r\n   \"serviceId\" : {{serviceId}},\r\n   \"price\": 100000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapster-service",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapster-service"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "41"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"29-d1P9krohLxJHg4C0MaQdXyKCGwU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:12:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"You're not admin\"\n}"
+						},
+						{
+							"name": "To create new kapster service",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"kapsterId\" : {{kapsterId}},\r\n   \"serviceId\" : {{serviceId}},\r\n   \"price\": 100000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/kapster-service",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapster-service"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "201"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c9-FemcqYZvMKeYLlBkAta5xmb2B4g\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:19:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 201,\n    \"data\": {\n        \"isActive\": true,\n        \"id\": 7,\n        \"kapsterId\": 6,\n        \"serviceId\": 6,\n        \"price\": 100000,\n        \"updatedAt\": \"2023-12-27T18:19:39.057Z\",\n        \"createdAt\": \"2023-12-27T18:19:39.057Z\"\n    },\n    \"message\": \"Kapster service created\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all kapster-service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/kapster-service",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"kapster-service"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get all kapster-service",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/kapster-service",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"kapster-service"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "909"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"38d-ePLaNUJT7KIj02HTShxneRQg6ds\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:12:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"price\": 20000,\n            \"id\": 1,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"HAIRCUT 1\",\n                \"id\": 1\n            },\n            \"kapster\": {\n                \"name\": \"Diego Santosa\",\n                \"id\": 1,\n                \"gender\": \"Man\"\n            }\n        },\n        {\n            \"price\": 100000,\n            \"id\": 2,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"FACE SHAVE\",\n                \"id\": 2\n            },\n            \"kapster\": {\n                \"name\": \"Joe\",\n                \"id\": 2,\n                \"gender\": \"Man\"\n            }\n        },\n        {\n            \"price\": 50000,\n            \"id\": 3,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"CLIPPER CUT\",\n                \"id\": 4\n            },\n            \"kapster\": {\n                \"name\": \"Clarra Jessica\",\n                \"id\": 3,\n                \"gender\": \"Woman\"\n            }\n        },\n        {\n            \"price\": 20000,\n            \"id\": 4,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"HAIRCUT 1\",\n                \"id\": 1\n            },\n            \"kapster\": {\n                \"name\": \"Clarra Jessica\",\n                \"id\": 3,\n                \"gender\": \"Woman\"\n            }\n        },\n        {\n            \"price\": 50000,\n            \"id\": 5,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"MOUSTACHE TRIM\",\n                \"id\": 3\n            },\n            \"kapster\": {\n                \"name\": \"Diego Santosa\",\n                \"id\": 1,\n                \"gender\": \"Man\"\n            }\n        },\n        {\n            \"price\": 200001,\n            \"id\": 6,\n            \"isActive\": true,\n            \"service\": {\n                \"serviceName\": \"Samsul\",\n                \"id\": 5\n            },\n            \"kapster\": {\n                \"name\": \"Dea Aprilia\",\n                \"id\": 4,\n                \"gender\": \"Woman\"\n            }\n        }\n    ],\n    \"message\": \"Kapster services retrieved\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -2390,7 +3739,7 @@
 							},
 							"response": [
 								{
-									"name": "Get appointment according id",
+									"name": "To get appointment",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -2400,56 +3749,14 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
+											"raw": "{{baseUrl}}/api/appointment/{{appointmentId}}",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
+												"api",
 												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"id\": \"<integer>\",\n  \"user\": {\n    \"id\": \"<number>\",\n    \"name\": \"<string>\",\n    \"passwod\": \"<string>\",\n    \"email\": \"<string>\",\n    \"number\": \"<string>\",\n    \"photo_url\": \"<string>\"\n  },\n  \"service\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"barberman\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"specialization\": \"<string>\"\n  },\n  \"date\": \"<number>\",\n  \"status\": \"<string>\",\n  \"time\": \"<integer>\"\n}"
-								},
-								{
-									"name": "Unauthorized Error",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
+												"{{appointmentId}}"
 											]
 										}
 									},
@@ -2458,15 +3765,51 @@
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+										},
+										{
 											"key": "Content-Type",
-											"value": "application/json"
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:05:24 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
+									"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 								},
 								{
-									"name": "Not permitted error",
+									"name": "To get appointment",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -2476,35 +3819,63 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
+											"raw": "{{baseUrl}}/api/appointment/{{appointmentId}}",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
+												"api",
 												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
+												"{{appointmentId}}"
 											]
 										}
 									},
-									"status": "Forbidden",
-									"code": 403,
+									"status": "OK",
+									"code": 200,
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
 											"key": "Content-Type",
-											"value": "application/json"
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "318"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"13e-ZqBDQeivB6PDGKbQnKtaY31QaYQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:13:01 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
+									"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"id\": \"APT00000000004\",\n        \"userId\": 2,\n        \"kapsterServiceId\": 1,\n        \"orderId\": \"ORDER-00000000011\",\n        \"date\": \"2023-12-26T21:34:14.000Z\",\n        \"time\": \"2023-12-27T01:30:57.000Z\",\n        \"status\": \"Completed\",\n        \"createdAt\": \"2023-12-26T21:34:14.000Z\",\n        \"updatedAt\": \"2023-12-27T10:30:00.000Z\"\n    },\n    \"message\": \"Data Appointment berhasil diambil\"\n}"
 								},
 								{
-									"name": "Not Found Error",
+									"name": "To get appointment",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -2514,18 +3885,14 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
+											"raw": "{{baseUrl}}/api/appointment/{{appointmentId}}",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
+												"api",
 												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
+												"{{appointmentId}}"
 											]
 										}
 									},
@@ -2534,12 +3901,44 @@
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
 											"key": "Content-Type",
-											"value": "application/json"
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "46"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2e-W1Z01OWoBZSEdQBeItiepCbCju4\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:20:10 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
+									"body": "{\n    \"code\": 404,\n    \"message\": \"Appointment not found\"\n}"
 								}
 							]
 						},
@@ -2598,7 +3997,7 @@
 							},
 							"response": [
 								{
-									"name": "update appointment",
+									"name": "To update appointment",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [
@@ -2613,7 +4012,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"userId\": \"<integer>\",\n  \"serviceId\": \"<integer>\",\n  \"barbermanId\": \"<integer>\",\n  \"date\": \"<number>\",\n  \"status\": \"<string>\",\n  \"time\": \"<integer>\"\n}",
+											"raw": "{\n \"status\": \"Completed\",\n \"time\" :\"{{$randomDateFuture}}\"\n}",
 											"options": {
 												"raw": {
 													"headerFamily": "json",
@@ -2622,70 +4021,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
+											"raw": "{{baseUrl}}/api/appointment/{{appointmentId}}",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
+												"api",
 												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"id\": \"<integer>\",\n  \"user\": {\n    \"id\": \"<number>\",\n    \"name\": \"<string>\",\n    \"passwod\": \"<string>\",\n    \"email\": \"<string>\",\n    \"number\": \"<string>\",\n    \"photo_url\": \"<string>\"\n  },\n  \"service\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"barberman\": {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"specialization\": \"<string>\"\n  },\n  \"date\": \"<number>\",\n  \"status\": \"<string>\",\n  \"time\": \"<integer>\"\n}"
-								},
-								{
-									"name": "Unauthorized Error",
-									"originalRequest": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"userId\": \"<integer>\",\n  \"serviceId\": \"<integer>\",\n  \"barbermanId\": \"<integer>\",\n  \"date\": \"<number>\",\n  \"status\": \"<string>\",\n  \"time\": \"<integer>\"\n}",
-											"options": {
-												"raw": {
-													"headerFamily": "json",
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
+												"{{appointmentId}}"
 											]
 										}
 									},
@@ -2694,15 +4037,51 @@
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+										},
+										{
 											"key": "Content-Type",
-											"value": "application/json"
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:05:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
+									"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 								},
 								{
-									"name": "Not permitted error",
+									"name": "To update appointment",
 									"originalRequest": {
 										"method": "PUT",
 										"header": [
@@ -2717,7 +4096,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"userId\": \"<integer>\",\n  \"serviceId\": \"<integer>\",\n  \"barbermanId\": \"<integer>\",\n  \"date\": \"<number>\",\n  \"status\": \"<string>\",\n  \"time\": \"<integer>\"\n}",
+											"raw": "{\n \"status\": \"Completed\",\n \"time\" :\"{{$randomDateFuture}}\"\n}",
 											"options": {
 												"raw": {
 													"headerFamily": "json",
@@ -2726,18 +4105,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseUrl}}/appointment/:id",
+											"raw": "{{baseUrl}}/api/appointment/{{appointmentId}}",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
+												"api",
 												"appointment",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id"
-												}
+												"{{appointmentId}}"
 											]
 										}
 									},
@@ -2746,12 +4121,44 @@
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin, Accept-Encoding"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
 											"key": "Content-Type",
-											"value": "application/json"
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "74"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"4a-jw0ko8Y6viXG5pLFVImdwA7E8y8\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 27 Dec 2023 18:14:59 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"message\": \"<string>\"\n}"
+									"body": "{\n    \"code\": 403,\n    \"message\": \"You are not authorized to update this appointment\"\n}"
 								}
 							]
 						}
@@ -2881,6 +4288,89 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 201,\n    \"data\": {\n        \"serviceId\": 2,\n        \"kapsterId\": 2,\n        \"time\": \"2024-10-28T18:43:45.000Z\",\n        \"userId\": 4,\n        \"status\": \"Booked\",\n        \"date\": \"2023-12-14T10:55:22.160Z\",\n        \"id\": \"APT00000000001\",\n        \"updatedAt\": \"2023-12-14T10:55:22.165Z\",\n        \"createdAt\": \"2023-12-14T10:55:22.165Z\"\n    },\n    \"message\": \"Appointment berhasil dibuat\"\n}"
+						},
+						{
+							"name": "To create new appointment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"serviceId\": {{serviceId}},\n    \"kapsterId\": {{kapsterId}},\n    \"time\": \"{{$randomDateFuture}}\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/appointment",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"appointment"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:05:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 						}
 					]
 				},
@@ -2968,21 +4458,222 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"code\": 401,\n    \"message\": \"Anda tidak memiliki akses untuk melihat appointment\"\n}"
+						},
+						{
+							"name": "To get all appointment (admin)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/appointment",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"appointment"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:06:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Payment gateway",
-			"item": [
+				},
 				{
-					"name": "New Request",
+					"name": "To get user all appointment history",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/appointment/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"appointment",
+								"user"
+							]
+						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To get user all appointment history",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/appointment/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"appointment",
+										"user"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:06:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To get user all appointment history",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/appointment/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"appointment",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"524-K++LsdVzchywpx6hEM9km4cFBSE\""
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:15:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": [\n        {\n            \"id\": \"APT00000000001\",\n            \"userId\": 2,\n            \"kapsterServiceId\": 3,\n            \"orderId\": \"ORDER-00000000008\",\n            \"date\": \"2023-12-26T19:14:16.000Z\",\n            \"time\": \"2023-12-27T01:30:28.000Z\",\n            \"status\": \"Completed\",\n            \"createdAt\": \"2023-12-26T19:14:16.000Z\",\n            \"updatedAt\": \"2023-12-27T10:30:00.000Z\",\n            \"order\": {\n                \"id\": \"ORDER-00000000008\",\n                \"redirect_url\": \"https://app.sandbox.midtrans.com/snap/v3/redirection/d6d6d58c-28d2-41c9-a960-a431873268cf\",\n                \"gross_amount\": 50000\n            }\n        },\n        {\n            \"id\": \"APT00000000002\",\n            \"userId\": 2,\n            \"kapsterServiceId\": 1,\n            \"orderId\": \"ORDER-00000000009\",\n            \"date\": \"2023-12-26T20:28:09.000Z\",\n            \"time\": \"2023-12-27T01:30:48.000Z\",\n            \"status\": \"Completed\",\n            \"createdAt\": \"2023-12-26T20:28:09.000Z\",\n            \"updatedAt\": \"2023-12-27T10:30:00.000Z\",\n            \"order\": {\n                \"id\": \"ORDER-00000000009\",\n                \"redirect_url\": \"https://app.sandbox.midtrans.com/snap/v3/redirection/771d02b1-5b42-4739-8d22-26890decb060\",\n                \"gross_amount\": 20000\n            }\n        },\n        {\n            \"id\": \"APT00000000004\",\n            \"userId\": 2,\n            \"kapsterServiceId\": 1,\n            \"orderId\": \"ORDER-00000000011\",\n            \"date\": \"2023-12-26T21:34:14.000Z\",\n            \"time\": \"2024-01-11T15:23:40.000Z\",\n            \"status\": \"Completed\",\n            \"createdAt\": \"2023-12-26T21:34:14.000Z\",\n            \"updatedAt\": \"2023-12-27T18:13:31.000Z\",\n            \"order\": {\n                \"id\": \"ORDER-00000000011\",\n                \"redirect_url\": \"https://app.sandbox.midtrans.com/snap/v3/redirection/0ac4715f-1f29-4f07-8d8e-00c2f2dcb5e0\",\n                \"gross_amount\": 20000\n            }\n        }\n    ],\n    \"message\": \"Data Appointments berhasil diambil\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -2996,7 +4687,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 100000\r\n}",
+							"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 10000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3016,7 +4707,225 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To  request refund",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 100000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order/ORDER-00000000002/refund",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"ORDER-00000000002",
+										"refund"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:06:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To  request refund",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 10000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order/ORDER-00000000002/refund",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"ORDER-00000000002",
+										"refund"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "173"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ad-BeiO+fE/qBgGeqqcjAPy77/o7XI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:15:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"data\": {\n        \"reason\": \"TO bheli pyulsa\",\n        \"amount\": 10000,\n        \"order_id\": \"ORDER-00000000002\",\n        \"cancel_state\": \"UNSETTLED\"\n    },\n    \"message\": \"Order cancel request successfuly issued\"\n}"
+						},
+						{
+							"name": "To  request refund",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"reason\": \"TO bheli pyulsa\",\r\n    \"amount\": 10000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order/ORDER-00000000002/refund",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"ORDER-00000000002",
+										"refund"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-0ZAozw7Y7MzthCm+dweSRjz4jZI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:22:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Admin cannot update order\"\n}"
+						}
+					]
 				},
 				{
 					"name": "To create new order",
@@ -3025,7 +4934,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 10\r\n}",
+							"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3043,7 +4952,219 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "To create new order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-LF2aslPYOX17ETtozmI4aLqSZmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:06:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Access denied\"\n}"
+						},
+						{
+							"name": "To create new order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "222"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"de-X+w9m/0giTa3zpnBn2iI8DKZzn4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:15:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 201,\n    \"data\": {\n        \"token\": \"7b1645a3-b3c7-4530-8e0f-841909b479c7\",\n        \"redirect_url\": \"https://app.sandbox.midtrans.com/snap/v3/redirection/7b1645a3-b3c7-4530-8e0f-841909b479c7\",\n        \"groos_amount\": 20000\n    },\n    \"message\": \"Order created\"\n}"
+						},
+						{
+							"name": "To create new order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"booking_time\" : \"{{$randomDateFuture}}\",\r\n    \"kapsterServiceId\" : 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/order",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"order"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin, Accept-Encoding"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"32-9xjw+FvIUT9BF7wvDDmlSg3ND4I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Dec 2023 18:22:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Admin cannot create order\"\n}"
+						}
+					]
 				}
 			]
 		}
