@@ -15,6 +15,8 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+console.log('Sending email to ->', workerData.to)
+
 transporter.sendMail(
   {
     from: process.env.MAIL_USERNAME,
@@ -23,7 +25,10 @@ transporter.sendMail(
     html: workerData.html,
   },
   (err, info) => {
-    if (err) return parentPort.postMessage()
+    if (err) {
+      console.error(err)
+      return parentPort.postMessage(err)
+    }
     console.info(
       'Email with subject ' +
         workerData.subject +

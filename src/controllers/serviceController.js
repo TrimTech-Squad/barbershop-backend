@@ -9,9 +9,7 @@ export const getAllService = async (
   /** @type {import("express").Response<any, Record<string, any>>} */ res,
 ) => {
   try {
-    const services = await ServiceServices.getAllServices(
-      req.query.all === 'true' ? 'ALL' : undefined,
-    )
+    const services = await ServiceServices.getAllServices(!!req.query.all)
     return ResponseBuilder(
       {
         code: 200,

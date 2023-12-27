@@ -58,6 +58,25 @@ export const getAllKapster = async (
     return ResponseBuilder(ErrorCatcher(error), res)
   }
 }
+export const getAllKapsterAdmin = async (
+  /** @type {{ body: any;query:{all:string,available:string} }} */ _req,
+  /** @type {import("express").Response<any, Record<string, any>>} */ res,
+) => {
+  try {
+    const kapsters = await KapsterServices.getKapsters(res.locals.isAdmin)
+
+    return ResponseBuilder(
+      {
+        code: 200,
+        data: kapsters,
+        message: 'Data Kapster berhasil diambil.',
+      },
+      res,
+    )
+  } catch (/** @type {any} */ error) {
+    return ResponseBuilder(ErrorCatcher(error), res)
+  }
+}
 
 export const getKapsterById = async (
   /** @type {{ body: any;params:{id:string} }} */ req,

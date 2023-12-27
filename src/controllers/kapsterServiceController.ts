@@ -30,9 +30,12 @@ export const createKapsterService = async (req: Request, res: Response) => {
   }
 }
 
-export const getKapsterServices = async (_req: Request, res: Response) => {
+export const getKapsterServices = async (req: Request, res: Response) => {
   try {
-    const kapsterServices = await KapsterServices.getKapsterServices()
+    const kapsterServices = await KapsterServices.getKapsterServices(
+      null,
+      !!req.query.all,
+    )
 
     return ResponseBuilder(
       {

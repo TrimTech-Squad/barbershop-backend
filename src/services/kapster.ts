@@ -74,7 +74,9 @@ export default class KapsterServices {
 
   static getAllKapsters = async (): Promise<KAPSTER[]> => {
     return new Promise((resolve, reject) => {
-      Kapster.findAll()
+      Kapster.findAll({
+        where: { status: KAPSTERSTATUS.AVAILABLE },
+      })
         .then((data: KAPSTER[]) => {
           resolve(data)
         })
@@ -233,6 +235,7 @@ export default class KapsterServices {
 
   static getKapsterServices = async (
     id: number | null = null,
+    all = false,
   ): Promise<
     {
       service: {
@@ -255,11 +258,13 @@ export default class KapsterServices {
             model: Service,
             as: 'service',
             attributes: ['serviceName', 'id'],
+            where: all ? {} : { isActive: true },
           },
           {
             model: Kapster,
             as: 'kapster',
             attributes: ['name', 'id', 'gender'],
+            where: all ? {} : { status: KAPSTERSTATUS.AVAILABLE },
           },
         ],
       })

@@ -19,10 +19,10 @@ export default class ServiceServices {
     })
   }
 
-  static getAllServices = async (query?: 'ALL'): Promise<SERVICE[]> => {
+  static getAllServices = async (all = false): Promise<SERVICE[]> => {
     return new Promise((resolve, reject) => {
       Service.findAll({
-        where: query === 'ALL' ? {} : { isActive: true },
+        where: all ? {} : { isActive: true },
       })
         .then((data: SERVICE[]) => {
           resolve(data)

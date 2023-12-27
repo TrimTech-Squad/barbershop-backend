@@ -9,11 +9,13 @@ const {
   getKapsterById,
   updateKapsterData,
   getKapsterSchedule,
+  getAllKapsterAdmin,
 } = require('../controllers/kapsterController')
 
 const router = Router()
 
 router.get('/', getAllKapster)
+router.get('/all', auth, isAdmin, getAllKapsterAdmin)
 router.post('/', auth, isAdmin, createKapster)
 router.get('/:id', getKapsterById)
 router.put('/:id', auth, isAdmin, updateKapsterData)

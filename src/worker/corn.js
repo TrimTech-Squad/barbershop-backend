@@ -14,7 +14,7 @@ const updateTask = cron.schedule('*/30 * * * *', async () => {
       {
         where: {
           status: {
-            [Op.not]: 'Completed',
+            [Op.eq]: 'Booked',
           },
           time: {
             [Op.lt]: date,
